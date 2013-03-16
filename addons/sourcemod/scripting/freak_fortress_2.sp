@@ -2702,7 +2702,8 @@ public Action:ClientTimer(Handle:hTimer)
 				new primary = GetPlayerWeaponSlot(client, TFWeaponSlot_Primary);
 				if (class == TFClass_Engineer && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) == 141) SetEntProp(client, Prop_Send, "m_iRevengeCrits", 3);
 				TF2_AddCondition(client, TFCond_Buffed, 0.3);
-				if (class == TFClass_Engineer && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) == 1004) SetEntProp(client, Prop_Send, "m_iRevengeCrits", 3); //Festive Frontier Justice (CM11)
+				//Festive Frontier Justice (CM11)
+				if (class == TFClass_Engineer && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) == 1004) SetEntProp(client, Prop_Send, "m_iRevengeCrits", 3);
 				TF2_AddCondition(client, TFCond_Buffed, 0.3);
 				continue;
 			}
@@ -2798,6 +2799,24 @@ public Action:ClientTimer(Handle:hTimer)
 						{
 							TF2_RemoveCondition(client, TFCond_Kritzkrieged);
 						}
+					}
+					//Festive Frontier Justice (CM11)
+					if (weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary) && index == 1004)
+					{
+						new sentry = FindSentry(client);
+						if (IsValidEntity(sentry) && IsBoss(GetEntPropEnt(sentry, Prop_Send, "m_hEnemy")))
+						{
+							SetEntProp(client, Prop_Send, "m_iRevengeCrits", 3);
+							TF2_AddCondition(client, TFCond_Kritzkrieged, 0.3);
+						}
+						else
+						{
+							if (GetEntProp(client, Prop_Send, "m_iRevengeCrits")) SetEntProp(client, Prop_Send, "m_iRevengeCrits", 0);
+							else if (TF2_IsPlayerInCondition(client, TFCond_Kritzkrieged) && !TF2_IsPlayerInCondition(client, TFCond_Healing))
+							{
+								TF2_RemoveCondition(client, TFCond_Kritzkrieged);
+							}
+						}	
 					}
 				}/*
 				case TFClass_Soldier: if (TF2_IsPlayerInCondition(client,TFCond_Healing) && IsValidEdict((weapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 226 && !(FF2flags[client]&FF2FLAG_ISBUFFED))
