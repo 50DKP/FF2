@@ -157,7 +157,11 @@ static const String:ff2versiontitles[][] = 		//the last line of this is what det
 	"1.06e",
 	"1.06f",
 	"1.06g",
-	"1.06h"	
+	"1.06h",
+	"2.0.0",
+	"2.0.0",
+	"2.0.0",
+	"2.0.0"
 };
 
 static const String:ff2versiondates[][] = 
@@ -176,7 +180,8 @@ static const String:ff2versiondates[][] =
 	"24 Aug 2012",
 	"5 Sep 2012",
 	"5 Sep 2012",
-	"6 Sep 2012"	
+	"6 Sep 2012",
+	"March 16, 2013"
 };
 
 static const maxversion = (sizeof(ff2versiontitles) - 1);
@@ -4782,6 +4787,61 @@ stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
+		case 18: //2.0.0
+		{
+			DrawPanelText(panel, "0) INTRODUCING:  THE MASSIVE UPDATE!");
+			DrawPanelText(panel, "1) [Players] FF2 has been updated to 1.07.");
+			DrawPanelText(panel, "[Players] ChrisMiuchiz's changes:");
+			DrawPanelText(panel, "2) [Players] Ninja Spy's slow-motion life is now 5 seconds, not 10.");
+			DrawPanelText(panel, "3) [Players] Limited Demopan's charge.");
+			DrawPanelText(panel, "4) [Players] Made Seeman's explosive radius lower.");
+			DrawPanelText(panel, "5) [Players] Gave Seeman slightly more HP.");
+			DrawPanelText(panel, "6) [Players] Lowered minion-spawn invincibility from 4 seconds to 2 seconds.");
+			DrawPanelText(panel, "7) [Players] Gave Saxton Hale, Vagineer, Seeman, and Seeldier buffed superjumps.");
+			DrawPanelText(panel, "See next page.");
+			DrawPanelText(panel, "8) [Players] Lowered Gaben's rage time to 5.625 seconds.");
+			DrawPanelText(panel, "9) [Players] Lowered Radigan's minigun damage from +30% to -30%.");
+			DrawPanelText(panel, "10) [Players] Increased Radigan's ammo from 35 to 45.");
+			DrawPanelText(panel, "11) [Players] Gave Saxton Hale more HP.");
+			DrawPanelText(panel, "12) [Players] Updated Radigan's description.");
+			DrawPanelText(panel, "13) [Players] Radigan's minigun does 50% less damage.");
+			DrawPanelText(panel, "14) [Players] Rocket's rage triggers at 1600 damage.");
+			DrawPanelText(panel, "15) [Players] Rocket now has a detonator:  +40% splash radius, +40% fire rate, 9 shots.");
+			DrawPanelText(panel, "16) [Players] Demopan now walks halfway between current and default Hale's speed");
+		}
+		
+		case 17:  //2.0.0
+		{
+			DrawPanelText(panel, "See next page.");
+			DrawPanelText(panel, "17) [Players] Updated Rocket's and Radigan's descriptions.");
+			DrawPanelText(panel, "18) [Players] Fixed "amount" typo.");
+			DrawPanelText(panel, "19) [Players] Added support for AWPer Hand, Hitman's Heatmaker, and botkiller/festive sniper rifles.");
+			DrawPanelText(panel, "20) [Players] Stopped Seeldier's minions from being able to cap.");
+			DrawPanelText(panel, "21) [Players] Added Robo-Cyphosis.");
+			DrawPanelText(panel, "22) [Players] Added support for botkiller/festive mediguns.");
+			DrawPanelText(panel, "23) [Players] Added support for festive frontier justice.");
+			DrawPanelText(panel, "24) [Players] Added support for festive huntsman.");
+			DrawPanelText(panel, "25) [Players] Added FF2 Help message leading to 50dkp.com/ff2/rules.");
+			DrawPanelText(panel, "26) [Players] Significantly increased Robo-Cyphosis's melee damage against buildings.");
+			DrawPanelText(panel, "See next page.");
+		}
+		
+		case 16:  //2.0.0
+		{
+			DrawPanelText(panel, "[Players] Wliu's changes:");
+			DrawPanelText(panel, "27) [Players] Short Circuit now only stuns for 0.5 seconds.");
+			DrawPanelText(panel, "28) [Players] FF2 gamemode message will now show only once per 5 minutes.");
+			DrawPanelText(panel, "29) [Players] Hales cannot get crits anymore.");
+			DrawPanelText(panel, "30) [Players] Rocket's rocket launcher now works.");
+			DrawPanelText(panel, "See next page.");
+		}
+		
+		case 15:  //2.0.0
+		{
+			DrawPanelText(panel, "[Players] Lawd's Changes:");
+			DrawPanelText(panel, "31) [Players] Added Ol' Nick and Gangplank.");
+		}
+		
 		case 14: // 1.06h
 		{
 		    DrawPanelText(panel, "1) [Players] Remove MvM powerup_bottle on Bosses. (RavensBro)");
