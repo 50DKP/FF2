@@ -3594,7 +3594,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							}
 						}
 					}
-					case 14,201,664:
+					case 14,201,664,851,792,801,881,890,899,908,752,957,966: //CM:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 664 Festive, 851 AWPer Hand, 792 Botkiller (Silver), 801 Gold Botkiller, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 752 Hitman's Heatmaker, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
 					{
 						new Float:chargelevel = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
 						new Float:time = 2.0;
