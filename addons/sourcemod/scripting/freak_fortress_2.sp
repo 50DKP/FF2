@@ -2736,7 +2736,7 @@ public Action:ClientTimer(Handle:hTimer)
 			}
 			switch (index)
 			{
-				case 305, 14, 56, 201, 230, 402, 16, 203, 58, 526: addthecrit = true;
+				case 305, 14, 851, 56, 1005, 201, 230, 402, 16, 203, 58, 526, 664, 792, 801, 881, 890, 899, 908, 957, 966: addthecrit = true; //CM Sniper Rifles
 				case 22, 23, 160, 209, 294, 449:
 				{
 					addthecrit = true;
