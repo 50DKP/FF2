@@ -2213,13 +2213,25 @@ public Action:checkItems(Handle:hTimer,any:client)
 						weapon = SpawnWeapon(client, "tf_weapon_medigun", 903, 5, 10, "10 ;  1.25 ;  178 ;  0.75"); 	//200 ;  1 for area of effect healing	// ;  178 ;  0.75 ;  128 ;  1.0 Faster switch-to
 						SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.41);
 						}
-						case 912: //Diamond Botkiller Medigun
+						case 912: //Diamond Botkiller Medigun Mk.I
 						{
 						TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
 						weapon = SpawnWeapon(client, "tf_weapon_medigun", 912, 5, 10, "10 ;  1.25 ;  178 ;  0.75"); 	//200 ;  1 for area of effect healing	// ;  178 ;  0.75 ;  128 ;  1.0 Faster switch-to
 						SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.41);
 						}
-						default: //Kritzkrieg, Quick-Fix, and any other unrecognized mediguns
+						case 961: //Silver Botkiller Medigun Mk.II
+						{
+						TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
+						weapon = SpawnWeapon(client, "tf_weapon_medigun", 961, 5, 10, "10 ;  1.25 ;  178 ;  0.75"); 	//200 ;  1 for area of effect healing	// ;  178 ;  0.75 ;  128 ;  1.0 Faster switch-to
+						SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.41);
+						}
+						case 970: //Gold Botkiller Medigun Mk.II
+						{
+						TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
+						weapon = SpawnWeapon(client, "tf_weapon_medigun", 9, 5, 10, "10 ;  1.25 ;  178 ;  0.75"); 	//200 ;  1 for area of effect healing	// ;  178 ;  0.75 ;  128 ;  1.0 Faster switch-to
+						SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.41);
+						}
+						default: //Kritzkrieg, Quick-Fix, Vaccinator, and any other unrecognized mediguns
 						{
 						TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
 						weapon = SpawnWeapon(client, "tf_weapon_medigun", 29, 5, 10, "10 ;  1.25 ;  178 ;  0.75"); 	//200 ;  1 for area of effect healing	// ;  178 ;  0.75 ;  128 ;  1.0 Faster switch-to
