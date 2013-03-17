@@ -147,6 +147,7 @@ new tf_arena_use_queue;
 new mp_teams_unbalance_limit;
 new tf_arena_first_blood;
 new mp_forcecamera;
+new Float:tf_scout_hype_pep_max;
 new Handle:cvarNextmap;
 new bool:isSubPluginsEnabled;
 
