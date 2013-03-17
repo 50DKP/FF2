@@ -194,9 +194,9 @@ static const String:ff2versiondates[][] =
 	"5 Sep 2012",
 	"5 Sep 2012",
 	"6 Sep 2012",
-	"March 16, 2013"
-	"March 16, 2013"
-	"March 16, 2013"
+	"March 16, 2013",
+	"March 16, 2013",
+	"March 16, 2013",
 	"March 16, 2013"
 };
 
