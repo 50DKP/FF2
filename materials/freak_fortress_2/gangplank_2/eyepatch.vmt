@@ -1,0 +1,42 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "freak_fortress_2\gangplank_2\eyepatch"
+	"$bumpmap" "freak_fortress_2\gangplank\eyepatch_normal" 
+	"$yellow" "0"
+
+	"$phong" "1"
+	"$phongexponent" "30"
+	"$phongboost" ".2"	
+	"$phongfresnelranges"	"[.25 .5 2]"
+
+ 	"$blendtintbybasealpha" "0" 
+ 	"$blendtintcoloroverbase" "0"  
+
+	"$rimlight" "1"
+	"$rimlightexponent" "25"
+	"$rimlightboost" ".8"
+
+	// Cloaking
+	"$cloakPassEnabled" "1"
+
+	"Proxies"
+	{
+		"weapon_invis"
+		{
+		}
+		"BurnLevel"
+		{
+			"resultVar" "$detailblendfactor"
+		}
+		"YellowLevel"
+		{
+			"resultVar" "$yellow"
+		}
+		"Equals"
+		{
+			"srcVar1"  "$yellow"
+			"resultVar" "$color2"
+		}
+
+	}
+}
