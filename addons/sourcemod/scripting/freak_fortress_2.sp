@@ -57,17 +57,17 @@ new Damage[MAXPLAYERS + 1];
 new curHelp[MAXPLAYERS + 1];
 new uberTarget[MAXPLAYERS + 1];
 
-#define FF2FLAG_UBERREADY		(1 << 1)	//Used when medic says "I'm charged!"
-#define FF2FLAG_ISBUFFED		(1 << 2)	//Used when soldier uses backup's buff.
-#define FF2FLAG_CLASSTIMERDISABLED 	(1 << 3)	//Used to prevent clients' timer.
-#define FF2FLAG_HUDDISABLED		(1 << 4)	//Used to prevent custom hud from clients' timer.
-#define FF2FLAG_BOTRAGE			(1 << 5)	//Used by bots to use Boss' rage.
-#define FF2FLAG_TALKING			(1 << 6)	//Used by Bosses with "sound_block_vo" to disable block for some lines.
-#define FF2FLAG_ALLOWSPAWNINBOSSTEAM	(1 << 7)	//Used to allow spawn players in Boss' team.
-#define FF2FLAG_USEBOSSTIMER		(1 << 8)	//Used to prevent Boss' timer.
-#define FF2FLAG_USINGABILITY		(1 << 9)	//Used to prevent Boss' hints about abilities buttons.
-#define FF2FLAG_CLASSHELPED 		(1 << 10)
-#define FF2FLAG_HASONGIVED 		(1 << 11)
+#define FF2FLAG_UBERREADY				(1 << 1)		//Used when medic says "I'm charged!"
+#define FF2FLAG_ISBUFFED				(1 << 2)		//Used when soldier uses backup's buff.
+#define FF2FLAG_CLASSTIMERDISABLED 		(1 << 3)		//Used to prevent clients' timer.
+#define FF2FLAG_HUDDISABLED				(1 << 4)		//Used to prevent custom hud from clients' timer.
+#define FF2FLAG_BOTRAGE					(1 << 5)		//Used by bots to use Boss' rage.
+#define FF2FLAG_TALKING					(1 << 6)		//Used by Bosses with "sound_block_vo" to disable block for some lines.
+#define FF2FLAG_ALLOWSPAWNINBOSSTEAM	(1 << 7)		//Used to allow spawn players in Boss' team.
+#define FF2FLAG_USEBOSSTIMER			(1 << 8)		//Used to prevent Boss' timer.
+#define FF2FLAG_USINGABILITY			(1 << 9)		//Used to prevent Boss' hints about abilities buttons.
+#define FF2FLAG_CLASSHELPED (1 << 10)
+#define FF2FLAG_HASONGIVED (1 << 11)
 #define FF2FLAGS_SPAWN				~FF2FLAG_UBERREADY & ~FF2FLAG_ISBUFFED & ~FF2FLAG_TALKING & ~FF2FLAG_ALLOWSPAWNINBOSSTEAM & FF2FLAG_USEBOSSTIMER & ~FF2FLAG_USINGABILITY
 new FF2flags[MAXPLAYERS + 1];
 
@@ -261,11 +261,9 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	RegPluginLibrary("freak_fortress_2");
 	
 	AskPluginLoad_VSH();
-//Testing to see if this will fix compile errors
-/*#if defined _steamtools_included
+#if defined _steamtools_included
 	MarkNativeAsOptional("Steam_SetGameDescription");
 #endif
-*/
 	return APLRes_Success;
 }
 
