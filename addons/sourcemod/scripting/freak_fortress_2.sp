@@ -8,6 +8,7 @@
 //Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
 
 //Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
+//50DKP version is being updated by ChrisMiuchiz, Wliu, and LAWD VAWLDAWMAWRT.
 
 #pragma semicolon 1
 
@@ -22,7 +23,7 @@
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "1.06h"
+#define PLUGIN_VERSION "2.0.0a2"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -58,7 +59,7 @@ new curHelp[MAXPLAYERS + 1];
 #define FF2FLAG_ALLOWSPAWNINBOSSTEAM	(1 << 7)		//Used to allow spawn players in Boss' team.
 #define FF2FLAG_USEBOSSTIMER			(1 << 8)		//Used to prevent Boss' timer.
 #define FF2FLAG_USINGABILITY			(1 << 9)		//Used to prevent Boss' hints about abilities buttons.
-#define FF2FLAGS_SPAWN				~FF2FLAG_UBERREADY & ~FF2FLAG_ISBUFFED & ~FF2FLAG_TALKING & ~FF2FLAG_ALLOWSPAWNINBOSSTEAM & FF2FLAG_USEBOSSTIMER & ~FF2FLAG_USINGABILITY
+#define FF2FLAGS_SPAWN					~FF2FLAG_UBERREADY & ~FF2FLAG_ISBUFFED & ~FF2FLAG_TALKING & ~FF2FLAG_ALLOWSPAWNINBOSSTEAM & FF2FLAG_USEBOSSTIMER & ~FF2FLAG_USINGABILITY
 new FF2flags[MAXPLAYERS + 1];
 
 new Boss[MAXPLAYERS+1];
@@ -159,10 +160,8 @@ static const String:ff2versiontitles[][] = 		//the last line of this is what det
 	"1.06f",
 	"1.06g",
 	"1.06h",
-	"2.0.0",
-	"2.0.0",
-	"2.0.0",
-	"2.0.0"
+	"2.0.0a1",
+	"2.0.0a2",
 };
 
 static const String:ff2versiondates[][] = 
@@ -182,10 +181,8 @@ static const String:ff2versiondates[][] =
 	"5 Sep 2012",
 	"5 Sep 2012",
 	"6 Sep 2012",
-	"March 16, 2013",
-	"March 16, 2013",
-	"March 16, 2013",
-	"March 16, 2013"
+	"March 17, 2013",
+	"March 19, 2013",
 };
 
 static const maxversion = (sizeof(ff2versiontitles) - 1);
@@ -4791,7 +4788,7 @@ stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
-		case 18: //2.0.0
+		/*case 18: //2.0.0
 		{
 			DrawPanelText(panel, "0) INTRODUCING:  THE MASSIVE UPDATE!");
 			DrawPanelText(panel, "1) [Players] FF2 has been updated to 1.07.");
@@ -4844,6 +4841,22 @@ stock FindVersionData(Handle:panel, versionindex)
 		{
 			DrawPanelText(panel, "[Players] Lawd's Changes:");
 			DrawPanelText(panel, "31) [Players] Added Ol' Nick and Gangplank.");
+		}*/
+		
+		case 16: //2.0.0a2
+		{
+			DrawPanelText(panel, "1) [Players] Nerfed Gentlespy's knife (Wliu)");
+			DrawPanelText(panel, "2) [Players] Added back nerfed Rocket's shotgun (Wliu)");
+			DrawPanelText(panel, "3) [Players] Rocket now stuns people for 2.5s on rage (Wliu)");
+			DrawPanelText(panel, "4) [Players] Made Vaginner description readable (Wliu)");
+			DrawPanelText(panel, "5) [Players] Disabled boss crits, nerfed Short Circuit, FF2 message pops up every 5 minutes (Wliu)");
+			DrawPanelText(panel, "6) [Players] Updated to FF2 1.06h-some of the CM changes might not have made it in (Wliu)");
+			DrawPanelText(panel, "7) [Players] Added in some CM changes (ChrisMiuchiz)");
+			DrawPanelText(panel, "8) [Players] Updated CBS model (Lawd)");
+		}
+		case 15: //2.0.0a1
+		{
+			DrawPanelText(panel, "1) [Players] Added Gangplank and Gentlespy (Lawd)");
 		}
 		
 		case 14: // 1.06h
