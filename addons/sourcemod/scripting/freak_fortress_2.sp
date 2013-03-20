@@ -4855,7 +4855,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "See next page");
 		}
 		
-		case 16: /2.0.0a2
+		case 16: //2.0.0a2
 		{
 			DrawPanelText(panel, "6) [Players] Added in some CM changes (ChrisMiuchiz)");
 			DrawPanelText(panel, "7) [Players] Updated CBS model (Lawd)");
