@@ -135,7 +135,7 @@ new tf_arena_use_queue;
 new mp_teams_unbalance_limit;
 new tf_arena_first_blood;
 new mp_forcecamera;
-new Float:tf_scout_hype_pep_max;
+//new Float:tf_scout_hype_pep_max;  //Used in 1.07+
 new Handle:cvarNextmap;
 new bool:isSubPluginsEnabled;
 
@@ -162,6 +162,7 @@ static const String:ff2versiontitles[][] = 		//the last line of this is what det
 	"1.06h",
 	"2.0.0a1",
 	"2.0.0a2",
+	"2.0.0a2"
 };
 
 static const String:ff2versiondates[][] = 
@@ -183,6 +184,7 @@ static const String:ff2versiondates[][] =
 	"6 Sep 2012",
 	"March 17, 2013",
 	"March 19, 2013",
+	"March 19, 2013"
 };
 
 static const maxversion = (sizeof(ff2versiontitles) - 1);
@@ -2819,7 +2821,7 @@ public Action:ClientTimer(Handle:hTimer)
 						}
 					}
 					//Festive Frontier Justice (CM11)
-					if (weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary) && index == 1004)
+					if (weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary) && index == 1004)  //SP COMPILER IS GIVING WARNINGS ABOUT THIS ~Wliu
 					{
 						new sentry = FindSentry(client);
 						if (IsValidEntity(sentry) && IsBoss(GetEntPropEnt(sentry, Prop_Send, "m_hEnemy")))
@@ -4843,17 +4845,23 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "31) [Players] Added Ol' Nick and Gangplank.");
 		}*/
 		
-		case 16: //2.0.0a2
+		case 17: //2.0.0a2
 		{
 			DrawPanelText(panel, "1) [Players] Nerfed Gentlespy's knife (Wliu)");
 			DrawPanelText(panel, "2) [Players] Added back nerfed Rocket's shotgun (Wliu)");
 			DrawPanelText(panel, "3) [Players] Rocket now stuns people for 2.5s on rage (Wliu)");
 			DrawPanelText(panel, "4) [Players] Made Vaginner description readable (Wliu)");
 			DrawPanelText(panel, "5) [Players] Disabled boss crits, nerfed Short Circuit, FF2 message pops up every 5 minutes (Wliu)");
+			DrawPanelText(panel, "See next page");
+		}
+		
+		case 16: /2.0.0a2
+		{
 			DrawPanelText(panel, "6) [Players] Updated to FF2 1.06h-some of the CM changes might not have made it in (Wliu)");
 			DrawPanelText(panel, "7) [Players] Added in some CM changes (ChrisMiuchiz)");
 			DrawPanelText(panel, "8) [Players] Updated CBS model (Lawd)");
 		}
+		
 		case 15: //2.0.0a1
 		{
 			DrawPanelText(panel, "1) [Players] Added Gangplank and Gentlespy (Lawd)");
