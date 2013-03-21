@@ -1753,9 +1753,8 @@ public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
             TFClassType:oldclass = TF2_GetPlayerClass(iClient), 
             iTeam   = GetClientTeam(iClient); 
      
-    if(iTeam==BossTeam && !b_allowBossChgClass && IsPlayerAlive(iClient) && GetBossIndex(iClient) !=-1)  
+    if(iTeam==BossTeam && !b_allowBossChgClass && IsPlayerAlive(iClient))  
     { 
-        CPrintToChat(iClient,"{olive}[FF2] {default}Do NOT change class when you're a HALE!");
         b_BossChgClassDetected = true; 
         TF2_SetPlayerClass(iClient, oldclass); 
     } 
@@ -2640,18 +2639,21 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 	SetVariantString("");
 	AcceptEntityInput(client, "SetCustomModel");
 	
-	if (b_BossChgClassDetected)
-	{
-		TF2_RemoveAllWeapons(client);
-		b_BossChgClassDetected = false;
-	}
-	
 	if ((FF2RoundState != 1 || !(FF2flags[client] & FF2FLAG_ALLOWSPAWNINBOSSTEAM)))
 		CreateTimer(0.1, MakeNotBoss, GetClientUserId(client));
-	else
-		CreateTimer(0.1, checkItems, client);
 		
 	FF2flags[client] = FF2FLAGS_SPAWN;
+	
+	if (b_BossChgClassDetected) 
+    { 
+		for(new i = 0; i <= MaxClients; i++)
+	{
+			if (!IsValidClient(Boss[i]))
+				continue;
+			EquipBoss(i);
+	}
+		b_BossChgClassDetected = false; 
+	} 
 	return Plugin_Continue;
 }
 
