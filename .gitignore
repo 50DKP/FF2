@@ -19,7 +19,7 @@
 /addons/sourcemod/extensions/
 /addons/sourcemod/gamedata/
 /addons/sourcemod/logs/
-/addons/sourcemod/plugins/
+!/addons/sourcemod/plugins/freak_fortress_2.smx
 !/addons/sourcemod/scripting/freaks/
 !/addons/sourcemod/scripting/include/
 !/addons/sourcemod/scripting/freak_fortress_2.sp
