@@ -1,3 +1,4 @@
+#This is so you can put this repo in your server directory without stuff blowing up :)
 *.bat
 *.cache
 *.cfg
@@ -7,8 +8,8 @@
 *.res
 *.txt
 *.vbsp
-/addons/metamod.vdf
 /addons/metamod/
+/addons/metamod.vdf
 /addons/sourcemod/bin/
 /addons/sourcemod/configs/geoip/
 /addons/sourcemod/configs/sql-init-scripts/
@@ -20,11 +21,23 @@
 /addons/sourcemod/gamedata/
 /addons/sourcemod/logs/
 !/addons/sourcemod/plugins/freak_fortress_2.smx
-!/addons/sourcemod/scripting/freaks/
-!/addons/sourcemod/scripting/include/
+/addons/sourcemod/scripting/a*/
+/addons/sourcemod/scripting/b*/
+/addons/sourcemod/scripting/compiled/
+/addons/sourcemod/scripting/f*/
+/addons/sourcemod/scripting/playercommands/
+/addons/sourcemod/scripting/testsuite/
 !/addons/sourcemod/scripting/freak_fortress_2.sp
 /addons/sourcemod/translations/*/
-!/addons/sourcemod/translations/freak_fortress_2_phrases.txt
+/addons/sourcemod/translations/a*.txt
+/addons/sourcemod/translations/b*.txt
+/addons/sourcemod/translations/c*.txt
+/addons/sourcemod/translations/fun*.txt
+/addons/sourcemod/translations/mapchooser.phrases.txt
+/addons/sourcemod/translations/n*.txt
+/addons/sourcemod/translations/p*.txt
+/addons/sourcemod/translations/r*.txt
+/addons/sourcemod/translations/s*.txt
 /addons/sourcemod/.hg_archival.txt
 /bin/
 !/cfg/sourcemod/FreakFortress2.cfg
@@ -45,5 +58,13 @@
 /scenes/
 /scripts/
 /servers/
-!/sound/freak_fortress_2/
-!/sound/saxton_hale/
+/sound/ambient/
+/sound/c*/
+/sound/doors/
+/sound/items/
+/sound/m*/
+/sound/p*/
+/sound/replay/
+/sound/ui/
+/sound/vo/
+/sound/weapons/
