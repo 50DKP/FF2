@@ -80,7 +80,7 @@
 	}
 	"help_soldier"
 	{
-		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25 and its honorbound is removed on hit.\nBoot weapons reduce fall damage.\nAll guns minicrit Boss in midair.\nThe Direct Hit crits at times when it would minicrit.\nThe Reserve Shooter has faster weapon switch and a small damage buff.\nThe Mantreads create greater rocketjumps."
+		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25 and its honorbound is removed on hit.\nBoot weapons reduce fall damage, and Mantreads create greater rocketjumps..\nAll guns minicrit Boss in midair.\nThe Direct Hit crits at times when it would minicrit.\nThe Reserve Shooter has faster weapon switch and a small damage buff."
 	}
 	"help_pyro"
 	{
@@ -145,7 +145,7 @@
 	"whatsnew"
 	{
 		"#format" "{1:s},{2:s}"
-		"en"	"Whats new in v.{1} from {2}"
+		"en"	"Whats new in v.{1} ({2})"
 	}
 	"help_mode"
 	{
@@ -189,7 +189,7 @@
 	"ff2_hp"
 	{
 		"#format" "{1:s},{2:i},{3:i},{4:s}"
-		"en"	"Current {1}'s hp amout is {2} of {3}{4}"
+		"en"	"Current {1}'s hp amount is {2} of {3}{4}"
 	}
 	"ff2_alive"
 	{
@@ -212,7 +212,7 @@
 	}
 	"to0"
 	{
-		"en"	"set to 0"
+		"en"	"Set to 0"
 	}	
 	"to0_title"
 	{
@@ -225,7 +225,7 @@
 	}	
 	"to0_done"
 	{
-		"en"	"Now you have {olive}0{default} queue points"
+		"en"	"You now have {olive}0{default} queue points"
 	}
 	"to0_done_admin"
 	{
@@ -243,7 +243,7 @@
 	}
 	"first_round"
 	{
-		"en"	"Waiting for players to finish loading. Gamemode will be arena for this round"//waiting for players to load and playing common arena for the first round
+		"en"	"Waiting for players to finish loading. Gamemode will be arena for this round"
 	}
 	"used_weighdown"
 	{
@@ -252,7 +252,7 @@
 	"ff2_music"
 	{
 		"#format" "{1:s}"
-		"en"	"Freak Fortress 2 Boss' music is {1} now"
+		"en"	"Freak Fortress 2 Boss' music is {1} now."
 	}
 	"ff2_voice"
 	{

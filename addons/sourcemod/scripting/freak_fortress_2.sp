@@ -1881,9 +1881,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 444:
+		case 444:  //Mantreads
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0");
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ; 259 ; 5.0");  //Wliu:  Increased Mantreads damage by 500%.
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -3713,12 +3713,20 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				{
 					new Float:changedamage = BossHealthMax[index]*(LastBossIndex()+1)*BossLivesMax[index]*(0.12-Stabbed[index]/90);
 					Damage[attacker]+= RoundFloat(changedamage);
-					if (BossHealth[index] > RoundFloat(changedamage)) damage = 0.0;
-					else damage = changedamage;
+					if (BossHealth[index] > RoundFloat(changedamage))
+					{
+						damage = 0.0;
+					}
+					else
+					{
+						damage = changedamage;
+					}
 					BossHealth[index]-= RoundFloat(changedamage);
 					BossCharge[index][0]+= changedamage*100/BossRageDamage[Special[index]];
 					if (BossCharge[index][0] > 100.0)
+					{
 						BossCharge[index][0] = 100.0;
+					}
 					EmitSoundToClient(client,"player/spy_shield_break.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 0.7, 100, _, Pos, NULL_VECTOR, false, 0.0);
 					EmitSoundToClient(attacker,"player/spy_shield_break.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 0.7, 100, _, Pos, NULL_VECTOR, false, 0.0);
 					EmitSoundToClient(client,"player/crit_received3.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 0.7, 100, _, _, NULL_VECTOR, false, 0.0);
@@ -3726,9 +3734,13 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					new Float:NextAttackTime=GetGameTime()+2.0;
 					SetEntPropFloat(attacker, Prop_Send, "m_flNextAttack", NextAttackTime);
 					if (!(FF2flags[attacker] & FF2FLAG_HUDDISABLED))
+					{
 						PrintCenterText(attacker,"You backstabbed him!");
+					}
 					if (!(FF2flags[client] & FF2FLAG_HUDDISABLED))
+					{
 						PrintCenterText(client,"You were just backstabbed!");
+					}
 					new Handle:stabevent = CreateEvent("player_hurt", true);
 					SetEventInt(stabevent, "userid", GetClientUserId(client));
 					SetEventInt(stabevent, "health", BossHealth[index]);
@@ -3747,20 +3759,29 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					SetEventInt(stabevent, "weaponid", TF_WEAPON_KNIFE);
 					FireEvent(stabevent);
 					if (wepindex == 225 || wepindex == 574)
+					{
 						CreateTimer(0.3, Timer_DisguiseBackstab, GetClientUserId(attacker));
+					}
 					new invis_watch=GetPlayerWeaponSlot(attacker, TFWeaponSlot_PDA);
 					new iw_index = (IsValidEntity(invis_watch) && invis_watch > MaxClients ? GetEntProp(invis_watch, Prop_Send, "m_iItemDefinitionIndex") : -1);
-					if (iw_index==59)	//Dead Ringer						
+					if (iw_index==59)	//Dead Ringer
+					{
 						SetEntPropFloat(attacker, Prop_Send, "m_flStealthNextChangeTime", NextAttackTime);
+					}
 					else if (wepindex == 356)
 					{
 						new health = GetClientHealth(attacker) + 100;
-						if (health > 270) health = 270;
+						if (health > 270)
+						{
+							health = 270;
+						}
 						SetEntProp(attacker, Prop_Data, "m_iHealth", health);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", health);
 					}
 					if (Stabbed[index] < 5)
+					{
 						Stabbed[index]++;
+					}
 					new healers[MAXPLAYERS];
 					new healercount = 0;
 					for(new i = 1; i <= MaxClients; i++)
