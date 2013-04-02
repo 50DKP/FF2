@@ -80,7 +80,7 @@
 	}
 	"help_soldier"
 	{
-		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25 and its honorbound is removed on hit.\nBoot weapons reduce fall damage, and Mantreads create greater rocketjumps..\nAll guns minicrit Boss in midair.\nThe Direct Hit crits at times when it would minicrit.\nThe Reserve Shooter has faster weapon switch and a small damage buff."
+		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25 and its honorbound is removed on hit.\nBoots reduce fall damage and Mantreads create greater rocketjumps.\nAll guns minicrit Boss in midair and the Reserve Shooter has faster weapon switch and a small damage buff.\nThe Direct Hit crits at times when it would minicrit."
 	}
 	"help_pyro"
 	{
@@ -88,7 +88,7 @@
 	}
 	"help_demo"
 	{
-		"en"	"The shields block one hit from Boss.\nUsing the shields grants criticals.\nEyelander/reskins gain heads on hit.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25. Honorbound is removed on hit."
+		"en"	"All shields block one hit from Boss.\nUsing the shields grants criticals.\nEyelander/reskins gain heads on hit.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25. Honorbound is removed on hit."
 	}
 	"help_heavy"
 	{
