@@ -76,11 +76,11 @@
 	}
 	"help_scout"
 	{
-		"en"	"The Crit-a-Cola grants criticals instead of minicrits.\nThe Fan O' War removes 5pct rage on hit.\nPistols gain minicrits.\nThe Candycane drops a health pack on hit."
+		"en"	"The Crit-a-Cola grants criticals instead of minicrits.\nThe Fan O' War removes 5% rage on hit.\nPistols gain minicrits.\nThe Candycane drops a small health pack on hit."
 	}
 	"help_soldier"
 	{
-		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25 and its honorbound is removed on hit.\nBoots reduce fall damage and Mantreads create greater rocketjumps.\nAll guns minicrit Boss in midair and the Reserve Shooter has faster weapon switch and a small damage buff.\nThe Direct Hit crits at times when it would minicrit."
+		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25 and its honorbound is removed on hit.\nBoots reduce fall damage and Mantreads create greater rocketjumps.\nAll guns minicrit Boss in midair (Direct Hit crits), and the Reserve Shooter has faster weapon switch and a small damage buff."
 	}
 	"help_pyro"
 	{
@@ -96,19 +96,19 @@
 	}
 	"help_eggineer"
 	{
-		"en"	"All maps have only small ammo packs.\nThe Frontier Justice gains crits only while your sentry is targetting Boss.\nThe Eureka Effect is disabled for now."
+		"en"	"All arena/VSH maps have only small ammo packs.\nThe Frontier Justice gains crits only while your sentry is targeting the Boss."
 	}
 	"help_medic"
 	{
-		"en"	"Charge: Kritz+Uber. Charge starts at 40 percent.\nCharge lasts for 150 percent after activation.\nSyringe Guns: on hit: +5 to ubercharge, overdose's speed effect.\nCrossbow: 100 percent crits, +150pct damage, +10 uber on hit."
+		"en"	"Charge: Kritz+Uber. Charge starts at 41 percent.\nCharge lasts for 150 percent after activation.\nSyringe Guns: on hit: +5 to ubercharge, Overdose's speed effect.\nCrossbow: 100 percent crits, +150pct damage, +10 uber on hit."
 	}
 	"help_sniper"
 	{
-		"en"	"All your weapons have critical hits.\nJarate removes 8pct rage.\nBack-equipped weapons are replaced with SMG.\nDefault Sniper Rifle causes Boss to glow. Glow time scales with charge."
+		"en"	"All your weapons have critical hits.\nJarate removes 8% rage.\nMost back-equipped weapons are replaced with SMG.\nDefault Sniper Rifle causes Boss to glow. Glow time scales with charge."
 	}
 	"help_spie"
 	{
-		"en"	"Backstab does about 10 percent of Boss' max health.\nCloaknDagger replaced with normal watch.\nAll revolvers minicrit.\nYour Eternal Reward backstabs will disguise you.\nKunai backstabs will get you a health bonus."
+		"en"	"Backstab does about 10 percent of Boss's max health.\nCloak and Dagger is replaced with normal watch.\nAll revolvers minicrit.\nYour Eternal Reward/Wanga Prick backstabs will disguise you instantly.\nKunai backstabs will give you a health bonus."
 	}
 	"help_melee"
 	{
@@ -169,7 +169,7 @@
 	}
 	"menu_7"
 	{
-		"en"	"Changes to my class in FF2 (/ff2classinfo)" //shows info about whats changed in your character class by ff2 plugin
+		"en"	"Type /ff2classinfo to see your class changes"
 	}
 	"damage_fx"
 	{
@@ -230,7 +230,7 @@
 	"to0_done_admin"
 	{
 		"#format" "{1:N}"
-		"en"	"Now {olive}{1}{default} have {olive}0{default} queue points"
+		"en"	"Now {olive}{1}{default} has {olive}0{default} queue points"
 	}
 	"to0_done_by_admin"
 	{
@@ -288,7 +288,7 @@
 	"charge_status"
 	{
 		"#format" "{1:i}"
-		"en"	"Charge is {1} percent ready. When at 100 percent and unpress charge button."
+		"en"	"Charge is {1} percent ready. When at 100 percent, depress charge button."
 	}
 	"nextmap_charset"
 	{
@@ -297,7 +297,7 @@
 	}
 	"ff2_buttons_reload"
 	{
-		"en"	"Press RELOAD button to use ability!"
+		"en"	"Press reload button to use ability!"
 	}
 	"ff2_buttons_rmb"
 	{
@@ -310,6 +310,6 @@
 	}
 	"ff2_50dkp_help"
 	{
-		"en"	"For FF2 rules, go to {red}50DKP.com/ff2/rules{default}"
+		"en"	"For FF2 rules, go to {red}50DKP.com/ff2/rules{default}.  For General rules, go to {red}50DKP.com/rules{default}"
 	}
 }
