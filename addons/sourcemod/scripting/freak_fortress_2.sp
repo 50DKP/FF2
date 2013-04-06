@@ -2645,14 +2645,21 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 	FF2flags[client] = FF2FLAGS_SPAWN;
 	
 	if (b_BossChgClassDetected) 
-    { 
+	{ 
 		for(new i = 0; i <= MaxClients; i++)
-	{
+		{
 			if (!IsValidClient(Boss[i]))
+			{
 				continue;
+			}
 			EquipBoss(i);
-	}
+		}
 		b_BossChgClassDetected = false; 
+	}
+	
+	if (GetBossIndex(client)!=-1 && FF2RoundState==0)  //CHRIS!
+	{
+		TF2_RemoveAllWeapons(client);
 	} 
 	return Plugin_Continue;
 }
