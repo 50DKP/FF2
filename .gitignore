@@ -1,14 +1,14 @@
 #This is so you can put this repo in your server directory without stuff blowing up :)
-*.bat
-*.cache
-*.cfg
-*.inf
-*.rad
-*.raw
-*.res
-*.txt
-*.vbsp
-*.vdf
+/*.bat
+/*.cache
+/*.cfg
+/*.inf
+/*.rad
+/*.raw
+/*.res
+/*.txt
+/*.vbsp
+/*.vdf
 #METAMOD/SOURCEMOD
 /addons/metamod/
 /addons/metamod.vdf
@@ -36,7 +36,6 @@
 /addons/sourcemod/plugins/n*.smx
 /addons/sourcemod/plugins/s*.smx
 /addons/sourcemod/plugins/r*.smx
-/addons/sourcemod/plugins/R*.smx
 /addons/sourcemod/plugins/t*.smx
 #CODE
 /addons/sourcemod/scripting/a*/
@@ -72,8 +71,10 @@
 /bin/
 #MOAR RANDOM STUFF
 /bz2/maps/
-#This is somehow really the only thing that works with a !, so ok...
-!/cfg/sourcemod/FreakFortress2.cfg
+#CONFIGS
+/cfg/sourcemod/f*.cfg
+/cfg/sourcemod/r*.cfg
+/cfg/sourcemod/s*.cfg
 /cfg/*.cfg
 /cfg/*.rc
 /cfg/*.scr
