@@ -1,31 +1,28 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "freak_fortress_2\ninjascout\scout_red"
-	"$alphatest" 1
-	"$bumpmap" "freak_fortress_2\ninjascout\scout_normal"
-	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
-	"$detailscale" "5"
-	"$detailblendfactor" .01
-	"$detailblendmode" 6
+	"$basetexture"			"freak_fortress_2\ninjascout\scout_red"
+	"$alphatest"			1
+	"$bumpmap"				"freak_fortress_2\ninjascout\scout_normal"
+	"$detail"				"effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+	"$detailscale"			"5"
+	"$detailblendfactor"	.01
+	"$detailblendmode"		6
 
+	"$yellow"				"0"
+	"$one"					"1"
 
-	"$yellow" "0"
-	"$one" "1"
-
-	"$phong" "1"
-	"$phongexponent" "20"
-	"$phongboost" ".3"	
-	"$lightwarptexture" "models/player/pyro/pyro_lightwarp"
+	"$phong"				"1"
+	"$phongexponent"		"20"
+	"$phongboost"			".3"	
+	"$lightwarptexture"		"models/player/pyro/pyro_lightwarp"
 	"$phongfresnelranges"	"[.3 1 8]"
-	"$halflambert" "0"
+	"$halflambert"			"0"
 
-	// Rim lighting parameters
-	"$rimlight" "1"												// To enable rim lighting (requires phong)
-	"$rimlightexponent" "4"										// Exponent for phong component of rim lighting	
-	"$rimlightboost" "2"										// Boost for ambient cube component of rim lighting
+	"$rimlight"				"1"
+	"$rimlightexponent"		"4"
+	"$rimlightboost"		"2"
 
-	// Cloaking
-	"$cloakPassEnabled" "1"
+	"$cloakPassEnabled"		"1"
 	"Proxies"
 	{
 		"spy_invis"
@@ -33,23 +30,22 @@
 		}
 		"AnimatedTexture"
 		{
-			"animatedtexturevar" "$detail"
-			"animatedtextureframenumvar" "$detailframe"
-			"animatedtextureframerate" 30
+			"animatedtexturevar"			"$detail"
+			"animatedtextureframenumvar"	"$detailframe"
+			"animatedtextureframerate"		30
 		}
 		"BurnLevel"
 		{
-			"resultVar" "$detailblendfactor"
+			"resultVar"						"$detailblendfactor"
 		}
 		"YellowLevel"
 		{
-			"resultVar" "$yellow"
+			"resultVar"						"$yellow"
 		}
 		"Equals"
 		{
-			"srcVar1"  "$yellow"
-			"resultVar" "$color2"
+			"srcVar1"						"$yellow"
+			"resultVar"						"$color2"
 		}
-
 	}
 }
