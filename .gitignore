@@ -49,6 +49,7 @@
 /addons/sourcemod/scripting/b*.sp
 /addons/sourcemod/scripting/c*.*
 /addons/sourcemod/scripting/fun*.sp
+/addons/sourcemod/scripting/ff2*.sp
 /addons/sourcemod/scripting/m*.sp
 /addons/sourcemod/scripting/n*.sp
 /addons/sourcemod/scripting/p*.sp
