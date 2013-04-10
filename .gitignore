@@ -27,11 +27,10 @@
 /addons/sourcemod/logs/
 #PLUGINS
 /addons/sourcemod/plugins/disabled/
-/addons/sourcemod/plugins/freaks/
 /addons/sourcemod/plugins/a*.smx
 /addons/sourcemod/plugins/b*.smx
 /addons/sourcemod/plugins/c*.smx
-/addons/sourcemod/plugins/f*.smx
+/addons/sourcemod/plugins/fun*.smx
 /addons/sourcemod/plugins/p*.smx
 /addons/sourcemod/plugins/n*.smx
 /addons/sourcemod/plugins/s*.smx

@@ -35,8 +35,8 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 		Rage_Radigan(index);									// Minigun
 	else if (!strcmp(ability_name,"rage_moko"))
 		Rage_Mokou(index);						// Detonator
-	else if (!strcmp(ability_name,"rage_cm_rocket"))
-		Rage_CM_Rocket(index);						// Rocket's Custom Detonator
+	/*else if (!strcmp(ability_name,"rage_cm_rocket"))
+		Rage_CM_Rocket(index);						// Rocket's Custom Detonator-removed, now uses shotgun rage again.*/
 	else if (!strcmp(ability_name,"fukkatsu_moko"))
 		Fukkatsu_Mokou(index);							// FUJIYAMA VOLCANO!
 	return Plugin_Continue;
@@ -96,7 +96,7 @@ Rage_Radigan(index)
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
 	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_minigun", 312, 100, 5, "1 ; 0.5 ; 86 ; 1.3 ; 5 ; 1.3 ; 37 ; 0 ; 77 ; 0 ; 205 ; 1.5 ; 206 ; 2.25 ; 128 ; 1 ; 75 ; 0.35"));
-		// 2 - -40%% damage done
+		// 2 - -40% damage done
 		// 86 - +30% spinup time
 		// 5 - 30% slower fire speed
 		// 75 - -65% move speed when spinning
@@ -122,7 +122,7 @@ Rage_Mokou(index)
 		// 25 - 0 is max ammo size
 	SetAmmo(Boss, TFWeaponSlot_Secondary,6);
 }
-
+/*Not used anymore-switched back to Shotgun rage.
 Rage_CM_Rocket(index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
@@ -132,7 +132,7 @@ Rage_CM_Rocket(index)
 		// 6 - +40% faster fire rate
 		// 25 - 0 is max ammo size
 	SetAmmo(Boss, TFWeaponSlot_Secondary,9);
-}
+}*/
 
 Fukkatsu_Mokou(index)
 {
