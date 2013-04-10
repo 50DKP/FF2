@@ -286,14 +286,14 @@ Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 				GetClientEyeAngles(Boss, rot);
 				if (bEnableSuperDuperJump[index])
 				{
-					vel[2]=(750.0+175.0*charge/70+2000)*multiplier;
+					vel[2]=(750.0+400.0*charge/70+2000)*multiplier;
 					vel[0]+=Cosine(DegToRad(rot[0]))*Cosine(DegToRad(rot[1]))*500*multiplier;
 					vel[1]+=Cosine(DegToRad(rot[0]))*Sine(DegToRad(rot[1]))*500*multiplier;
 					bEnableSuperDuperJump[index]=false;
 				}
 				else
 				{
-					vel[2]=(750.0+175.0*charge/70)*multiplier;
+					vel[2]=(750.0+400.0*charge/70)*multiplier;
 					vel[0]+=Cosine(DegToRad(rot[0]))*Cosine(DegToRad(rot[1]))*100*multiplier;
 					vel[1]+=Cosine(DegToRad(rot[0]))*Sine(DegToRad(rot[1]))*100*multiplier;
 				}
