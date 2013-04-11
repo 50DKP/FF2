@@ -1883,7 +1883,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 444:  //Mantreads
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ; 2 ; 5.0");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ; 2 ;  5.0");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
