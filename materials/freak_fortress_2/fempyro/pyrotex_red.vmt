@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
 	"$basetexture" "freak_fortress_2/fempyro/pyrotex_red"
-	"$bumpmap" "models/player/pyro/pyrotex_normal"
+	"$bumpmap" "freak_fortress_2/fempyro/pyrotex_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"
 	"$detailblendfactor" 0.0
