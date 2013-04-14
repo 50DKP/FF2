@@ -8,7 +8,7 @@
 //Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
 
 //Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
-//50DKP version is being updated by ChrisMiuchiz, Wliu, and LAWD VAWLDAWMAWRT.
+//50DKP version is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 
 #pragma semicolon 1
 
@@ -23,7 +23,7 @@
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.0.0a2"
+#define PLUGIN_VERSION "2.0.0a3"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -162,7 +162,9 @@ static const String:ff2versiontitles[][] = 		//the last line of this is what det
 	"1.06h",
 	"2.0.0a1",
 	"2.0.0a2",
-	"2.0.0a2"
+	"2.0.0a2",
+	"2.0.0a3",
+	"2.0.0a3"
 };
 
 static const String:ff2versiondates[][] = 
@@ -184,8 +186,186 @@ static const String:ff2versiondates[][] =
 	"6 Sep 2012",
 	"March 17, 2013",
 	"March 19, 2013",
-	"March 19, 2013"
+	"March 19, 2013",
+	"April 14, 2013",
+	"April 14, 2013"
 };
+
+stock FindVersionData(Handle:panel, versionindex)
+{
+	switch (versionindex)
+	{	
+		case 19: //2.0.0a3
+		{
+			DrawPanelText(panel, "FF2 2.0.0 is almost here, we're nearing completion :D");
+			DrawPanelText(panel, "In the meantime, here's a little update done mostly by Lawd!");
+			DrawPanelText(panel, "1) Added Female Pyro (Lawd)");
+			DrawPanelText(panel, "2) Added background music for Robo-Cyphosis (Carge and Lawd)");
+			DrawPanelText(panel, "3) Added more maps (Lawd)");
+			DrawPanelText(panel, "See next page");
+		}
+		
+		case 18: //2.0.0a3
+		{
+			DrawPanelText(panel, "4) Re-added CM8 Hale classchange detection (ChrisMiuchiz)");
+			DrawPanelText(panel, "5) Added Hale spy exploit detection (Wliu and official FF2)");
+			DrawPanelText(panel, "6) Improved class info and might have possibly buffed Mantreads (Wliu)");
+			DrawPanelText(panel, "2.0.0 will have the remaining CM changes, sorry about that.");
+			DrawPanelText(panel, "Gangplank will have a Loose Cannon rage, Robo-Cyphosis will have a cool sapper,");
+			DrawPanelText(panel, "There will be a new boss, weapons will be balanced, and more! :)");
+		}
+		
+		case 17: //2.0.0a2
+		{
+			DrawPanelText(panel, "1) [Players] Nerfed Gentlespy's knife (Wliu)");
+			DrawPanelText(panel, "2) [Players] Added back nerfed Rocket's shotgun (Wliu)");
+			DrawPanelText(panel, "3) [Players] Made Vaginner description readable (Wliu)");
+			DrawPanelText(panel, "4) [Players] Disabled boss crits, nerfed Short Circuit, FF2 message pops up every 5 minutes (Wliu)");
+			DrawPanelText(panel, "5) [Players] Updated to FF2 1.06h-some of the CM changes might not have made it in (Wliu)");
+			DrawPanelText(panel, "See next page");
+		}
+		
+		case 16: //2.0.0a2
+		{
+			DrawPanelText(panel, "6) [Players] Added in some CM changes (ChrisMiuchiz)");
+			DrawPanelText(panel, "7) [Players] Updated CBS model (Lawd)");
+		}
+		
+		case 15: //2.0.0a1
+		{
+			DrawPanelText(panel, "1) [Players] Added Gangplank and Gentlespy (Lawd)");
+		}
+		
+		case 14: // 1.06h
+		{
+		    DrawPanelText(panel, "1) [Players] Remove MvM powerup_bottle on Bosses. (RavensBro)");
+		}
+		
+		case 13: // 1.06g
+		{
+		    DrawPanelText(panel, "1) [Players] Fixed vote for charset. (RavensBro)");
+		}		
+		
+		case 12: // 1.06f
+		{
+			DrawPanelText(panel, "1) [Players] Changelog now divided into [Players] and [Dev] sections. (Otokiru)");
+			DrawPanelText(panel, "2) [Players] Don't bother reading [Dev] changelogs because you'll have no idea what it's stated. (Otokiru)");
+			DrawPanelText(panel, "3) [Players] Fixed civilian glitch. (Otokiru)");
+			DrawPanelText(panel, "4) [Players] Fixed hale HP bar. (Valve) lol?");
+			DrawPanelText(panel, "5) [Dev] Fixed \"GetEntProp\" reported: Entity XXX (XXX) is invalid on checkFirstHale(). (Otokiru)");
+		}
+		
+		case 11: // 1.06e
+		{
+
+			DrawPanelText(panel, "1) [Players] Remove MvM water-bottle on hales. (Otokiru)");
+			DrawPanelText(panel, "2) [Dev] Fixed \"GetEntProp\" reported: Property \"m_iClass\" not found (entity 0/worldspawn) error on checkFirstHale(). (Otokiru)");
+			DrawPanelText(panel, "3) [Dev] Change how FF2 check for player weapons. Now also checks when spawned in the middle of the round. (Otokiru)");
+			DrawPanelText(panel, "4) [Dev] Changed some FF2 warning messages color such as \"First-Hale Checker\" and \"Change class exploit\". (Otokiru)");
+		}
+		
+		case 10: // 1.06d
+		{
+			DrawPanelText(panel, "1) Fix first boss having missing health or abilities. (Otokiru)");
+			DrawPanelText(panel, "2) Health bar now goes away if the boss wins the round. (Powerlord)");
+			DrawPanelText(panel, "3) Health bar cedes control to Monoculus if he is summoned. (Powerlord)");
+			DrawPanelText(panel, "4) Health bar instantly updates if enabled or disabled via cvar mid-game. (Powerlord)");
+		}
+		
+		
+		case 9: //1.06c
+		{
+			DrawPanelText(panel, "1) Remove weapons if a player tries to switch classes when they become boss to prevent an exploit. (Otokiru)");
+			DrawPanelText(panel, "2) Reset hale's queue points to prevent the 'retry' exploit. (Otokiru)");
+			DrawPanelText(panel, "3) Better detection of backstabs. (Powerlord)");
+			DrawPanelText(panel, "4) Boss now has optional life meter on screen. (Powerlord)");
+		}
+		case 8: //1.06
+		{
+			DrawPanelText(panel, "1) Fixed attributes key for weaponN block. Now 1 space needed for explode string.");
+			DrawPanelText(panel, "2) Disabled vote for charset when there is only 1 not hidden chatset.");
+			DrawPanelText(panel, "3) Fixed \"Invalid key value handle 0 (error 4)\" when when round starts.");
+			DrawPanelText(panel, "4) Fixed ammo for special_noanims.ff2\\rage_new_weapon ability.");
+			DrawPanelText(panel, "Coming soon: weapon balance will be moved into config file.");
+		}
+		case 7: //1.05
+		{
+			DrawPanelText(panel, "1) Added \"hidden\" key for charsets.");
+			DrawPanelText(panel, "2) Added \"sound_stabbed\" key for characters.");
+			DrawPanelText(panel, "3) Mantread stomp deals 5x damage to Boss.");
+			DrawPanelText(panel, "4) Minicrits will not play loud sound to all players");
+			DrawPanelText(panel, "5-11) See next page...");
+		}
+		case 6: //1.05
+		{
+			DrawPanelText(panel, "6) For mappers: Add info_target with name 'hale_no_music'");
+			DrawPanelText(panel, "    to prevent Boss' music.");
+			DrawPanelText(panel, "7) FF2 renames *.smx from plugins/freaks/ to *.ff2 by itself.");
+			DrawPanelText(panel, "8) Third Degree hit adds uber to healers.");
+			DrawPanelText(panel, "9) Fixed hard \"ghost_appearation\" in default_abilities.ff2.");
+			DrawPanelText(panel, "10) FF2FLAG_HUDDISABLED flag blocks EVERYTHING of FF2's HUD.");
+			DrawPanelText(panel, "11) Changed FF2_PreAbility native to fix bug about broken Boss' abilities.");
+		}
+		case 5: //1.04
+		{
+			DrawPanelText(panel, "1) Seeldier's minions have protection (teleport) from pits for first 4 seconds after spawn.");
+			DrawPanelText(panel, "2) Seeldier's minions correctly dies when owner-Seeldier dies.");
+			DrawPanelText(panel, "3) Added multiplier for brave jump ability in char.configs (arg3, default is 1.0).");
+			DrawPanelText(panel, "4) Added config key sound_fail. It calls when Boss fails, but still alive");
+			DrawPanelText(panel, "4) Fixed potential exploits associated with feign death.");
+			DrawPanelText(panel, "6) Added ff2_reload_subplugins command to reload FF2's subplugins.");
+		}
+		case 4: //1.03
+		{
+			DrawPanelText(panel, "1) Finally fixed exploit about queue points.");
+			DrawPanelText(panel, "2) Fixed non-regular bug with 'UTIL_SetModel: not precached'.");
+			DrawPanelText(panel, "3) Fixed potential bug about reducing of Boss' health by healing.");
+			DrawPanelText(panel, "4) Fixed Boss' stun when round begins.");
+		}
+		case 3: //1.02
+		{
+			DrawPanelText(panel, "1) Added isNumOfSpecial parameter into FF2_GetSpecialKV and FF2_GetBossSpecial natives");
+			DrawPanelText(panel, "2) Added FF2_PreAbility forward. Plz use it to prevent FF2_OnAbility only.");
+			DrawPanelText(panel, "3) Added FF2_DoAbility native.");
+			DrawPanelText(panel, "4) Fixed exploit about queue points...ow wait, it done in 1.01");
+			DrawPanelText(panel, "5) ff2_1st_set_abilities.ff2 sets kac_enabled to 0.");
+			DrawPanelText(panel, "6) FF2FLAG_HUDDISABLED flag disables Boss' HUD too.");
+			DrawPanelText(panel, "7) Added FF2_GetQueuePoints and FF2_SetQueuePoints natives.");
+		}
+		case 2: //1.01
+		{
+			DrawPanelText(panel, "1) Fixed \"classmix\" bug associated with Boss' class restoring.");
+			DrawPanelText(panel, "3) Fixed other little bugs.");
+			DrawPanelText(panel, "4) Fixed bug about instant kill of Seeldier's minions.");
+			DrawPanelText(panel, "5) Now you can use name of Boss' file for \"companion\" Boss' keyvalue.");
+			DrawPanelText(panel, "6) Fixed exploit when dead Boss can been respawned after his reconnect.");
+			DrawPanelText(panel, "7-10) See next page...");
+		}
+		case 1: //1.01
+		{
+			DrawPanelText(panel, "7) I've missed 2nd item.");
+			DrawPanelText(panel, "8) Fixed \"Random\" charpack, there is no vote if only one charpack.");
+			DrawPanelText(panel, "9) Fixed bug when boss' music have a chance to DON'T play.");
+			DrawPanelText(panel, "10) Fixed bug associated with ff2_enabled in cfg/sourcemod/FreakFortress2.cfg and disabling of pugin.");
+		}
+		case 0: //1.0
+		{
+			DrawPanelText(panel, "1) Boss' health devided by 3,6 in medieval mode");
+			DrawPanelText(panel, "2) Restoring player's default class, after his round as Boss");
+			DrawPanelText(panel, "===UPDATES OF VS SAXTON HALE MODE===");			
+			DrawPanelText(panel, "1) Added !ff2_resetqueuepoints command (also there is admin version)");
+			DrawPanelText(panel, "2) Medic is credited 100% of damage done during ubercharge");
+			DrawPanelText(panel, "3) If map changes mid-round, queue points not lost");
+			DrawPanelText(panel, "4) Dead Ringer will not be able to activate for 2s after backstab");
+			DrawPanelText(panel, "5) Added ff2_spec_force_boss cvar");
+		}
+		default:
+		{
+			DrawPanelText(panel, "-- Somehow you've managed to find a glitched version page!");
+			DrawPanelText(panel, "-- Congratulations. Now go fight Boss.");
+		}
+	}
+}
 
 static const maxversion = (sizeof(ff2versiontitles) - 1);
 
@@ -4814,217 +4994,6 @@ public Action:NewPanel(client, versionindex)
 	SendPanelToClient(panel, client, NewPanelH, 9001);
 	CloseHandle(panel);
 	return Plugin_Continue;
-}
-
-stock FindVersionData(Handle:panel, versionindex)
-{
-	switch (versionindex)
-	{
-		/*case 18: //2.0.0
-		{
-			DrawPanelText(panel, "0) INTRODUCING:  THE MASSIVE UPDATE!");
-			DrawPanelText(panel, "1) [Players] FF2 has been updated to 1.07.");
-			DrawPanelText(panel, "[Players] ChrisMiuchiz's changes:");
-			DrawPanelText(panel, "2) [Players] Ninja Spy's slow-motion life is now 5 seconds, not 10.");
-			DrawPanelText(panel, "3) [Players] Limited Demopan's charge.");
-			DrawPanelText(panel, "4) [Players] Made Seeman's explosive radius lower.");
-			DrawPanelText(panel, "5) [Players] Gave Seeman slightly more HP.");
-			DrawPanelText(panel, "6) [Players] Lowered minion-spawn invincibility from 4 seconds to 2 seconds.");
-			DrawPanelText(panel, "7) [Players] Gave Saxton Hale, Vagineer, Seeman, and Seeldier buffed superjumps.");
-			DrawPanelText(panel, "See next page.");
-			DrawPanelText(panel, "8) [Players] Lowered Gaben's rage time to 5.625 seconds.");
-			DrawPanelText(panel, "9) [Players] Lowered Radigan's minigun damage from +30% to -30%.");
-			DrawPanelText(panel, "10) [Players] Increased Radigan's ammo from 35 to 45.");
-			DrawPanelText(panel, "11) [Players] Gave Saxton Hale more HP.");
-			DrawPanelText(panel, "12) [Players] Updated Radigan's description.");
-			DrawPanelText(panel, "13) [Players] Radigan's minigun does 50% less damage.");
-			DrawPanelText(panel, "14) [Players] Rocket's rage triggers at 1600 damage.");
-			DrawPanelText(panel, "15) [Players] Rocket now has a detonator:  +40% splash radius, +40% fire rate, 9 shots.");
-			DrawPanelText(panel, "16) [Players] Demopan now walks halfway between current and default Hale's speed");
-		}
-		
-		case 17:  //2.0.0
-		{
-			DrawPanelText(panel, "See next page.");
-			DrawPanelText(panel, "17) [Players] Updated Rocket's and Radigan's descriptions.");
-			DrawPanelText(panel, "18) [Players] Fixed "amount" typo.");
-			DrawPanelText(panel, "19) [Players] Added support for AWPer Hand, Hitman's Heatmaker, and botkiller/festive sniper rifles.");
-			DrawPanelText(panel, "20) [Players] Stopped Seeldier's minions from being able to cap.");
-			DrawPanelText(panel, "21) [Players] Added Robo-Cyphosis.");
-			DrawPanelText(panel, "22) [Players] Added support for botkiller/festive mediguns.");
-			DrawPanelText(panel, "23) [Players] Added support for festive frontier justice.");
-			DrawPanelText(panel, "24) [Players] Added support for festive huntsman.");
-			DrawPanelText(panel, "25) [Players] Added FF2 Help message leading to 50dkp.com/ff2/rules.");
-			DrawPanelText(panel, "26) [Players] Significantly increased Robo-Cyphosis's melee damage against buildings.");
-			DrawPanelText(panel, "See next page.");
-		}
-		
-		case 16:  //2.0.0
-		{
-			DrawPanelText(panel, "[Players] Wliu's changes:");
-			DrawPanelText(panel, "27) [Players] Short Circuit now only stuns for 0.5 seconds.");
-			DrawPanelText(panel, "28) [Players] FF2 gamemode message will now show only once per 5 minutes.");
-			DrawPanelText(panel, "29) [Players] Hales cannot get crits anymore.");
-			DrawPanelText(panel, "30) [Players] Rocket's rocket launcher now works.");
-			DrawPanelText(panel, "See next page.");
-		}
-		
-		case 15:  //2.0.0
-		{
-			DrawPanelText(panel, "[Players] Lawd's Changes:");
-			DrawPanelText(panel, "31) [Players] Added Ol' Nick and Gangplank.");
-		}*/
-		
-		case 17: //2.0.0a2
-		{
-			DrawPanelText(panel, "1) [Players] Nerfed Gentlespy's knife (Wliu)");
-			DrawPanelText(panel, "2) [Players] Added back nerfed Rocket's shotgun (Wliu)");
-			DrawPanelText(panel, "3) [Players] Made Vaginner description readable (Wliu)");
-			DrawPanelText(panel, "4) [Players] Disabled boss crits, nerfed Short Circuit, FF2 message pops up every 5 minutes (Wliu)");
-			DrawPanelText(panel, "5) [Players] Updated to FF2 1.06h-some of the CM changes might not have made it in (Wliu)");
-			DrawPanelText(panel, "See next page");
-		}
-		
-		case 16: //2.0.0a2
-		{
-			DrawPanelText(panel, "6) [Players] Added in some CM changes (ChrisMiuchiz)");
-			DrawPanelText(panel, "7) [Players] Updated CBS model (Lawd)");
-		}
-		
-		case 15: //2.0.0a1
-		{
-			DrawPanelText(panel, "1) [Players] Added Gangplank and Gentlespy (Lawd)");
-		}
-		
-		case 14: // 1.06h
-		{
-		    DrawPanelText(panel, "1) [Players] Remove MvM powerup_bottle on Bosses. (RavensBro)");
-		}
-		
-		case 13: // 1.06g
-		{
-		    DrawPanelText(panel, "1) [Players] Fixed vote for charset. (RavensBro)");
-		}		
-		
-		case 12: // 1.06f
-		{
-			DrawPanelText(panel, "1) [Players] Changelog now divided into [Players] and [Dev] sections. (Otokiru)");
-			DrawPanelText(panel, "2) [Players] Don't bother reading [Dev] changelogs because you'll have no idea what it's stated. (Otokiru)");
-			DrawPanelText(panel, "3) [Players] Fixed civilian glitch. (Otokiru)");
-			DrawPanelText(panel, "4) [Players] Fixed hale HP bar. (Valve) lol?");
-			DrawPanelText(panel, "5) [Dev] Fixed \"GetEntProp\" reported: Entity XXX (XXX) is invalid on checkFirstHale(). (Otokiru)");
-		}
-		
-		case 11: // 1.06e
-		{
-
-			DrawPanelText(panel, "1) [Players] Remove MvM water-bottle on hales. (Otokiru)");
-			DrawPanelText(panel, "2) [Dev] Fixed \"GetEntProp\" reported: Property \"m_iClass\" not found (entity 0/worldspawn) error on checkFirstHale(). (Otokiru)");
-			DrawPanelText(panel, "3) [Dev] Change how FF2 check for player weapons. Now also checks when spawned in the middle of the round. (Otokiru)");
-			DrawPanelText(panel, "4) [Dev] Changed some FF2 warning messages color such as \"First-Hale Checker\" and \"Change class exploit\". (Otokiru)");
-		}
-		
-		case 10: // 1.06d
-		{
-			DrawPanelText(panel, "1) Fix first boss having missing health or abilities. (Otokiru)");
-			DrawPanelText(panel, "2) Health bar now goes away if the boss wins the round. (Powerlord)");
-			DrawPanelText(panel, "3) Health bar cedes control to Monoculus if he is summoned. (Powerlord)");
-			DrawPanelText(panel, "4) Health bar instantly updates if enabled or disabled via cvar mid-game. (Powerlord)");
-		}
-		
-		
-		case 9: //1.06c
-		{
-			DrawPanelText(panel, "1) Remove weapons if a player tries to switch classes when they become boss to prevent an exploit. (Otokiru)");
-			DrawPanelText(panel, "2) Reset hale's queue points to prevent the 'retry' exploit. (Otokiru)");
-			DrawPanelText(panel, "3) Better detection of backstabs. (Powerlord)");
-			DrawPanelText(panel, "4) Boss now has optional life meter on screen. (Powerlord)");
-		}
-		case 8: //1.06
-		{
-			DrawPanelText(panel, "1) Fixed attributes key for weaponN block. Now 1 space needed for explode string.");
-			DrawPanelText(panel, "2) Disabled vote for charset when there is only 1 not hidden chatset.");
-			DrawPanelText(panel, "3) Fixed \"Invalid key value handle 0 (error 4)\" when when round starts.");
-			DrawPanelText(panel, "4) Fixed ammo for special_noanims.ff2\\rage_new_weapon ability.");
-			DrawPanelText(panel, "Coming soon: weapon balance will be moved into config file.");
-		}
-		case 7: //1.05
-		{
-			DrawPanelText(panel, "1) Added \"hidden\" key for charsets.");
-			DrawPanelText(panel, "2) Added \"sound_stabbed\" key for characters.");
-			DrawPanelText(panel, "3) Mantread stomp deals 5x damage to Boss.");
-			DrawPanelText(panel, "4) Minicrits will not play loud sound to all players");
-			DrawPanelText(panel, "5-11) See next page...");
-		}
-		case 6: //1.05
-		{
-			DrawPanelText(panel, "6) For mappers: Add info_target with name 'hale_no_music'");
-			DrawPanelText(panel, "    to prevent Boss' music.");
-			DrawPanelText(panel, "7) FF2 renames *.smx from plugins/freaks/ to *.ff2 by itself.");
-			DrawPanelText(panel, "8) Third Degree hit adds uber to healers.");
-			DrawPanelText(panel, "9) Fixed hard \"ghost_appearation\" in default_abilities.ff2.");
-			DrawPanelText(panel, "10) FF2FLAG_HUDDISABLED flag blocks EVERYTHING of FF2's HUD.");
-			DrawPanelText(panel, "11) Changed FF2_PreAbility native to fix bug about broken Boss' abilities.");
-		}
-		case 5: //1.04
-		{
-			DrawPanelText(panel, "1) Seeldier's minions have protection (teleport) from pits for first 4 seconds after spawn.");
-			DrawPanelText(panel, "2) Seeldier's minions correctly dies when owner-Seeldier dies.");
-			DrawPanelText(panel, "3) Added multiplier for brave jump ability in char.configs (arg3, default is 1.0).");
-			DrawPanelText(panel, "4) Added config key sound_fail. It calls when Boss fails, but still alive");
-			DrawPanelText(panel, "4) Fixed potential exploits associated with feign death.");
-			DrawPanelText(panel, "6) Added ff2_reload_subplugins command to reload FF2's subplugins.");
-		}
-		case 4: //1.03
-		{
-			DrawPanelText(panel, "1) Finally fixed exploit about queue points.");
-			DrawPanelText(panel, "2) Fixed non-regular bug with 'UTIL_SetModel: not precached'.");
-			DrawPanelText(panel, "3) Fixed potential bug about reducing of Boss' health by healing.");
-			DrawPanelText(panel, "4) Fixed Boss' stun when round begins.");
-		}
-		case 3: //1.02
-		{
-			DrawPanelText(panel, "1) Added isNumOfSpecial parameter into FF2_GetSpecialKV and FF2_GetBossSpecial natives");
-			DrawPanelText(panel, "2) Added FF2_PreAbility forward. Plz use it to prevent FF2_OnAbility only.");
-			DrawPanelText(panel, "3) Added FF2_DoAbility native.");
-			DrawPanelText(panel, "4) Fixed exploit about queue points...ow wait, it done in 1.01");
-			DrawPanelText(panel, "5) ff2_1st_set_abilities.ff2 sets kac_enabled to 0.");
-			DrawPanelText(panel, "6) FF2FLAG_HUDDISABLED flag disables Boss' HUD too.");
-			DrawPanelText(panel, "7) Added FF2_GetQueuePoints and FF2_SetQueuePoints natives.");
-		}
-		case 2: //1.01
-		{
-			DrawPanelText(panel, "1) Fixed \"classmix\" bug associated with Boss' class restoring.");
-			DrawPanelText(panel, "3) Fixed other little bugs.");
-			DrawPanelText(panel, "4) Fixed bug about instant kill of Seeldier's minions.");
-			DrawPanelText(panel, "5) Now you can use name of Boss' file for \"companion\" Boss' keyvalue.");
-			DrawPanelText(panel, "6) Fixed exploit when dead Boss can been respawned after his reconnect.");
-			DrawPanelText(panel, "7-10) See next page...");
-		}
-		case 1: //1.01
-		{
-			DrawPanelText(panel, "7) I've missed 2nd item.");
-			DrawPanelText(panel, "8) Fixed \"Random\" charpack, there is no vote if only one charpack.");
-			DrawPanelText(panel, "9) Fixed bug when boss' music have a chance to DON'T play.");
-			DrawPanelText(panel, "10) Fixed bug associated with ff2_enabled in cfg/sourcemod/FreakFortress2.cfg and disabling of pugin.");
-		}
-		case 0: //1.0
-		{
-			DrawPanelText(panel, "1) Boss' health devided by 3,6 in medieval mode");
-			DrawPanelText(panel, "2) Restoring player's default class, after his round as Boss");
-			DrawPanelText(panel, "===UPDATES OF VS SAXTON HALE MODE===");			
-			DrawPanelText(panel, "1) Added !ff2_resetqueuepoints command (also there is admin version)");
-			DrawPanelText(panel, "2) Medic is credited 100% of damage done during ubercharge");
-			DrawPanelText(panel, "3) If map changes mid-round, queue points not lost");
-			DrawPanelText(panel, "4) Dead Ringer will not be able to activate for 2s after backstab");
-			DrawPanelText(panel, "5) Added ff2_spec_force_boss cvar");
-		}
-		default:
-		{
-			DrawPanelText(panel, "-- Somehow you've managed to find a glitched version page!");
-			DrawPanelText(panel, "-- Congratulations. Now go fight Boss.");
-		}
-	}
 }
 
 public Action:HelpPanel3Cmd(client, args)
