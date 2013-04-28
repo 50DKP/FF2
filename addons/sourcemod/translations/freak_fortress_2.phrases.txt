@@ -306,6 +306,11 @@
 	"ff2_lives_left"
 	{
 		"#format" "{1:s},{2:i}"
+		"en"	"{1} lost 1 life! There are {2} more!"
+	}
+	"ff2_lives_left1"
+	{
+		"#format" "{1:s},{2:i}"
 		"en"	"{1} lost 1 life! There is {2} more!"
 	}
 	"ff2_50dkp_help"
