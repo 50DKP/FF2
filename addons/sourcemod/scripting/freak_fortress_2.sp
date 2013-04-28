@@ -3447,7 +3447,14 @@ public Action:event_hurt(Handle:event, const String:name[], bool:dontBroadcast)
 			decl String:aname[64];
 			KvRewind(BossKV[Special[index]]);
 			KvGetString(BossKV[Special[index]], "name", aname, 64," = Failed name = ");
-			Format(s,256,"%t","ff2_lives_left",aname,BossLives[index]); 	
+			if (BossLives[index] < 2)
+			{
+				Format(s,256,"%t","ff2_lives_left1",aname,BossLives[index]); 
+			}
+			if (BossLives[index] > 1)
+			{
+				Format(s,256,"%t","ff2_lives_left",aname,BossLives[index]); 
+			}
 			for (j = 1;  j <= MaxClients; j++)
 				if (IsValidClient(j) && !(FF2flags[j] & FF2FLAG_HUDDISABLED))
 				{
