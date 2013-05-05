@@ -7,7 +7,11 @@
 /*.rad
 /*.raw
 /*.res
-/*.txt
+/gameinfo.txt
+/item_whitelist_example.txt
+/mapcycle.txt
+/stats.txt
+/umc_mapcycle.txt
 /*.vbsp
 /*.vdf
 #METAMOD/SOURCEMOD

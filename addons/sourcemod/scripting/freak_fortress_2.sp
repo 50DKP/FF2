@@ -19,7 +19,9 @@
 #include <colors>
 #include <tf2items>
 #include <clientprefs>
+#include <updater>
 
+#define UPDATE_URL "http://www.github.com/50DKP/FF2/autoudate.txt"  //<--Probably will be changed.
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -540,11 +542,23 @@ public OnPluginStart()
 	decl String:oldversion[64];
 	GetConVarString(cvarVersion, oldversion, sizeof(oldversion));
 	if (strcmp(oldversion, ff2versiontitles[maxversion], false) != 0)
+	{
 		LogError("[Freak Fortress 2] Warning: your config may be outdated. Back up your tf/cfg/sourcemod/FreakFortress2.cfg and delete it, and this plugin will generate a new one that you can then modify to your original values.");
-
+	}
+	
 	LoadTranslations("freak_fortress_2.phrases");
 	LoadTranslations("common.phrases");
-	AddNormalSoundHook(HookSound); 	
+	AddNormalSoundHook(HookSound);
+	
+	Updater_AddPlugin(UPDATE_URL);  //For auto-updates
+}
+
+public OnLibraryAdded(const String:name[])
+{
+    if (StrEqual(name, "updater"))
+    {
+        Updater_AddPlugin(UPDATE_URL);
+    }
 }
 
 public OnConfigsExecuted()
