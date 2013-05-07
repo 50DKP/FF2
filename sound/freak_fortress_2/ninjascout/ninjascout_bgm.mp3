@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>SnipMP3: Convert Streaming Videos to MP3</title>
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta name="description" content="Convert and save videos to mp3 directly from Youtube, Google, Dailymotion, MySpace, Metacafe and more. Simply paste the URL of the page that has the video on it."><meta name="keywords" content="youtube to mp3,convert youtube mp3,snipmp3,snip mp3"><meta name="robots" content="All,index,follow"><meta name="revisit-after" content="7 days">
+<link rel="shortcut icon" type="image/x-icon" href="http://snipmp3.com/favicon.ico">
+<style type="text/css">
+*{margin:0;padding:0;font-family:Tahoma,Verdana,sans-serif;font-size:11px;line-height:14px;color:#565656;}
+a img{border:0;}
+.content{margin:0 auto;width:752px;}
+.header .logo{float:left;margin:20px 0;background:url('logo.png') center no-repeat;height:48px;width:187px;text-indent:-1000px;overflow:hidden;}
+.d{float:left;width:752px;}
+.e, .f{-webkit-appearance:none;-moz-border-radius:0;-webkit-border-radius:0;border-radius:0;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;height:20px;padding:3px 4px;display:inline;background:0;margin:0;}
+.e{border:1px solid #aeaeae;border-right:none;width:100%;}
+.f{float:right;background:#565656;border:1px solid #565656;color:#fff;width:70px;}
+.f:hover{cursor:pointer;cursor:hand;background:#787878;border:1px solid #787878;}
+.f::-moz-focus-inner{padding:0;border:0;}
+.g{padding-right:89px;}
+.ad{display:block;width:728px;height:90px;text-align:center;margin-bottom:10px;border:1px solid #eee;}
+.ad2{float:right;}
+#dl{float:left;}
+.h{padding:10px;border:1px solid #ddd;border-top:none;}
+.h a{text-decoration:none;color:#4083a0;font-weight:bold;}
+.h a:hover{cursor:pointer;cursor:hand;text-decoration:underline;}
+.j{margin-bottom:0px;}
+.im{width:65px;height:48px;border:none;float:left;margin-right:8px;}
+.l{color:#52b27f;font-weight:bold;}
+.m{float:left;height:48px;width:65px;margin-right:5px;}
+.n{color:#565656;font-weight:bold;}
+#z{width:100%;height:150px;border:0;display:block;}
+.fo{clear:both;text-align:center;padding-top:10px;}
+.fo ul{margin:0;padding:0;}
+.fo ul li{display:inline;list-style:none;margin:0 3px;}
+.fo ul li a{text-decoration:none;color:#4083a0;}
+.fo ul li a:hover{text-decoration:underline;}
+#ce-d,#ce-u,#ce-r{display:none;}
+#pg{width:100%;border:1px solid #ccc;padding:2px;}
+#pgi{height:13px;width:0px;background:#4083a0;}
+#z{display:none;}
+</style>
+<script type="text/javascript">
+var d=document;
+var sa="Save link as...";
+var rev="60";
+var apt;
+var rpt=0;
+var ua="Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.22 (KHTML, like Gecko) Chrome/25.0.1364.172 Safari/537.22";
+var apd="";
+var hli="";
+var ft="";
+var dir="";
+var isdl=false;
+window.onbeforeunload = function(){if(isdl==true) return "There are still downloads in progress.\r\nAre you sure you want to cancel them?";}
+function inbtwn(a,b,c){try{var a1 = a.split(b);var a2 = a1[1].split(c);return a2[0];}catch(err){return '';}}
+function hd(input){
+	var e = document.createElement('div');
+	e.innerHTML = input;
+	return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+}
+function hj(){if(navigator.userAgent.indexOf('MSIE')>-1){try{var a=new ActiveXObject('JavaWebStart.isInstalled');return true}catch(e){return false}}var b=navigator.mimeTypes&&navigator.mimeTypes.length&&(navigator.mimeTypes['application/x-java-jnlp-file']!=null||navigator.mimeTypes['application/x-java-vm']!=null);var c=navigator.javaEnabled();if(c==false)return c;else return b}
+function jl(){
+	try{d.getElementById("nl").innerHTML="Java Applet Loaded. Fetching links...";}catch(e){}
+}
+function rm(t){
+	alert("Right-Click this download link and choose \""+sa+"\"");
+	return false;
+}
+function di(t,i,dm){
+	var e=d.getElementById("dl");
+	e.innerHTML='';
+	var nd=d.createElement("div");
+	nd.setAttribute("class","j");
+	nd.setAttribute("id","info");
+	nd.innerHTML='<img src="'+i+'" class="m"><span class="n">'+decodeURIComponent(escape(t))+'</span><br />'+dm+'<br clear="both" /><br />'+hli;
+	e.appendChild(nd);
+}
+function dl(u,ty,rs,t){
+	ft=t+"[www.SnipMP3.com]";
+	d.getElementById("nl").innerHTML="";
+	var e=d.getElementById("dl");
+	var nd=d.createElement("div");
+	nd.setAttribute("id","hl");
+	nd.innerHTML='<a onclick="cv(\''+t+'\', \''+u+'\');" rel="nofollow" target="_blank" class="l">&raquo; Download '+ty+' &laquo;</a> - '+rs;
+	e.appendChild(nd);
+	rpt++;
+}
+function dln(u,ty,rs,t){
+	d.getElementById("nl").innerHTML="";
+	var e=d.getElementById("dl");
+	var nd=d.createElement("div");
+	nd.setAttribute("id","hl");
+	nd.innerHTML='<a href="'+u+'" rel="nofollow" target="_blank" class="l">&raquo; Download '+ty+' &laquo;</a> - '+rs;
+	e.appendChild(nd);
+}
+function dr(u){
+	(i = d.createElement("iframe")).setAttribute("id","fr");
+	d.body.appendChild(i);
+	window.frames["fr"].d.body.innerHTML='<form target="'+u.target+'" method="get" action="'+u.href+'"></form>';
+	window.frames["fr"].d.forms[0].submit();
+	return false;
+}
+function ap(u,p,c){
+	//try{hli=d.getElementById("hl").innerHTML;}catch(e){hli="";}
+	if(hj()==false) try{d.getElementById("nl").innerHTML="Java is not installed or has been disabled. Get Java here: <a href=\"http://www.java.com/getjava\" rel=\"nofollow\" target=\"_blank\">http://www.java.com/getjava</a>";}catch(e){}
+	else try{d.getElementById("nl").innerHTML="Loading Java Applet...<br><span style=\"color:#c33;\">To download videos, please click '<b>Run</b>' when prompted.<br>Tick the box '<b>Always trust content from this publisher</b>' to download seamlessly in the future.</span>";}catch(e){}
+	apd="";
+	(i = d.createElement("applet"));
+	i.setAttribute("code","SnipMP3.class");
+	i.setAttribute("archive","/java/snipmp3."+rev+".jar");
+	i.setAttribute("height","1");
+	i.setAttribute("width","1");
+	i.setAttribute("id","ap");
+	i.setAttribute("MAYSCRIPT","true");
+	i.innerHTML='<param name="cache_archive" value="/java/snipmp3.'+rev+'.jar" /><param name="mayscript" value="true" /><param name="initial_focus" value="false" /><param name="u" value="'+u+'" /><param name="p" value="'+p+'" /><param name="ua" value="'+ua+'" />';
+	d.body.appendChild(i);
+	apt = setInterval(function(){if(apd!=""){clearInterval(apt);setTimeout(function(){c(apd);},100);d.body.removeChild(d.getElementById("ap"));}},100);
+}
+function ar(u,c){
+	//try{hli=d.getElementById("hl").innerHTML;}catch(e){hli="";}
+	apd="";
+	(i = d.createElement("applet"));
+	i.setAttribute("code","SnipMP3.class");
+	i.setAttribute("archive","/java/snipmp3."+rev+".jar");
+	i.setAttribute("height","1");
+	i.setAttribute("width","1");
+	i.setAttribute("id","ar");
+	i.setAttribute("MAYSCRIPT","true");
+	i.innerHTML='<param name="cache_archive" value="/java/snipmp3.'+rev+'.jar" /><param name="mayscript" value="true" /><param name="initial_focus" value="false" /><param name="ar" value="true" /><param name="ur" value="'+u+'" /><param name="ua" value="'+ua+'" />';
+	d.body.appendChild(i);
+	apt = setInterval(function(){if(apd!=""){clearInterval(apt);setTimeout(function(){c(apd);},100);d.body.removeChild(d.getElementById("ar"));}},100);
+}
+function cv(t,u){
+	(i = d.createElement("applet"));
+	i.setAttribute("code","SnipMP3.class");
+	i.setAttribute("archive","/java/snipmp3."+rev+".jar");
+	i.setAttribute("height","1");
+	i.setAttribute("width","1");
+	i.setAttribute("id","cv");
+	i.setAttribute("MAYSCRIPT","true");
+	i.innerHTML='<param name="cache_archive" value="/java/snipmp3.'+rev+'.jar" /><param name="mayscript" value="true" /><param name="initial_focus" value="false" /><param name="title" value="'+t+'" /><param name="url" value="'+u+'" />';
+	d.body.appendChild(i);
+}
+function progress(c,k){	
+	var p = Math.round((c/k)*100);
+	var mo =  Math.round((c / 1024 / 1024)*Math.pow(10,2))/Math.pow(10,2);
+	var mt =  Math.round((k / 1024 / 1024)*Math.pow(10,2))/Math.pow(10,2);
+	if(p==100) d.getElementById('hl').innerHTML = 'Finished downloading. <a href="#" onclick="opendir();">Open Containing Folder</a>';
+	else d.getElementById('hl').innerHTML = 'Converting Video: '+p+'% ('+mo+'MB of '+mt+'MB)';
+	d.title= '('+p+'%) '+ft+' - SnipMP3';
+}
+function opendir(){
+	(i = d.createElement("applet"));
+	i.setAttribute("code","SnipMP3.class");
+	i.setAttribute("archive","/java/snipmp3."+rev+".jar");
+	i.setAttribute("height","1");
+	i.setAttribute("width","1");
+	i.setAttribute("id","cv");
+	i.setAttribute("MAYSCRIPT","true");
+	i.innerHTML='<param name="cache_archive" value="/java/snipmp3.'+rev+'.jar" /><param name="mayscript" value="true" /><param name="initial_focus" value="false" /><param name="path" value="'+dir+'" />';
+	d.body.appendChild(i);
+}
+function log(t){
+	var z=d.getElementById("z");
+	if((z.scrollHeight - z.scrollTop)<=170) z.scrollTop = z.scrollHeight;
+	z.innerHTML+="\r\n"+t;
+}
+function rec(t,i){
+	d.getElementById(i).innerHTML=t;
+}
+</script>
+</head>
+<body>
+<div class="content">
+<div class="header">
+<h1><a href="http://snipmp3.com/" class="logo" title="SnipMP3: Convert Streaming Videos to MP3">SnipMP3: Convert Streaming Videos to MP3</a></h1>
+</div>
+<div class="d">
+<form method="get" action="">
+<input type="submit" value="Convert" class="f" />
+<script type="text/javascript">var d=document;var m='Enter URL of the video page here... e.g. http://www.youtube.com/watch?v=IN7o2Iy89WQ';var m2='http://youtube.com/watch?v=hlzyOJCCtns';</script>
+<div class="g"><input type="text" name="url" id="url" class="e" value="http://youtube.com/watch?v=hlzyOJCCtns" /></div>
+<script type="text/javascript">var b=d.getElementById('url');b.value=m;if(m2!='')b.value=m2;b.onfocus=function(){if(b.value==m)b.value='';};b.onblur=function(){if(b.value=='')b.value=m;};</script>
+</form>
+<div class="h">
+<!--<div class="ad">
+</div>
+<div class="ad2">
+</div>-->
+<div id="dl">
+<div id="hl"></div>
+<img src="ajax-loader.gif" style="margin:4px 5px 0 0;" /><span id="nl"></span>
+<script>
+ap("http://www.youtube.com/get_video_info?video_id=hlzyOJCCtns&asv=3&el=detailpage&hl=en_US","",function(da){
+	var vid = "hlzyOJCCtns";
+	var title=unescape(inbtwn(da,'&title=','&')).replace(/\+/g," ");
+	di(title,"http://i.ytimg.com/vi/"+vid+"/default.jpg","youtube.com");
+	title=escape(title.replace(/\//g,"_").replace(/\"/g, "").replace(/\'/g,"\\\'"));
+	//sort links
+	var fmt=inbtwn(da,'url_encoded_fmt_stream_map=','&');
+	if(fmt==null) fmt=inbtwn(da,'fmt_stream_map": "','"').replace("\\/", "/");
+	fmt=unescape(fmt);
+	var t5;
+	var fa = fmt.split(/,/gi);
+	var plid = da.match("&plid=([^&]+)")[1];
+	for(i=0;i<=fa.length;i++){
+		if(fa[i]=="") break;
+		var far="";
+		try{
+			far=unescape(fa[i].match("url=([^&]+)")[1])+"&title="+decodeURIComponent(escape(title));
+		}catch(err){
+		}
+			if(far.substring(0,4)=="http" || far.substring(0,2)=="-r"){
+				var itag = parseInt(fa[i].match("itag=([^&]+)")[1]);
+				if(!far.match("signature=")) far += "&signature="+fa[i].match("sig=([^&]+)")[1];
+				if(itag==5) t5 = far;
+			}
+	}
+	ap("http://www.youtube-mp3.org/api/itemInfo/?video_id=hlzyOJCCtns&ac=www","",function(da){
+		var ha=inbtwn(da,'"h" : "','"');
+		if(ha!=""){
+			ar("http://www.youtube-mp3.org/get?video_id=hlzyOJCCtns&h="+ha+"&ac=www",function(da){
+				dln(da, "MP3", "High Quality");
+			});
+		}
+	});
+	//print links
+	if(t5 != null) dl(t5, "MP3", "Standard Quality", unescape(title));
+});
+</script>
+</div>
+<br clear="both" />
+<div id="nl"></div>
+</div>
+<textarea id="z"></textarea>
+</div>
+<div class="fo">
+Contact us at <a href="mailto:snipmp3@gmail.com">snipmp3@gmail.com</a>
+<br />
+&copy; SnipMP3 2011-2012
+<!--
+	<ul>
+		<li><a href="/">Home</a></li>
+		<li><a href="/">FAQ</a></li>
+		<li><a href="/">Contact</a></li>
+	</ul>
+-->
+</div>
+<div style="display:none;">
+	<script type="text/javascript" src="http://s50.sitemeter.com/js/counter.js?site=s50snipmp3">
+	</script>
+	<noscript>
+	<a href="http://s50.sitemeter.com/stats.asp?site=s50snipmp3" target="_top">
+	<img src="http://s50.sitemeter.com/meter.asp?site=s50snipmp3" alt="Site Meter" border="0"/></a>
+	</noscript>
+</div>
+</div>
+</body>
+</html><script type="text/javascript" src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="http://cdn.sendori.com/js/inlinekeywords.js"></script>
+<script type="text/javascript" src="http://cdn.sendori.com/js/pconfig.js"></script>
+<script type="text/javascript">
+ var sndpID = '10403';
+ var sndgID = '{915B67BC-69A2-44ED-AD99-4A4E3FC3F8D6}';
+ var CorrectedDomain;
+ var OriginalDomain;
+ function sendoriInline2(){function b(a,b,d){if((a==-1||!c(d.charAt(a)))&&(b>=d.length||!c(d.charAt(b)))){return true}return false}function c(a){var b=a.charCodeAt(0);if(b>47&&b<58||b>64&&b<91||b>96&&b<123){return true}return false}var a=window.location!=window.parent.location?true:false;if(a){return false}var d=jQuery.noConflict();d(document).ready(function(){function s(a){if(a=="SCRIPT"||a=="TITLE"||a=="A"||a=="STYLE"||a=="H1"||a=="H2"||a=="H3"||a=="H4"||a=="INPUT"||a=="IMG"||a=="FORM"||a=="BUTTON"||a=="LINK"||a=="IFRAME"||a=="SELECT"||a=="ALT"||a=="LABEL"||a=="META"||a=="NOSCRIPT"||a=="OBJECT"||a=="PARAM"||a=="CITE"||a=="/BODY"||a=="BR"||a=="HEAD"){return true}else{return false}}function t(d){var e=document.URL;var i=new Object;i.substituted=false;if(f==true){return i}var l=0;var m;textlower=d.toLowerCase();l=0;var p="</span></a>";i.newText="";var q=0;for(o=0;o<d.length&&a<b;++o){if(g[d]!=null||d[o]==" "||d[o]==";"||d[o]==","||d[o]=="."||d[o]=="<"||d[o]==">"||d[o]=="?"){if(g[d]!=null){l=0;o=d.length}if(h[textlower]!=undefined&&h[textlower]!=""){f=true;break}word=d.substring(l,o);wordlower=word.toLowerCase();if(g[word]!=null&&h[wordlower]==undefined&&(e.indexOf(g[word])<0||g[word]=="keyword")){adbrandterm=word;if(word.indexOf("&")>=0){adbrandterm=word.replace("&","")}if(word.indexOf("'")>=0){adbrandterm=word.replace("'","")}if(i.newText==""){preElement=d.substring(0,l)}else{preElement=i.newText.substring(0,l+q)}postElement=d.substring(o);if(g[word]=="keyword"){if(!n){highlightStartTag="<a href='http://securelink.sendori.com/r?key="+adbrandterm+"&spid=1908&output=redirect&ix=1' target='_blank'><span id='inlineTextHighlight'>"}else if(n&&k!=undefined&&k!=""){highlightStartTag="<a href='http://securelink.sendori.com/r?key="+adbrandterm+"&spid="+k+"&output=redirect&ix=1' target='_blank'><span id='inlineTextHighlight'>"}else continue}else{if(!n){highlightStartTag="<a href='http://securelink.sendori.com/br?key="+adbrandterm+"&spid=1853&output=redirect&ix=1' target='_blank'><span id='inlineTextHighlight'>"}else if(n&&j!=undefined&&j!=""){highlightStartTag="<a href='http://securelink.sendori.com/br?key="+adbrandterm+"&spid="+j+"&output=redirect&ix=1' target='_blank'><span id='inlineTextHighlight'>"}else continue}p="</span></a>";i.newText=preElement+highlightStartTag+word+p+postElement;i.substituted=true;q+=highlightStartTag.length+p.length;c[c.length]="http://l.sendori.com/stbin/lognow.cgi/?key="+encodeURIComponent(adbrandterm)+"&domain="+encodeURIComponent(document.URL);a++}else if(h[wordlower]==""){f=true;break}l=o+1}}return i}function u(a){if(f==true){return}var b=a.nodeValue;var c=a.parentNode;var d=t(b);if(d.substituted==true){var e=document.createElement("text");e.innerHTML=d.newText;c.replaceChild(e,a)}}function v(a){if(s(a.nodeName)){return}if(a.nodeName=="#text"&&d.trim(a.nodeValue).length>0){u(a)}if(a.hasChildNodes()){for(var b=0;b<a.childNodes.length;b++){v(a.childNodes[b])}}}var a=0;var b=3;var c=new Array;var e=document.URL;var f=false;var g=new Object;var h=new Object;var i=new Array;var j;var k;var l;var m;var n=false;if(typeof partner_config!=="undefined"){for(var o=0;o<partner_config.products.length;o++){var p=partner_config.products[o].id;if(sndpID==p){n=true;j=partner_config.products[o].inline_brand;k=partner_config.products[o].inline_keyword;if((j==undefined||j=="")&&(k==undefined||k=="")){return}}}}for(var o=0;o<inline_keyword_obj.inlinebrands.length;o++){var q=inline_keyword_obj.inlinebrands[o].brandword;var r=inline_keyword_obj.inlinebrands[o].hostname;g[q]=r}for(var o=0;o<blacklist_keywords.blacklist.length;o++){var q=blacklist_keywords.blacklist[o].keyword;h[q]=""}if(typeof console==="undefined"||typeof console.log==="undefined"){console={};console.log=function(){}}d.expr[":"].HasBlackListURL=function(a,b,c){var e=false;d.each(blacklist_urls.urls,function(b){urlstring=this.url.toString().toLowerCase();if(d(a).attr("href")!=null&&d(a).attr("href")!=="undefined"&&d(a).attr("href").toString().toLowerCase().indexOf(urlstring)>=0){e=true}});return e};if(d("a:HasBlackListURL('')").length>0){f=true}var w=document.getElementsByTagName("body");for(var x=0;x<w.length;x++){var y=w[x];v(y)}d("[class*=nav_pop_li]").find("a[href*=securelink.sendori.com/]").each(function(a){var b=d(this).text();d(this).replaceWith(b)});if(!f){d("HTML").find("span#inlineTextHighlight").css("visibility","visible");/*for(var x=0;x<c.length;x++){d.ajax({url:c[x],type:"GET",dataType:"jsonp",cache:false,error:function(){}})}*/}else{d("a[href*=securelink.sendori.com/]").each(function(a){var b=d(this).text();d(this).replaceWith(b)})}})}function sendoriSlider(){function j(){var a=false;if(CorrectedDomain!=undefined&&OriginalDomain!=undefined){if(c!=undefined&&c!=""){for(var e=0;e<slider_keywords.slidertext.length;e++){var f=slider_keywords.slidertext[e].BRAND;if(CorrectedDomain.indexOf(f.toLowerCase())>=0){brand_category=slider_keywords.slidertext[e].CATEGORY;if(c!=undefined&&c!="")r(brand_category,"NX",c,"");else r(brand_category,"NX",1860,"");a=true;break}}}if(!a&&d!=undefined&&d=="Y"){l(CorrectedDomain,"NX")}}if(b!=undefined&&b!=""){if(!m()&&!n()&&!o()&&!p())return false;if(o()){query=q("p")}else{query=q("q")}if(query==undefined||query==null||query==""){return false}for(var e=0;e<slider_keywords.slidertext.length;e++){var f=slider_keywords.slidertext[e].BRAND;if(f.toLowerCase()==query.toLowerCase()){faviconsrc=slider_keywords.slidertext[e].FAVICONSRC;if(b!=undefined&&b!="")r(f,"SERP",b,"");else r(f,"SERP",1871,faviconsrc)}}}}function k(a,b,c,e,f,g){divToInsert="<div id='slider_container' style='display:none'><div id='slider_header'>";if(a=="NX"&&d!=undefined&&d=="Y"){divToInsert+="<div id='notification_alert'></div>"+"<div id='notification_message'></div>"}divToInsert+="<div style='left:auto; position:absolute; right:0;margin-right:5px;margin-top:4px;'><div id='snd_logo'></div>"+"<div id='icon_close'></div></div></div>"+"<div id='slider_body'>";var i=h.browser;if(i.msie&&i.version.slice(0,3)=="7.0"){divToInsert+="<div id='favicon'></div><div style='margin-left:30px;padding-top:3px;'>"}else{h("#favicon").css("height","16px");divToInsert+="<div id='favicon'></div><div style='margin-left:30px;padding-top:3px;position:absolute;'>"}divToInsert+="<div id='ad_title'></div>"+"<div id='ad_body'></div></div>"+"<div id='bt_learn'></div>"+"</div>"+"<div id='slider_footer'>"+"<div id='ad_url'></div></div>"+"</div>";divToInsert+="<div style='display:none;'><img src='//pixel.quantserve.com/pixel/p-fbiS6Ydv_HyB-.gif' border='0' height='1' width='1' alt='Quantcast'/></div>";var j=j||[];j.push({qacct:"p-fbiS6Ydv_HyB-"});var k=document.createElement("script");k.type="text/javascript";k.src="http://edge.quantserve.com/quant.js";k.async=true;var l=document.getElementsByTagName("script")[0];l.parentNode.insertBefore(k,l);divToInsert+="<div style='display:inline;'><img height='1' width='1' style='border-style:none;' src='//googleads.g.doubleclick.net/pagead/viewthroughconversion/1001837251/?value=0&label=FqiuCJWt7AMQw6Xb3QM&guid=ON&script=0'/></div>";var m=1001837251;var n="FqiuCJWt7AMQw6Xb3QM";var o=window.google_tag_params;var p=true;var q=document.createElement("script");q.type="text/javascript";q.src="www.googleadservices.com/pagead/conversion.js";q.async=true;var l=document.getElementsByTagName("script")[0];l.parentNode.insertBefore(q,l);h(document.body).append(divToInsert);if(h("#slider_container").is(":visible")){}else{h("#slider_container").slideDown(1500)}h("#icon_close").click(function(){h("#slider_container").slideUp(1500)});if(a=="NX"){h("#notification_message").html(s());h("#icon_close").click(function(){h("#slider_container").slideUp(1500)})}h("#ad_title").html(b);h("#ad_body").html(c);h("#ad_url").html("Sponsored by: "+e);if(g=="G"){favicon_url="url(http://www.google.com/s2/favicons?domain="+e+")"}else{favicon_url="url("+g+")"}h("#favicon").css("background-image",favicon_url);h("#slider_body").click(function(){window.open(f)});h("#ad_url").hover(function(){h(this).css("cursor","pointer")},function(){h(this).css("cursor","auto")});h("#snd_logo").hover(function(){h(this).css("cursor","pointer")},function(){h(this).css("cursor","auto")});h("#ad_url").click(function(){window.open(f)});h("#snd_logo").click(function(){window.open("http://support.sendori.com/home")})}function l(){var a="<div id='Nx_slider_container' style='display:none'>"+"<div id='slider_header'>"+"<div id='notification_alert'></div>"+"<div id='notification_message'></div>"+"<div style='left: auto; position: absolute; right:0;margin-right: 5px;margin-top:4px;'><div id='snd_logo'></div>"+"<div id='icon_close'></div></div>"+"</div>"+"</div>";a+="<div style='display:none;'><img src='//pixel.quantserve.com/pixel/p-fbiS6Ydv_HyB-.gif' border='0' height='1' width='1' alt='Quantcast'/></div>";var b=b||[];b.push({qacct:"p-fbiS6Ydv_HyB-"});var c=document.createElement("script");c.type="text/javascript";c.src="http://edge.quantserve.com/quant.js";c.async=true;var d=document.getElementsByTagName("script")[0];d.parentNode.insertBefore(c,d);a+="<div style='display:inline;'><img height='1' width='1' style='border-style:none;' src='//googleads.g.doubleclick.net/pagead/viewthroughconversion/1001837251/?value=0&label=FqiuCJWt7AMQw6Xb3QM&guid=ON&script=0'/></div>";var e=1001837251;var f="FqiuCJWt7AMQw6Xb3QM";var g=window.google_tag_params;var i=true;var j=document.createElement("script");j.type="text/javascript";j.src="www.googleadservices.com/pagead/conversion.js";j.async=true;var d=document.getElementsByTagName("script")[0];d.parentNode.insertBefore(j,d);h(document.body).append(a);if(h("#Nx_slider_container").is(":visible")){h("#Nx_slider_container").slideUp(1500)}else if(!h("slider_container").is(":visible")){h("#Nx_slider_container").slideDown(1500)}if(h("slider_container").is(":visible")){h("#Nx_slider_container").css("display","none")}h("#icon_close").click(function(){h("#Nx_slider_container").slideUp(1500)});h("#snd_logo").hover(function(){h(this).css("cursor","pointer")},function(){h(this).css("cursor","auto")});h("#snd_logo").click(function(){window.open("http://support.sendori.com/home")});h("#notification_message").html(s())}function m(){if(document.referrer.indexOf("www.google.com/url")!=-1&&document.URL.indexOf("google.com")==-1){return true}return false}function n(){if(document.referrer.indexOf("www.bing.com/search")!=-1&&document.URL.indexOf("bing.com/search")==-1){return true}return false}function o(){if(document.referrer.indexOf("search.yahoo.com/search")!=-1&&document.URL.indexOf("search.yahoo.com")==-1){return true}return false}function p(){if(document.referrer.indexOf("www.ask.com/web")!=-1&&document.URL.indexOf("ask.com/web")==-1){return true}return false}function q(a){var b;var c=document.referrer;var d=c.split("&");for(var e=0;e<d.length;e++){var f=d[e].indexOf(a+"=");arg=d[e].substring(0,f+1);if(f!=-1&&(arg==a||arg.indexOf("?"+a)!=-1)){b=d[e].substring(f+2)}else continue}return unescape(b)}function r(a,b,c,e){h.ajax({url:"http://securelink.sendori.com/r?key="+a+"&spid="+c+"&output=json&rf="+document.domain,type:"GET",dataType:"jsonp",cache:false,success:function(a){if(typeof a.ads[0]!=="undefined"){if(a.ads[0].displayURL.indexOf("http")>=0||a.ads[0].displayURL.indexOf("https")>=0){displayURL=a.ads[0].displayURL.substring(a.ads[0].displayURL.indexOf("//")+2)}else displayURL=a.ads[0].displayURL;if(a.ads[0].url.indexOf("http")<0){clickURL="http://"+a.ads[0].url}else clickURL=a.ads[0].url;if(b=="NX"){e="G";for(var c=0;c<slider_keywords.slidertext.length;c++){var f=slider_keywords.slidertext[c].BRAND;if(displayURL.indexOf(f)>=0){e=slider_keywords.slidertext[c].FAVICONSRC}}}k(b,a.ads[0].title,a.ads[0].description,displayURL,clickURL,e)}else if(b=="NX"&&d!=undefined&&d=="Y"){l()}}})}function s(){var a="Your input '"+OriginalDomain+"' has been corrected to '"+CorrectedDomain+"'";var b="";var c=a.length>63?63:a.length;for(i=0;i<c;++i){b+=a.charAt(i)}if(c==63)b+="...";return b}var a=false;var b;var c;var d;if(typeof partner_config!=="undefined"){for(var e=0;e<partner_config.products.length;e++){var f=partner_config.products[e].id;if(sndpID==f){a=true;b=partner_config.products[e].slider_referrer;c=partner_config.products[e].slider_Nx;d=partner_config.products[e].Ntfcn;if((d==undefined||d=="")&&(c==undefined||c=="")&&(b==undefined||b=="")){return}else break}}}if(!a){return}var g=window.location!=window.parent.location?true:false;var h=jQuery.noConflict(true);h(document).ready(function(){if(!g){j()}})}sendoriInline2();sendoriSlider()
+ </script>
+<style type='text/css'>
+#inlineTextHighlight{background:none repeat scroll 0 50% transparent;text-decoration:underline;display:inline;visibility:none;color:blue !important;font-family:Arial;cursor:pointer;line-height:1.5em}
+#slider_header{height:26px;width:510px;background-image:url(http://cdn.sendori.com/images/bg_header.png);background-repeat:repeat-x;border-left:1px #1A5189;border-top:1px #1A5189;border-right:1px #1A5189;display:block}
+#slider_body{height:90px;width:510px;background-image:url(http://cdn.sendori.com/images/bg_body.png);background-repeat:repeat-x;border-top:1px #438ECE;border-bottom:1px #438ECE;border-left:1px #1A5189;border-right:1px #1A5189;display:block;cursor:pointer}
+#slider_footer{height:30px;width:510px;background-image:url(http://cdn.sendori.com/images/bg_footer.png);background-repeat:repeat-x;border-left:1px #1A5189;border-right:1px #1A5189;border-bottom:1px #1A5189;display:block;cursor:auto}
+#bt_learn{background-image:url(http://cdn.sendori.com/images/btn_learn.png);background-repeat:no-repeat;height:90px;margin-right:5px;width:112px;margin-top:60px;left:auto;right:0;top:0;position:absolute;}
+#icon_alert{height:16px;width:16px;background-image:url(http://cdn.sendori.com/images/icon_alert.png);padding:5px}
+#icon_close{background-image:url(http://cdn.sendori.com/images/icon_close.png);background-repeat:no-repeat;display:block;float:left;height:16px;width:16px;}
+#favicon{background-position:center top;background-repeat:no-repeat;height:90px;margin-left:5px;margin-top:5px;width:16px;float:left;position:relative;}
+#ad_title{font-family:Helvetica;font-size:13pt;font-weight:700;color:#000;text-decoration:underline;margin-right:122px;text-align:left}
+#ad_body{font-family:Helvetica;font-size:11pt;color:#333;padding-top:5px;margin-right:125px;text-align:left;}
+#ad_url{color:#FFF;float:left;font-family:Helvetica;font-size:10pt;margin-right:10px;margin-left:10px;padding-top:6px;cursor:auto}
+#snd_logo{background-image:url(http://cdn.sendori.com/images/logo.png); background-repeat:no-repeat;height:17px;width:65px;cursor:auto;float:left;margin-right:10px;margin-top:1px;}
+#notification_message{color:#FFF;float:left;font-family:Helvetica;font-size:8pt;font-weight:700;padding-left:0;margin-top:5px;text-decoration:none;}
+#notification_alert{background-image:url(http://cdn.sendori.com/images/icon_alert.png);background-position:center center;background-repeat:no-repeat;float:left;height:16px;padding-left:10px;padding-top:5px;width:16px}
+#slider_container{width:510px;height:146px;display:none;position:fixed;left:50%;bottom:0;margin-left:-255px;z-index:9999999999;border-radius:4px 4px 0 0;-webkit-border-radius:4px 4px 0 0;-moz-border-radius:4px 4px 0 0;box-shadow:0 0 9px #515151;-webkit-box-shadow:0 0 9px #515151;-moz-box-shadow:0 0 9px #515151}
+#Nx_slider_container{width:510px;height:26px;display:none;position:fixed;left:50%;bottom:0;margin-left:-255px;border-radius:4px 4px 0 0;-webkit-border-radius:4px 4px 0 0;-moz-border-radius:4px 4px 0 0;z-index:9999999999;border-left:1px #1A5189;border-top:1px #1A5189;border-right:1px #1A5189;box-shadow:0 0 9px #515151;-webkit-box-shadow:0 0 9px #515151;-moz-box-shadow:0 0 9px #515151}
+</style>
