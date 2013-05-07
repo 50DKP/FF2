@@ -21,7 +21,7 @@
 #include <clientprefs>
 #include <updater>
 
-#define UPDATE_URL "http://www.github.com/50DKP/FF2/autoudate.txt"  //<--Probably will be changed.
+#define UPDATE_URL "https://raw.github.com/50DKP/FF2/development/autoupdate.txt"  //<--Probably will *still* be changed.
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -76,7 +76,7 @@ new Float:KSpreeTimer[MAXPLAYERS+1];
 new KSpreeCount[MAXPLAYERS+1];
 new Float:GlowTimer[MAXPLAYERS+1];
 new TFClassType:LastClass[MAXPLAYERS+1];
-new shortname[MAXPLAYERS+1];			//new SerPointsToZeroTarget[MAXPLAYERS+1];
+new shortname[MAXPLAYERS+1];			//new SetPointsToZeroTarget[MAXPLAYERS+1];
 
 new timeleft;
 
@@ -137,15 +137,14 @@ new tf_arena_use_queue;
 new mp_teams_unbalance_limit;
 new tf_arena_first_blood;
 new mp_forcecamera;
-//new Float:tf_scout_hype_pep_max;  //Used in 1.07+
 new Handle:cvarNextmap;
 new bool:isSubPluginsEnabled;
 
-// Healthbar-related things
+//Healthbar-related things
 new g_healthBar = -1;
-new g_Monoculus = -1; // Track Monoculus for health bar
+new g_Monoculus = -1; //Track Monoculus for health bar
 
-static const String:ff2versiontitles[][] = 		//the last line of this is what determines the displayed plugin version
+static const String:ff2versiontitles[][]=
 {
 	"1.0",
 	"1.01",

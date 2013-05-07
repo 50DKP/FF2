@@ -14,34 +14,39 @@
 /umc_mapcycle.txt
 /*.vbsp
 /*.vdf
-#METAMOD/SOURCEMOD
+/*.vpk
+#METAMOD/SOURCEMOD/STRIPPER
 /addons/metamod/
 /addons/metamod.vdf
 /addons/sourcemod/bin/
-#CONFIGS
+/addons/stripper/
+#SOURCEMOD CONFIGS
 /addons/sourcemod/configs/geoip/
 /addons/sourcemod/configs/sql-init-scripts/
 /addons/sourcemod/configs/freak_fortress_2/readme/
 /addons/sourcemod/configs/*.cfg
 /addons/sourcemod/configs/*.txt
 /addons/sourcemod/configs/*.ini
-#RANDOM STUFF
+#SOURCEMOD RANDOM STUFF
 /addons/sourcemod/data/
 /addons/sourcemod/extensions/
 /addons/sourcemod/gamedata/
 /addons/sourcemod/logs/
-#PLUGINS
+#SOURCEMOD PLUGINS
 /addons/sourcemod/plugins/disabled/
 /addons/sourcemod/plugins/a*.smx
 /addons/sourcemod/plugins/b*.smx
 /addons/sourcemod/plugins/c*.smx
+/addons/sourcemod/plugins/d*.smx
 /addons/sourcemod/plugins/fun*.smx
 /addons/sourcemod/plugins/p*.smx
 /addons/sourcemod/plugins/n*.smx
 /addons/sourcemod/plugins/s*.smx
 /addons/sourcemod/plugins/r*.smx
 /addons/sourcemod/plugins/t*.smx
-#CODE
+/addons/sourcemod/plugins/u*.smx
+/addons/sourcemod/plugins/w*.smx
+#SOURCEMOD CODE
 /addons/sourcemod/scripting/a*/
 /addons/sourcemod/scripting/b*/
 /addons/sourcemod/scripting/compiled/
@@ -60,8 +65,10 @@
 /addons/sourcemod/scripting/r*.sp
 /addons/sourcemod/scripting/s*.*
 /addons/sourcemod/scripting/t*.sp
-#TRANSLATIONS
+/addons/sourcemod/scripting/w*.sp
+#SOURCEMOD TRANSLATIONS
 /addons/sourcemod/translations/*/
+/addons/sourcemod/.hg_archival.txt
 /addons/sourcemod/translations/a*.txt
 /addons/sourcemod/translations/b*.txt
 /addons/sourcemod/translations/c*.txt
@@ -71,23 +78,28 @@
 /addons/sourcemod/translations/p*.txt
 /addons/sourcemod/translations/r*.txt
 /addons/sourcemod/translations/s*.txt
-/addons/sourcemod/.hg_archival.txt
+/addons/sourcemod/translations/u*.txt
+/addons/sourcemod/translations/w*.txt
 #RANDOM STUFF
 /bin/
 #MOAR RANDOM STUFF
 /bz2/maps/
 #CONFIGS
+/cfg/sourcemod/c*.cfg
 /cfg/sourcemod/f*.cfg
+/cfg/sourcemod/p*.cfg
 /cfg/sourcemod/r*.cfg
 /cfg/sourcemod/s*.cfg
+/cfg/sourcemod/u*.cfg
 /cfg/*.cfg
 /cfg/*.rc
 /cfg/*.scr
 /cfg/*.txt
+#CUSTOM
+/custom/readme.txt
 #RANDOM STUFF FTW
-/DownloadLists/
-/downloads/
-/expressions/
+/download/
+/downloadlists/
 #MAPS
 /maps/
 #MATERIALS
@@ -110,6 +122,8 @@
 /materials/t*/
 /materials/v*/
 /materials/w*/
+#MEDIA?
+/media/
 #MODELS
 /models/b*/
 /models/c*/
@@ -137,13 +151,9 @@
 /models/a*.*
 /models/e*.*
 #RANDOM STUFF
-/particles/
-/readme/
 /replay/
 /resource/
-/scenes/
 /scripts/
-/servers/
 #SOUNDS
 /sound/a*/
 /sound/c*/
