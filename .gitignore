@@ -14,8 +14,9 @@
 /umc_mapcycle.txt
 /*.vbsp
 /*.vdf
-/*.vpk
+/tf2*.vpk
 #METAMOD/SOURCEMOD/STRIPPER
+/addons/BounceSteam_1.0.tgz
 /addons/metamod/
 /addons/metamod.vdf
 /addons/sourcemod/bin/
@@ -27,6 +28,7 @@
 /addons/sourcemod/configs/*.cfg
 /addons/sourcemod/configs/*.txt
 /addons/sourcemod/configs/*.ini
+/addons/sourcemod/configs/sourcebans/
 #SOURCEMOD RANDOM STUFF
 /addons/sourcemod/data/
 /addons/sourcemod/extensions/
@@ -46,11 +48,19 @@
 /addons/sourcemod/plugins/t*.smx
 /addons/sourcemod/plugins/u*.smx
 /addons/sourcemod/plugins/w*.smx
+/addons/sourcemod/plugins/g*.smx
+/addons/sourcemod/plugins/m*.smx
+/addons/sourcemod/plugins/l*.smx
 #SOURCEMOD CODE
 /addons/sourcemod/scripting/a*/
 /addons/sourcemod/scripting/b*/
 /addons/sourcemod/scripting/compiled/
+/addons/sourcemod/scripting/example.sp
 /addons/sourcemod/scripting/f*/
+/addons/sourcemod/scripting/g*.sp
+/addons/sourcemod/scripting/G*.txt
+/addons/sourcemod/scripting/d*.sp
+/addons/sourcemod/scripting/gscramble*.sp
 /addons/sourcemod/scripting/include/
 /addons/sourcemod/scripting/playercommands/
 /addons/sourcemod/scripting/testsuite/
@@ -66,6 +76,13 @@
 /addons/sourcemod/scripting/s*.*
 /addons/sourcemod/scripting/t*.sp
 /addons/sourcemod/scripting/w*.sp
+/addons/sourcemod/source/
+/addons/sourcemod/scripting/u*.sp
+/addons/sourcemod/scripting/kigenac/
+/addons/sourcemod/scripting/spcomp
+/addons/sourcemod/scripting/w*.smx
+/addons/sourcemod/scripting/k*.sp
+/addons/sourcemod/scripting/l*.sp
 #SOURCEMOD TRANSLATIONS
 /addons/sourcemod/translations/*/
 /addons/sourcemod/.hg_archival.txt
@@ -80,13 +97,18 @@
 /addons/sourcemod/translations/s*.txt
 /addons/sourcemod/translations/u*.txt
 /addons/sourcemod/translations/w*.txt
+/addons/sourcemod/translations/
 #RANDOM STUFF
 /bin/
+motd.txt
+update_tf2.txt
 #MOAR RANDOM STUFF
 /bz2/maps/
 #CONFIGS
 /cfg/sourcemod/c*.cfg
 /cfg/sourcemod/f*.cfg
+/cfg/sourcemod/k*.cfg
+/cfg/sourcemod/m*.cfg
 /cfg/sourcemod/p*.cfg
 /cfg/sourcemod/r*.cfg
 /cfg/sourcemod/s*.cfg
