@@ -1,0 +1,10 @@
+"UnLitGeneric"
+{
+	"$basetexture"	"freak_fortress_2\merasmus/eyeball_spectral"
+	"$surfaceprop"	"flesh"
+	"$model"		1
+	">=DX90"
+	{
+		"$selfillum" 1
+	}
+}
