@@ -35,6 +35,8 @@
 /addons/sourcemod/logs/
 #SOURCEMOD PLUGINS
 /addons/sourcemod/plugins/disabled/
+/addons/sourcemod/plugins/freaks/ff2_d*.*
+/addons/sourcemod/plugins/freaks/ff2_p*.*
 /addons/sourcemod/plugins/a*.smx
 /addons/sourcemod/plugins/b*.smx
 /addons/sourcemod/plugins/c*.smx
