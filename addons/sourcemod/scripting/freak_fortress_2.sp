@@ -8,6 +8,7 @@
 //Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
 
 //Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
+//
 //50DKP version is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 
 #pragma semicolon 1
@@ -16,9 +17,10 @@
 #include <sdktools>
 #include <sdkhooks>
 #include <tf2_stocks>
-#include <colors>
+#include <morecolors>
 #include <tf2items>
 #include <clientprefs>
+#include <steamtools>  //You'll see why soon.
 #include <updater>
 
 #define UPDATE_URL "https://raw.github.com/50DKP/FF2/development/autoupdate.txt"  //<--Probably will *still* be changed.
@@ -446,7 +448,6 @@ public OnPluginStart()
 	cvarCircuitStun = CreateConVar("ff2_circuit_stun", "2", "0 to disable Short Circuit stun, > 0 to make it stun Boss for x seconds", FCVAR_PLUGIN, true, 0.0);
 	cvarUseCountdown = CreateConVar("ff2_countdown", "120", "Seconds of deathly countdown (begins when only 1 enemy lefts)", FCVAR_PLUGIN);
 	cvarSpecForceBoss = CreateConVar("ff2_spec_force_boss", "0", "Spectators are allowed in Boss' queue.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-	
 	cvarHealthBar = CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0); // Added by Powerlord
 	HookConVarChange(cvarHealthBar, HealthbarEnableChanged);
 
@@ -540,6 +541,7 @@ public OnPluginStart()
 
 	decl String:oldversion[64];
 	GetConVarString(cvarVersion, oldversion, sizeof(oldversion));
+	
 	if (strcmp(oldversion, ff2versiontitles[maxversion], false) != 0)
 	{
 		LogError("[Freak Fortress 2] Warning: your config may be outdated. Back up your tf/cfg/sourcemod/FreakFortress2.cfg and delete it, and this plugin will generate a new one that you can then modify to your original values.");
@@ -552,12 +554,13 @@ public OnPluginStart()
 	Updater_AddPlugin(UPDATE_URL);  //For auto-updates
 }
 
-public OnLibraryAdded(const String:name[])
+public OnLibraryAdded(const String:name[])  //Autoupdates
 {
-    if (StrEqual(name, "updater"))
-    {
-        Updater_AddPlugin(UPDATE_URL);
-    }
+	if (StrEqual(name, "updater"))
+	{
+		Updater_AddPlugin(UPDATE_URL);
+		LogMessage("FF2 UPDATER INITIALIZED!");  //DELETE THIS WHEN DONE
+	}
 }
 
 public OnConfigsExecuted()
@@ -643,7 +646,7 @@ public AddToDownload()
 	BuildPath(Path_SM,s,PLATFORM_MAX_PATH,"configs/freak_fortress_2/characters.cfg");
 	if (!FileExists(s))
 	{
-		LogError("[FF2] Freak Fortress 2 disables - can not found character config.");
+		LogError("[FF2] Freak Fortress 2 disabled - can not found character config.");
 		return;
 	}
 	new Handle:Kv = CreateKeyValues("");
@@ -2047,22 +2050,37 @@ public Action:checkFirstHale(Handle:timer,any:i)
 	{
 		CPrintToChat(i,"{olive}[FF2] {default}First-round Hale Bug Check!");
 		ForcePlayerSuicide(i);
+		
 		if (TF2_GetPlayerClass(i) == TFClass_Soldier)
+		{
 			TF2_SetPlayerClass(i, TFClass_Scout);
+		}
 		else
+		{
 			TF2_SetPlayerClass(i, TFClass_Soldier);
+		}
+		
 		TF2_RespawnPlayer(i);
 		TF2_RemoveAllWeapons(i);
 		CPrintToChat(i,"{olive}[FF2] {default}We'll fix you up when the game starts.");
 	}
+	
 	b_allowBossChgClass = false;
 	chkFirstHale++;
 }
 
 public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)
 {
-	if (!Enabled2) return Plugin_Continue;
-	if (hItem != INVALID_HANDLE) return Plugin_Continue;
+	if (!Enabled2)
+	{	
+		return Plugin_Continue;
+	}
+	
+	if (hItem != INVALID_HANDLE)
+	{
+		return Plugin_Continue;
+	}
+	
 	switch (iItemDefinitionIndex)
 	{
 		case 648:
@@ -2076,7 +2094,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 444:  //Mantreads
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ; 2 ;  5.0");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  5.0");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2101,7 +2119,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 305:
+		case 305:  //Crusader's Crossbow
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "17 ;  0.1 ;  2 ;  2.5");
 			if (hItemOverride != INVALID_HANDLE)
@@ -2156,11 +2174,19 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 			}
 		}
 	}
+	
 	if (TF2_GetPlayerClass(client) == TFClass_Soldier && (strncmp(classname, "tf_weapon_rocketlauncher", 24, false) == 0 || strncmp(classname, "tf_weapon_shotgun", 17, false) == 0))
 	{
 		new Handle:hItemOverride;
-		if (iItemDefinitionIndex == 127) hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0 ;  179 ;  1.0");
-		else hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0");
+		if (iItemDefinitionIndex == 127)
+		{
+			hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0 ;  179 ;  1.0");
+		}
+		else
+		{
+			hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0");
+		}
+		
 		if (hItemOverride != INVALID_HANDLE)
 		{
 			hItem = hItemOverride;
@@ -2179,15 +2205,22 @@ public Action:Timer_NoHonorBound(Handle:timer, any:userid)
 		new index = ((IsValidEntity(weapon) && weapon > MaxClients) ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 		new active = GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 		new String:classname[64];
-		if (IsValidEdict(active)) GetEdictClassname(active, classname, sizeof(classname));
+		if (IsValidEdict(active))
+		{
+			GetEdictClassname(active, classname, sizeof(classname));
+		}
+		
 		if (index == 357 && active == weapon && strcmp(classname, "tf_weapon_katana", false) == 0)
 		{
 			SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 			if (GetEntProp(client, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
+			{
 				SetEntProp(client, Prop_Send, "m_iKillCountSinceLastDeploy", 1);
+			}
 		}
 	}
 }
+
 stock Handle:PrepareItemHandle(String:name[] = "",index = -1, const String:att[] = "", bool:dontpreserve = false)
 {
 	new String:weaponAttribsArray[32][32];
@@ -2958,11 +2991,17 @@ public Action:ClientTimer(Handle:hTimer)
 			}
 			switch (index)
 			{
-				case 305, 14, 851, 56, 1005, 201, 230, 402, 16, 203, 58, 526, 664, 792, 801, 881, 890, 899, 908, 957, 966: addthecrit = true; //CM Sniper Rifles
+				case 305, 14, 851, 56, 1005, 201, 230, 402, 16, 203, 58, 526, 664, 792, 801, 881, 890, 899, 908, 957, 966:  //CM Sniper Rifles
+				{
+					addthecrit = true;
+				}
 				case 22, 23, 160, 209, 294, 449:
 				{
 					addthecrit = true;
-					if (class == TFClass_Scout && cond == TFCond_HalloweenCritCandy) cond = TFCond_Buffed;
+					if (class == TFClass_Scout && cond == TFCond_HalloweenCritCandy)
+					{
+						cond = TFCond_Buffed;
+					}
 				}
 				case 656:
 				{
@@ -3006,7 +3045,7 @@ public Action:ClientTimer(Handle:hTimer)
 						TF2_AddCondition(client, TFCond_CritCola, 0.3);
 					}
 				}
-				case TFClass_Engineer: if (weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary) && index == 141)
+				case TFClass_Engineer: if (weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary) && index == 141 || index==1004)  //CM/Wliu:  Added Festive Frontier Justice (1004)
 				{
 					new sentry = FindSentry(client);
 					if (IsValidEntity(sentry) && IsBoss(GetEntPropEnt(sentry, Prop_Send, "m_hEnemy")))
@@ -3016,28 +3055,13 @@ public Action:ClientTimer(Handle:hTimer)
 					}
 					else
 					{
-						if (GetEntProp(client, Prop_Send, "m_iRevengeCrits")) SetEntProp(client, Prop_Send, "m_iRevengeCrits", 0);
+						if (GetEntProp(client, Prop_Send, "m_iRevengeCrits"))
+						{
+							SetEntProp(client, Prop_Send, "m_iRevengeCrits", 0);
+						}
 						else if (TF2_IsPlayerInCondition(client, TFCond_Kritzkrieged) && !TF2_IsPlayerInCondition(client, TFCond_Healing))
 						{
 							TF2_RemoveCondition(client, TFCond_Kritzkrieged);
-						}
-					}
-					//Festive Frontier Justice (CM11)
-					if (weapon == GetPlayerWeaponSlot(client, TFWeaponSlot_Primary) && index == 1004)  //SP COMPILER IS GIVING WARNINGS ABOUT THIS ~Wliu
-					{
-						new sentry = FindSentry(client);
-						if (IsValidEntity(sentry) && IsBoss(GetEntPropEnt(sentry, Prop_Send, "m_hEnemy")))
-						{
-							SetEntProp(client, Prop_Send, "m_iRevengeCrits", 3);
-							TF2_AddCondition(client, TFCond_Kritzkrieged, 0.3);
-						}
-						else
-						{
-							if (GetEntProp(client, Prop_Send, "m_iRevengeCrits")) SetEntProp(client, Prop_Send, "m_iRevengeCrits", 0);
-							else if (TF2_IsPlayerInCondition(client, TFCond_Kritzkrieged) && !TF2_IsPlayerInCondition(client, TFCond_Healing))
-							{
-								TF2_RemoveCondition(client, TFCond_Kritzkrieged);
-							}
 						}	
 					}
 				}/*
@@ -3145,7 +3169,9 @@ public Action:BossTimer(Handle:hTimer)
 			GlowTimer[index] = 0.0;
 		}
 		else
+		{
 			GlowTimer[index] -= 0.2;
+		}
 		decl slot,j,buttonmode,count;
 		decl String:lives[MAXRANDOMS][3];
 		for(new n = 1; ; n++)
@@ -3695,11 +3721,17 @@ public Action:event_hurt(Handle:event, const String:name[], bool:dontBroadcast)
 public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3], damagecustom)
 {
 	if (!Enabled || !IsValidEdict(attacker))
+	{
 		return Plugin_Continue;
+	}
 	if ((attacker <= 0 || client == attacker) && IsBoss(client))
+	{
 		return Plugin_Handled;
+	}
 	if (TF2_IsPlayerInCondition(client, TFCond_Ubercharged))
+	{
 		return Plugin_Continue;
+	}
 	if (FF2RoundState == 0 && IsBoss(client))
 	{
 		damage *= 0.0;
@@ -3718,8 +3750,9 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				damage *= 0.3;
 				return Plugin_Changed;
 			}
+			
 			new ent = -1;
-			while ((ent = FindEntityByClassname2(ent, "tf_wearable_demoshield")) != -1)
+			while ((ent = FindEntityByClassname2(ent, "tf_wearable_demoshield")) != -1)  //SHIELDS
 			{
 				if (GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity") == client && !GetEntProp(ent, Prop_Send, "m_bDisguiseWearable"))
 				{
@@ -3749,7 +3782,9 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 			new buffweapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary);
 			new buffindex = (IsValidEntity(buffweapon) && buffweapon > MaxClients ? GetEntProp(buffweapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 			if (buffindex == 226)
+			{
 				CreateTimer(0.25, Timer_CheckBuffRage, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
+			}
 			if (damage <= 160.0)
 			{
 				damage*= 3;
@@ -3772,15 +3807,23 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						Damage[teleowner]+= 9001*3/5;
 						if (!(FF2flags[teleowner] & FF2FLAG_HUDDISABLED))
+						{
 							PrintCenterText(teleowner, "TELEFRAG ASSIST! Nice job setting up!");
+						}
 					}
 					if (!(FF2flags[attacker] & FF2FLAG_HUDDISABLED))
-						PrintCenterText(attacker,"TELEFRAG! You are a pro.");
+					{
+						PrintCenterText(attacker,"TELEFRAG! You are a pro!");
+					}
 					if (!(FF2flags[client] & FF2FLAG_HUDDISABLED))
+					{
 						PrintCenterText(client,"TELEFRAG! Be careful around quantum tunneling devices!");
+					}
 					return Plugin_Changed;
 				}
+				
 				new wepindex = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
+				
 				switch (wepindex)
 				{
 					case 593:	//Third Degree
@@ -3823,16 +3866,38 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						time += 4*(chargelevel/100);
 						SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
 						GlowTimer[index]+= RoundToCeil(time);
-						if (GlowTimer[index] > 30.0) GlowTimer[index] = 30.0;
+						if (GlowTimer[index] > 30.0)
+						{
+							GlowTimer[index] = 30.0;
+						}
 					}
-					case 355:
+					case 355:  //Sydney Sleeper
 					{
 						BossCharge[index][0] -= 5.0;
 						if (BossCharge[index][0] < 0)
+						{
 							BossCharge[index][0] = 0.0;
+						}
 					}
-					case 132, 266, 482: IncrementHeadCount(attacker);
-					case 214:	//applejack...no wait...powerjack!
+					case 61:  //Wliu: Highlight Hale on Ambassador headshot for 5 seconds
+					{
+						if(damage>=120)
+						{
+							new Float:time = 5.0;
+							SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
+							GlowTimer[index]+= RoundToCeil(time);
+							
+							if(GlowTimer[index]>30.0)
+							{
+								GlowTimer[index]=30.0;
+							}
+						}
+					}
+					case 132, 266, 482:  //Swords
+					{
+						IncrementHeadCount(attacker);
+					}
+					case 214:	//Powerjack
 					{
 						new health = GetClientHealth(attacker);
 						new max = GetEntProp(attacker, Prop_Data, "m_iMaxHealth");
@@ -3843,10 +3908,16 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 							SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
 						}
-						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire)) TF2_RemoveCondition(attacker, TFCond_OnFire);
+						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
+						{
+							TF2_RemoveCondition(attacker, TFCond_OnFire);
+						}
 					}
-					case 317: SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
-					case 357:
+					case 317:  //Candycane
+					{
+						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
+					}
+					case 357:  //Katana
 					{
 						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
@@ -3862,7 +3933,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						}
 						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire)) TF2_RemoveCondition(attacker, TFCond_OnFire);
 					}
-					case 528:
+					case 528:  //Short Circuit
 					{
 						if (circuitStun > 0.0)
 						{
@@ -3871,12 +3942,13 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							EmitSoundToClient(client, "weapons/barret_arm_zap.wav");
 						}
 					}
-					case 656:
+					case 656:  //Holiday Punch
 					{
 						CreateTimer(0.1, Timer_StopTickle, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 						if (TF2_IsPlayerInCondition(attacker, TFCond_Dazed)) TF2_RemoveCondition(attacker, TFCond_Dazed);
 					}
 				}
+				
 				new activeweapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if (activeweapon == GetPlayerWeaponSlot(attacker, TFWeaponSlot_Primary))
 				{
@@ -3888,7 +3960,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						time += 4*(chargelevel/100);
 						SetEntProp(Boss[index], Prop_Send, "m_bGlowEnabled", 1);
 						GlowTimer[index]+= RoundToCeil(time);
-						if (GlowTimer[index] > 30.0) GlowTimer[index] = 30.0;
+						if (GlowTimer[index] > 30.0)
+						{
+							GlowTimer[index] = 30.0;
+						}
 					}
 				}
 				

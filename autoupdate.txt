@@ -4,44 +4,28 @@
 	{
 		"Version"
 		{
-			"Latest"	"2.0.0a3"
-			"Previous"	"2.0.0a2"
+			"Latest"	"2.0.0"
+			"Previous"	"2.0.0a3"
 		}
 		
-		"Notes"	"More info at www.github.com/50DKP/FF2. This is 50DKP's version of FF2.
-		"Notes" "Changes in 2.0.0a3:"
-		"Notes"	"TODO"
+		"Notes"	"More info at www.github.com/50DKP/FF2. This is 50DKP's version of FF2."
+		"Notes" "Changes in 2.0.0:"
+		"Notes"	"Currently just a bogus test right now"
 	}
 	
 	"Files"
 	{
 		"Patch"
 		{
-			"Plugin"	"Path_SM/plugins/freak_fortress_2.smx"
-			"Plugin"	"Path_SM/plugins/freaks/ff2_50dkp.ff2"
-			"Plugin"	"Path_SM/plugins/freaks/default_abilities.ff2"
-			"Plugin"	"Path_SM/plugins/freaks/ff2_1st_set_abilities.ff2"
-			"Plugin"	"Path_SM/translations/freak_fortress_2_phrases.txt"
-			"Plugin"	"Path_SM/configs/freak_fortress_2/hhh_hale.cfg"
-			"Plugin"	"Path_SM/configs/freak_fortress_2/seeman.cfg"
-			"Plugin"	"Path_SM/configs/freak_fortress_2/demopan.cfg"
-			"Plugin"	"Path_SM/configs/freak_fortress_2/gaben.cfg"
-			"Plugin"	"Path_SM/configs/freak_fortress_2/saxtonhale.cfg"
-			"Plugin"	"Path_SM/configs/freak_fortress_2/fempyro.cfg"
-			"Plugin"	"Path_SM/configs/freak_fortress_2/characters.cfg"
-
-			"Source"	"Path_SM/scripting/freak_fortress_2.sp"
-			"Source"	"Path_SM/scripting/freaks/ff2_50dkp.sp"
-			"Source"	"Path_SM/scripting/freaks/default_abilities.sp"
-			"Source"	"Path_SM/scripting/freaks/ff2_1st_set_abilities.sp"
+			"Plugin"	"Path_SM/plugins/freak_fortress_2_bogus.smx"
+			"Plugin"	"custom\freak_fortress_2\models\freak_fortress_2\bogus"
+			
+			"Source"	"Path_SM/scripting/freak_fortress_2_bogus.sp"
 		}
 		
-		"Plugin"	"Path_SM/plugins/myplugin.smx"
-		"Plugin"	"Path_SM/translations/myplugin.phrases.txt"
-		"Plugin"	"Path_SM/translations/ru/myplugin.phrases.txt"
-		"Plugin"	"Path_Mod/models/characters/batman.mdl"
-		"Plugin"	"Path_Mod/materials/models/characters/batman.vmt"
+		"Plugin"	"Path_SM/plugins/freak_fortress_2_bogus.smx"
+		"Plugin"	"custom\freak_fortress_2\models\freak_fortress_2\bogus"
 		
-		"Source"	"Path_SM/scripting/myplugin.sp"
+		"Source"	"Path_SM/scripting/freak_fortress_2_bogus.sp"
 	}
 }
