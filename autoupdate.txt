@@ -18,13 +18,13 @@
 		"Patch"
 		{
 			"Plugin"	"Path_SM/plugins/freak_fortress_2_bogus.smx"
-			"Plugin"	"custom\freak_fortress_2\models\freak_fortress_2\bogus"
+			"Plugin"	"custom/freak_fortress_2/models/freak_fortress_2/bogus.mdl"
 			
 			"Source"	"Path_SM/scripting/freak_fortress_2_bogus.sp"
 		}
 		
 		"Plugin"	"Path_SM/plugins/freak_fortress_2_bogus.smx"
-		"Plugin"	"custom\freak_fortress_2\models\freak_fortress_2\bogus"
+		"Plugin"	"custom/freak_fortress_2/models/freak_fortress_2/bogus.mdl"
 		
 		"Source"	"Path_SM/scripting/freak_fortress_2_bogus.sp"
 	}

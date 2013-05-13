@@ -1,16 +1,17 @@
-//===Freak Fortress 2===
-//
-//By Rainbolt Dash: programmer, modeller, mapper, painter.
-//Author of Demoman The Pirate: http://www.randomfortress.ru/thepirate/
-//And one of two creators of Floral Defence: http://www.polycount.com/forum/showthread.php?t=73688
-//And author of VS Saxton Hale Mode
+/*
+===Freak Fortress 2===
 
-//Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
+By Rainbolt Dash: programmer, modeller, mapper, painter.
+Author of Demoman The Pirate: http://www.randomfortress.ru/thepirate/
+And one of two creators of Floral Defence: http://www.polycount.com/forum/showthread.php?t=73688
+And author of VS Saxton Hale Mode
 
-//Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
-//
-//50DKP version is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
+Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
 
+Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
+
+50DKP version is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
+*/
 #pragma semicolon 1
 
 #include <sourcemod>
@@ -27,7 +28,7 @@
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.0.0a3"
+#define PLUGIN_VERSION "2.0.0"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -166,8 +167,9 @@ static const String:ff2versiontitles[][]=
 	"2.0.0a1",
 	"2.0.0a2",
 	"2.0.0a2",
-	"2.0.0a3",
-	"2.0.0a3"
+	"2.0.0",
+	"2.0.0",
+	"2.0.0"
 };
 
 static const String:ff2versiondates[][] = 
@@ -190,32 +192,43 @@ static const String:ff2versiondates[][] =
 	"March 17, 2013",
 	"March 19, 2013",
 	"March 19, 2013",
-	"April 14, 2013",
-	"April 14, 2013"
+	"May 13, 2013",
+	"May 13, 2013",
+	"May 13, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
-	{	
-		case 19: //2.0.0a3
+	{
+		case 20: //2.0.0
 		{
-			DrawPanelText(panel, "FF2 2.0.0 is almost here, we're nearing completion :D");
-			DrawPanelText(panel, "In the meantime, here's a little update done mostly by Lawd!");
-			DrawPanelText(panel, "1) Added Female Pyro (Lawd)");
-			DrawPanelText(panel, "2) Added background music for Robo-Cyphosis (Carge and Lawd)");
-			DrawPanelText(panel, "3) Added more maps (Lawd)");
+			DrawPanelText(panel, "FF2 2.0.0 IS LIVE! :D");
+			DrawPanelText(panel, "1) Updated for Steampipe (Lawd/Wliu)");
+			DrawPanelText(panel, "2) Added Female Pyro (Lawd)");
+			DrawPanelText(panel, "3) Added Merasmus (Lawd)");
+			DrawPanelText(panel, "4) Added more maps (Lawd/Carge)");
 			DrawPanelText(panel, "See next page");
 		}
 		
-		case 18: //2.0.0a3
+		case 19: //2.0.0
 		{
-			DrawPanelText(panel, "4) Re-added CM8 Hale classchange detection (ChrisMiuchiz)");
-			DrawPanelText(panel, "5) Added Hale spy exploit detection (Wliu and official FF2)");
-			DrawPanelText(panel, "6) Improved class info and might have possibly buffed Mantreads (Wliu)");
-			DrawPanelText(panel, "2.0.0 will have the remaining CM changes, sorry about that.");
-			DrawPanelText(panel, "Gangplank will have a Loose Cannon rage, Robo-Cyphosis will have a cool sapper,");
-			DrawPanelText(panel, "There will be a new boss, weapons will be balanced, and more! :)");
+			DrawPanelText(panel, "5) Re-added CM8 Hale classchange detection (ChrisMiuchiz)");
+			DrawPanelText(panel, "6) Removed Robo-Cyphosis (ChrisMiuchiz/Wliu)");
+			DrawPanelText(panel, "7) Added Hale spy exploit detection (Wliu/official FF2)");
+			DrawPanelText(panel, "8) Improved all phrases and might have buffed Mantreads (Wliu)");
+			DrawPanelText(panel, "9) Allowed Fists of Steel to be equipped with changes (Wliu)");
+			DrawPanelText(panel, "See next page");
+		}
+		
+		case 18: //2.0.0
+		{
+			DrawPanelText(panel, "10) Added knockback resistance and weighdown to Gentlespy (Wliu)");
+			DrawPanelText(panel, "11) Ambassador highlights Hale on headshot for 5 seconds (Wliu)");
+			DrawPanelText(panel, "12) Added back old VSH superjump.  YAY! (Wliu)");
+			DrawPanelText(panel, "13) Merged in all CM changes (Wliu/ChirsMiuchiz)");
+			DrawPanelText(panel, "Gangplank will have a Loose Cannon rage next update hopefully.");
+			DrawPanelText(panel, "Will also be working on more weapon balance changes.");
 		}
 		
 		case 17: //2.0.0a2
@@ -551,9 +564,9 @@ public OnPluginStart()
 	LoadTranslations("common.phrases");
 	AddNormalSoundHook(HookSound);
 	
-	Updater_AddPlugin(UPDATE_URL);  //For auto-updates
+//	Updater_AddPlugin(UPDATE_URL);  //For auto-updates
 }
-
+/*
 public OnLibraryAdded(const String:name[])  //Autoupdates
 {
 	if (StrEqual(name, "updater"))
@@ -562,7 +575,7 @@ public OnLibraryAdded(const String:name[])  //Autoupdates
 		LogMessage("FF2 UPDATER INITIALIZED!");  //DELETE THIS WHEN DONE
 	}
 }
-
+*/
 public OnConfigsExecuted()
 {
 	SetConVarString(FindConVar("ff2_version"), ff2versiontitles[maxversion]);
@@ -2083,10 +2096,10 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	
 	switch (iItemDefinitionIndex)
 	{
-		case 648:
+		case 648:  //Wrap Assasin
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "279 ;  2.0");
-			if (hItemOverride != INVALID_HANDLE)
+			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
@@ -2095,13 +2108,13 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		case 444:  //Mantreads
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  5.0");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
-			if (hItemOverride != INVALID_HANDLE)
+			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
 			}
 		}
-		case 220:
+		case 220:  //Shortstop
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "328 ;  1.0", true);
 			if (hItemOverride != INVALID_HANDLE)
@@ -2110,7 +2123,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 226:
+		case 226:  //Battalion's Backup
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "140 ;  15.0");
 			if (hItemOverride != INVALID_HANDLE)
@@ -2128,7 +2141,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 56:
+		case 56,1005:  //Huntsman+Festive Huntsman (CM11/Wliu)
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "2 ;  1.5");
 			if (hItemOverride != INVALID_HANDLE)
@@ -2137,16 +2150,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 1005: //Festive Huntsman (CM11)
-		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "2 ;  1.5");
-			if (hItemOverride != INVALID_HANDLE)
-			{
-				hItem = hItemOverride;
-				return Plugin_Changed;
-			}
-		}
-		case 38, 457:
+		case 38, 457:  //Axtinguisher+Postal Pummeler
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "", true);
 			if (hItemOverride != INVALID_HANDLE)
@@ -2155,7 +2159,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 43, 239:
+		case 43,239:  //KGB+GRU
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, 239, "107 ;  1.5 ;  1 ;  0.5 ;  128 ;  1 ;  191 ;  -7", true);
 			if (hItemOverride != INVALID_HANDLE)
@@ -2164,7 +2168,16 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 415:
+		case 331:  //Fists of Steel
+		{
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.8 ;  206 ;  9", true);
+			if (hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 415:  //Reserve Shooter
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0 ;  178 ;  0.6 ;  2 ;  1.1 ;  3 ;  0.5", true);
 			if (hItemOverride != INVALID_HANDLE)
@@ -2178,7 +2191,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	if (TF2_GetPlayerClass(client) == TFClass_Soldier && (strncmp(classname, "tf_weapon_rocketlauncher", 24, false) == 0 || strncmp(classname, "tf_weapon_shotgun", 17, false) == 0))
 	{
 		new Handle:hItemOverride;
-		if (iItemDefinitionIndex == 127)
+		if (iItemDefinitionIndex == 127)  //Direct Hit
 		{
 			hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0 ;  179 ;  1.0");
 		}
@@ -2210,7 +2223,7 @@ public Action:Timer_NoHonorBound(Handle:timer, any:userid)
 			GetEdictClassname(active, classname, sizeof(classname));
 		}
 		
-		if (index == 357 && active == weapon && strcmp(classname, "tf_weapon_katana", false) == 0)
+		if (index == 357 && active == weapon && strcmp(classname, "tf_weapon_katana", false) == 0)  //Half-Zatoichi
 		{
 			SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 			if (GetEntProp(client, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
@@ -2291,35 +2304,41 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 public Action:checkItems(Handle:hTimer,any:client)
 {
 	if (!IsValidClient(client) || !IsPlayerAlive(client) || FF2RoundState == 2 || IsBoss(client))
+	{
 		return Plugin_Continue;
+	}
+	
 	SetEntityRenderColor(client, 255, 255, 255, 255);
 	new weapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Primary);
 	new index = -1;
 	
 	if (bMedieval)
+	{
 		return Plugin_Continue;
+	}
+	
 	if (IsValidEdict(weapon) && (weapon > 0))
 	{
 		index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch (index)
 		{
-			case 41:
+			case 41:  //Natascha.  TODO:  ALLOW THIS, BUT INSTEAD MAKE IT GIVE YOU HEALTH, NOT SLOW BOSS.
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
 				weapon = SpawnWeapon(client,"tf_weapon_minigun",15,1,0,"");
 			}
-			case 402:
+			case 402:  //Bazaar Bargain
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
 				SpawnWeapon(client,"tf_weapon_sniperrifle",14,1,0,"");
 			}
-			case 237:
+			case 237:  //Rocket Jumper
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
 				weapon = SpawnWeapon(client,"tf_weapon_rocketlauncher",18,1,0,"");
 				SetAmmo(client, 0, 20);
 			}
-			case 17, 204, 36, 412:
+			case 17, 204, 36, 412:  //Syringe Guns
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
 				SpawnWeapon(client,"tf_weapon_syringegun_medic",17,1,10,"17 ;  0.05 ;  144 ;  1");
@@ -2332,18 +2351,18 @@ public Action:checkItems(Handle:hTimer,any:client)
 		index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch (index)
 		{
-			case 57, 231:
+			case 57, 231:  //Razorback+Darwin's Danger Shield
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
 				weapon = SpawnWeapon(client,"tf_weapon_smg",16,1,0,"");
 			}
-			case 265:
+			case 265:  //Sticky Jumper
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
 				weapon = SpawnWeapon(client,"tf_weapon_pipebomblauncher",20,1,0,"");
 				SetAmmo(client,1,24);
 			}
-			case 39, 351:
+			case 39, 351:  //Flare Gun+Detonator
 			{
 				if (GetEntProp(weapon, Prop_Send, "m_iEntityQuality") != 10)
 				{
@@ -2353,27 +2372,23 @@ public Action:checkItems(Handle:hTimer,any:client)
 			}
 		}
 	}
-	if (FindPlayerBack(client))
+	if (FindPlayerBack(client))  //Razorback/Darwin's Danger Shield again?
 	{
 		RemovePlayerBack(client);
 		weapon = SpawnWeapon(client,"tf_weapon_smg",16,1,0,"");
 	}
+	
 	weapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Melee);
 	if (weapon && IsValidEdict(weapon))
 	{
 		index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch (index)
 		{
-			case 331:
-			{
-				TF2_RemoveWeaponSlot(client,TFWeaponSlot_Melee);
-				weapon = SpawnWeapon(client,"tf_weapon_fists",195,1,6,"");
-			}
-			case 357:
+			case 357:  //Half-Zatoichi
 			{
 				CreateTimer(1.0, Timer_NoHonorBound, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 			}
-			case 589:
+			case 589:  //Eureka Effect
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Melee);
 				weapon = SpawnWeapon(client, "tf_weapon_wrench", 7, 1, 0, "");
@@ -2381,7 +2396,7 @@ public Action:checkItems(Handle:hTimer,any:client)
 		}
 	}
 	weapon = GetPlayerWeaponSlot(client, 4);
-	if (weapon > 0 && IsValidEntity(weapon) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 60)
+	if (weapon > 0 && IsValidEntity(weapon) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 60)  //Cloak and Dagger
 	{
 		TF2_RemoveWeaponSlot(client,4);
 		weapon = SpawnWeapon(client,"tf_weapon_invis",297,1,6,"");
@@ -3838,21 +3853,28 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 								healercount++;
 							}
 						}
-						for (new i = 0; i < healercount; i++)
+						for(new i = 0; i < healercount; i++)
 						{
-							if (IsValidClient(healers[i]) && IsPlayerAlive(healers[i]))
+							if(IsValidClient(healers[i]) && IsPlayerAlive(healers[i]))
 							{
 								new medigun = GetPlayerWeaponSlot(healers[i], TFWeaponSlot_Secondary);
-								if (IsValidEntity(medigun))
+								if(IsValidEntity(medigun))
 								{
 									new String:s[64];
 									GetEdictClassname(medigun, s, sizeof(s));
-									if (strcmp(s, "tf_weapon_medigun", false) == 0)
+									if(strcmp(s, "tf_weapon_medigun", false) == 0)
 									{
 										new Float:uber = GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel") + (0.1 / healercount);
 										new Float:max = 1.0;
-										if (GetEntProp(medigun, Prop_Send, "m_bChargeRelease")) max = 1.5;
-										if (uber > max) uber = max;
+										if(GetEntProp(medigun, Prop_Send, "m_bChargeRelease"))
+										{
+											max = 1.5;
+										}
+										
+										if (uber > max)
+										{
+											uber = max;
+										}
 										SetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel", uber);
 									}
 								}
@@ -3879,9 +3901,9 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							BossCharge[index][0] = 0.0;
 						}
 					}
-					case 61:  //Wliu: Highlight Hale on Ambassador headshot for 5 seconds
+					case 61:  //Ambassador.  Wliu: Highlight Hale on Ambassador headshot for 5 seconds
 					{
-						if(damage>=120)
+						if(damage>=102)
 						{
 							new Float:time = 5.0;
 							SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
@@ -3920,22 +3942,33 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					case 357:  //Katana
 					{
 						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
+						
 						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
+						{
 							SetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy", 1);
+						}
 						new health = GetClientHealth(attacker);
 						new max = GetEntProp(attacker, Prop_Data, "m_iMaxHealth");
 						new newhealth = health+35;
-						if (health < max+25)
+						
+						if(health < max+25)
 						{
-							if (newhealth > max+25) newhealth = max+25;
+							if (newhealth > max+25)
+							{
+								newhealth = max+25;
+							}
 							SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 							SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
 						}
-						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire)) TF2_RemoveCondition(attacker, TFCond_OnFire);
+						
+						if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
+						{
+							TF2_RemoveCondition(attacker, TFCond_OnFire);
+						}
 					}
 					case 528:  //Short Circuit
 					{
-						if (circuitStun > 0.0)
+						if(circuitStun > 0.0)
 						{
 							TF2_StunPlayer(client, circuitStun, 0.0, TF_STUNFLAGS_SMALLBONK|TF_STUNFLAG_NOSOUNDOREFFECT, attacker);
 							EmitSoundToAll("weapons/barret_arm_zap.wav", client);
@@ -3945,7 +3978,11 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					case 656:  //Holiday Punch
 					{
 						CreateTimer(0.1, Timer_StopTickle, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
-						if (TF2_IsPlayerInCondition(attacker, TFCond_Dazed)) TF2_RemoveCondition(attacker, TFCond_Dazed);
+						
+						if(TF2_IsPlayerInCondition(attacker, TFCond_Dazed))
+						{
+							TF2_RemoveCondition(attacker, TFCond_Dazed);
+						}
 					}
 				}
 				
@@ -4183,7 +4220,11 @@ public Action:Timer_StopTickle(Handle:timer, any:userid)
 
 stock IncrementHeadCount(client)
 {
-	if (!TF2_IsPlayerInCondition(client, TFCond_DemoBuff)) TF2_AddCondition(client, TFCond_DemoBuff, -1.0);
+	if (!TF2_IsPlayerInCondition(client, TFCond_DemoBuff))
+	{
+		TF2_AddCondition(client, TFCond_DemoBuff, -1.0);
+	}
+	
 	new decapitations = GetEntProp(client, Prop_Send, "m_iDecapitations");
 	SetEntProp(client, Prop_Send, "m_iDecapitations", decapitations+1);
 	new health = GetClientHealth(client);
