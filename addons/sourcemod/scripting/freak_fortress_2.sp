@@ -564,7 +564,14 @@ public OnPluginStart()
 	LoadTranslations("common.phrases");
 	AddNormalSoundHook(HookSound);
 	
+<<<<<<< HEAD
 //	Updater_AddPlugin(UPDATE_URL);  //For auto-updates
+=======
+	if(LibraryExists("updater"))
+	{
+		Updater_AddPlugin(UPDATE_URL);  //For auto-updates
+	}
+>>>>>>> d0dcc5d0ece92564e16189743d066f00a6a94da1
 }
 /*
 public OnLibraryAdded(const String:name[])  //Autoupdates
