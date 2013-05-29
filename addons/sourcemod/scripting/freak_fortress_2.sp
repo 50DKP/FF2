@@ -22,7 +22,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <tf2items>
 #include <clientprefs>
 #include <steamtools>  //You'll see why soon.
-#include <updater>
+#tryinclude <updater>
 
 #define UPDATE_URL "https://raw.github.com/50DKP/FF2/development/autoupdate.txt"  //<--Probably will *still* be changed.
 #define ME 2048
@@ -216,7 +216,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) Re-added CM8 Hale classchange detection (ChrisMiuchiz)");
 			DrawPanelText(panel, "6) Removed Robo-Cyphosis (ChrisMiuchiz/Wliu)");
 			DrawPanelText(panel, "7) Added Hale spy exploit detection (Wliu/official FF2)");
-			DrawPanelText(panel, "8) Improved all phrases and might have buffed Mantreads (Wliu)");
+			DrawPanelText(panel, "8) Improved all phrases (Wliu)");
 			DrawPanelText(panel, "9) Allowed Fists of Steel to be equipped with changes (Wliu)");
 			DrawPanelText(panel, "See next page");
 		}
@@ -226,7 +226,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "10) Added knockback resistance and weighdown to Gentlespy (Wliu)");
 			DrawPanelText(panel, "11) Ambassador highlights Hale on headshot for 5 seconds (Wliu)");
 			DrawPanelText(panel, "12) Added back old VSH superjump.  YAY! (Wliu)");
-			DrawPanelText(panel, "13) Merged in all CM changes (Wliu/ChirsMiuchiz)");
+			DrawPanelText(panel, "13) Merged in all CM changes (Wliu/ChrisMiuchiz)");
 			DrawPanelText(panel, "Gangplank will have a Loose Cannon rage next update hopefully.");
 			DrawPanelText(panel, "Will also be working on more weapon balance changes.");
 		}
@@ -2110,7 +2110,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 444:  //Mantreads
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  5.0");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  500");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -3785,13 +3785,13 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 			}
 			switch (TF2_GetPlayerClass(client))
 			{
-				case TFClass_Spy: if (GetEntProp(client, Prop_Send, "m_bFeignDeathReady") || TF2_IsPlayerInCondition(client, TFCond_DeadRingered))
+				case TFClass_Spy: if (GetEntProp(client, Prop_Send, "m_bFeignDeathReady") || TF2_IsPlayerInCondition(client, TFCond_DeadRingered))  //Dead Ringer
 				{
 					if (damagetype & DMG_CRIT) damagetype &= ~DMG_CRIT;
 					damage = 620.0;
 					return Plugin_Changed;
 				}
-				case TFClass_Soldier: if (IsValidEdict((weapon = GetPlayerWeaponSlot(client, 1))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 226 && !(FF2flags[client]&FF2FLAG_ISBUFFED))
+				case TFClass_Soldier: if (IsValidEdict((weapon = GetPlayerWeaponSlot(client, 1))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 226 && !(FF2flags[client]&FF2FLAG_ISBUFFED))  //Battalion's Backup
 				{
 					SetEntPropFloat(client, Prop_Send, "m_flRageMeter",100.0);
 					FF2flags[client] |= FF2FLAG_ISBUFFED;
@@ -3904,7 +3904,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							BossCharge[index][0] = 0.0;
 						}
 					}
-					case 61:  //Ambassador.  Wliu: Highlight Hale on Ambassador headshot for 5 seconds
+/*					case 61:  //Ambassador.  Wliu: Highlight Hale on Ambassador headshot for 5 seconds
 					{
 						if(damage>=102)
 						{
@@ -3917,7 +3917,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 								GlowTimer[index]=30.0;
 							}
 						}
-					}
+					}*/
 					case 132, 266, 482:  //Swords
 					{
 						IncrementHeadCount(attacker);
