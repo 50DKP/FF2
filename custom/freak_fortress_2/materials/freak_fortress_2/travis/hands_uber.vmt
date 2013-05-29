@@ -1,0 +1,6 @@
+VertexlitGeneric {
+	"$basetexture" "freak_fortress_2/travis/hands_uber"
+	"$bumpmap" "freak_fortress_2/travis/hands_normal"
+	"$surfaceprop" "metal"
+	"$halflambert" "1"
+	}

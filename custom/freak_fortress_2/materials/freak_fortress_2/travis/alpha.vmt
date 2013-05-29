@@ -1,0 +1,6 @@
+VertexlitGeneric
+{
+	"$basetexture" "freak_fortress_2/travis/alpha"
+	"$alphatest" 1
+	"$translucent" 1
+}
