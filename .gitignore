@@ -14,12 +14,14 @@
 /umc_mapcycle.txt
 /*.vbsp
 /*.vdf
-/tf2*.vpk
+/*.vpk
 #METAMOD/SOURCEMOD/STRIPPER
 /addons/metamod/
-/addons/metamod.vdf
 /addons/sourcemod/bin/
 /addons/stripper/
+/addons/BounceSteam.vdf
+/addons/metamod.vdf
+/addons/triggerbotdetector.*
 #SOURCEMOD CONFIGS
 /addons/sourcemod/configs/geoip/
 /addons/sourcemod/configs/sql-init-scripts/
@@ -113,14 +115,12 @@ update_tf2.txt
 /cfg/*.scr
 /cfg/*.txt
 #CUSTOM
-/custom/readme.txt
+/custom/
 #RANDOM STUFF FTW
 /download/
 /downloadlists/
 #MAPS
 /maps/
-#MATERIALS
-/materials/
 #MEDIA?
 /media/
 #RANDOM STUFF
