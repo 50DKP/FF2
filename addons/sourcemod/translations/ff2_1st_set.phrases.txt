@@ -3,7 +3,7 @@
 	"seeldier_rage_message"
 	{
 		"#format"	"{1:s}"
-		"en"    "Now you are {1}'s minion! Attack other team!"
+		"en"    "You are now {1}'s minion! Go attack the other team!"
 		"ru"	"Теперь ты помощник {1}! Атакуй вражескую команду!"
 	}
 }

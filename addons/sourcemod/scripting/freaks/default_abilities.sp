@@ -45,7 +45,7 @@ public OnPluginStart2()
 	HookEvent("player_death", event_player_death);
 	LoadTranslations("freak_fortress_2.phrases");
 	
-	cvarOldJump = CreateConVar("ff2_oldjump", "0", "Use old Saxton Hale jump equations", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	cvarOldJump = CreateConVar("ff2_oldjump", "1", "Use old Saxton Hale jump equations", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 }
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
@@ -286,14 +286,14 @@ Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 				GetClientEyeAngles(Boss, rot);
 				if (bEnableSuperDuperJump[index])
 				{
-					vel[2]=(750.0+175.0*charge/70+2000)*multiplier;
+					vel[2]=(750.0+400.0*charge/70+2000)*multiplier;
 					vel[0]+=Cosine(DegToRad(rot[0]))*Cosine(DegToRad(rot[1]))*500*multiplier;
 					vel[1]+=Cosine(DegToRad(rot[0]))*Sine(DegToRad(rot[1]))*500*multiplier;
 					bEnableSuperDuperJump[index]=false;
 				}
 				else
 				{
-					vel[2]=(750.0+175.0*charge/70)*multiplier;
+					vel[2]=(750.0+400.0*charge/70)*multiplier;
 					vel[0]+=Cosine(DegToRad(rot[0]))*Cosine(DegToRad(rot[1]))*100*multiplier;
 					vel[1]+=Cosine(DegToRad(rot[0]))*Sine(DegToRad(rot[1]))*100*multiplier;
 				}

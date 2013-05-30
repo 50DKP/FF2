@@ -118,7 +118,7 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 		{
 			new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 			new Float:charge=FF2_GetBossCharge(index,0);
-			SetEntPropFloat(Boss, Prop_Send, "m_flChargeMeter", 100.0);		
+//			SetEntPropFloat(Boss, Prop_Send, "m_flChargeMeter", 100.0);		
 			TF2_AddCondition(Boss,TFCond_Charging,0.25);	
 			if (charge>10.0 && charge<90.0)
 				FF2_SetBossCharge(index,0,charge-0.4);
@@ -193,7 +193,7 @@ Rage_CloneAttack(const String:ability_name[],index)
 				case 1:
 				{
 					TF2_RemoveAllWeapons(client);
-					weapon=SpawnWeapon(client,"tf_weapon_bottle",191,34,0,"");
+					weapon=SpawnWeapon(client,"tf_weapon_bottle",191,34,0,"68 ; -1");
 					if (IsValidEdict(weapon))
 					{
 						SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
@@ -209,7 +209,7 @@ Rage_CloneAttack(const String:ability_name[],index)
 			PrintHintText(client,"%t","seeldier_rage_message",bossname);
 			SetEntProp(client, Prop_Data, "m_takedamage", 0);
 			SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage_SaveMinion);
-			CreateTimer(4.0,Timer_Enable_Damage,GetClientUserId(client));
+			CreateTimer(2.0,Timer_Enable_Damage,GetClientUserId(client));
 		}
 	new ent = MaxClients+1;
 	decl owner;
@@ -360,18 +360,18 @@ public Action:Rage_Timer_Explosive_DanceB(Handle:hTimer,any:index)
 			proj = CreateEntityByName("env_explosion");   
 			DispatchKeyValueFloat(proj, "DamageForce", 180.0);
 
-			SetEntProp(proj, Prop_Data, "m_iMagnitude", 280, 4);
-			SetEntProp(proj, Prop_Data, "m_iRadiusOverride", 200, 4);
+			SetEntProp(proj, Prop_Data, "m_iMagnitude", 160, 4);
+			SetEntProp(proj, Prop_Data, "m_iRadiusOverride", 90, 4);
 			SetEntPropEnt(proj, Prop_Data, "m_hOwnerEntity", Boss);
 
 			DispatchSpawn(proj);
   
-			pos2[0]=pos[0]+GetRandomInt(-350,350);
-			pos2[1]=pos[1]+GetRandomInt(-350,350);
+			pos2[0]=pos[0]+GetRandomInt(-140,140);
+			pos2[1]=pos[1]+GetRandomInt(-140,140);
 			if (!(GetEntityFlags(Boss) & FL_ONGROUND))
-				pos2[2]=pos[2]+GetRandomInt(-150,150);
+				pos2[2]=pos[2]+GetRandomInt(-40,340);
 			else			
-				pos2[2]=pos[2]+GetRandomInt(0,100);
+				pos2[2]=pos[2]+GetRandomInt(0,50);
 			TeleportEntity(proj, pos2, NULL_VECTOR, NULL_VECTOR);
 			AcceptEntityInput(proj, "Explode");
 			AcceptEntityInput(proj, "kill");
@@ -409,7 +409,7 @@ public Action:Rage_Timer_Explosive_DanceB(Handle:hTimer,any:index)
 Rage_UseSlomo(index,const String:ability_name[])
 {
 	SetConVarFloat(cvarTimeScale, FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,2,0.1));
-	new Float:duration=FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,1,1.0)+1.0;
+	new Float:duration=FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,1,1.0)-0.2;
 	SloMoTimer=CreateTimer(duration,Timer_StopSlomo,index);
 	ff2flags[index]=ff2flags[index]|FLAG_SLOMOREADYCHANGE|FLAG_ONSLOMO;
 	UpdateClientCheatValue("1");

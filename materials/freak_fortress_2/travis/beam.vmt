@@ -1,0 +1,32 @@
+"VertexlitGeneric"
+{
+    "$translucent" 1
+	"$baseTexture" "freak_fortress_2/travis/beam"
+    "$nocull" 1
+    "$additive" "1"
+	"$vertexcolor" "1"
+	"$vertexalpha" "1"
+
+	// Cloaking
+	"$cloakPassEnabled" "1"
+	"Proxies"
+	{
+		"weapon_invis"
+		{
+		}
+		"ModelGlowColor"
+		{
+			"resultVar" "$glowcolor"
+		}
+		"Equals"
+		{
+			"srcVar1"  "$glowcolor"
+			"resultVar" "$selfillumtint"
+		}
+		"Equals"
+		{
+			"srcVar1"  "$glowcolor"
+			"resultVar" "$color2"
+		}
+	}
+}

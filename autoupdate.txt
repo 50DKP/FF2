@@ -1,0 +1,31 @@
+"Updater"
+{
+	"Information"
+	{
+		"Version"
+		{
+			"Latest"	"2.0.0"
+			"Previous"	"2.0.0a3"
+		}
+		
+		"Notes"	"More info at www.github.com/50DKP/FF2. This is 50DKP's version of FF2."
+		"Notes" "Changes in 2.0.0:"
+		"Notes"	"Currently just a bogus test right now"
+	}
+	
+	"Files"
+	{
+		"Patch"
+		{
+			"Plugin"	"Path_SM/plugins/freak_fortress_2_bogus.smx"
+			"Plugin"	"custom/freak_fortress_2/models/freak_fortress_2/bogus.mdl"
+			
+			"Source"	"Path_SM/scripting/freak_fortress_2_bogus.sp"
+		}
+		
+		"Plugin"	"Path_SM/plugins/freak_fortress_2_bogus.smx"
+		"Plugin"	"custom/freak_fortress_2/models/freak_fortress_2/bogus.mdl"
+		
+		"Source"	"Path_SM/scripting/freak_fortress_2_bogus.sp"
+	}
+}
