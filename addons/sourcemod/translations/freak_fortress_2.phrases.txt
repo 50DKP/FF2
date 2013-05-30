@@ -26,7 +26,7 @@
 	"point_enable"
 	{
 		"#format" "{1:i}"
-		"en"  "Only {1} player(s) left alive, the control point has been unlocked!"
+		"en"  "Only {1} players left, the control point has been unlocked!"
 	}
 	"top_3"
 	{
@@ -149,7 +149,7 @@
 	}
 	"help_mode"
 	{
-		"en"	"===Freak Fortress 2===\nOne (or more) players become one of the Bosses.\nWhile the other players have to defeat them."
+		"en"	"===Freak Fortress 2===\nOne or more players become one of the Bosses\nwhile the other players have to defeat them."
 	}
 	"older"
 	{
@@ -305,7 +305,12 @@
 	}
 	"ff2_lives_left"
 	{
-		"#format" "{1:s},{2:i}"
+		"#format"	"{1:s},{2:i}"
+		"en"	"{1} lost 1 life! There are {2} more!"
+	}
+	"ff2_lives_left1"
+	{
+		"#format"	"{1:s},{2:i}"
 		"en"	"{1} lost 1 life! There is {2} more!"
 	}
 	"ff2_50dkp_help"
