@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.1.0"
+#define PLUGIN_VERSION "2.2.0"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -97,12 +97,6 @@ new Handle:cvarUseCountdown;
 new Handle:cvarHealthBar;
 
 new Handle:FF2Cookies;		// "queue_points music monologues classinfo rmb_help reload_help"
-/*
-new Handle:PointCookie;
-new Handle:MusicCookie;
-new Handle:VoiceCookie;
-new Handle:ClassinfoCookie
-*/
 
 new Handle:jumpHUD;
 new Handle:rageHUD;
@@ -228,7 +222,6 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Added more maps (Lawd/Carge)");
 			DrawPanelText(panel, "See next page");
 		}
-		
 		case 19: //2.0.0
 		{
 			DrawPanelText(panel, "5) Re-added CM8 Hale classchange detection (ChrisMiuchiz)");
@@ -238,7 +231,6 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "9) Allowed Fists of Steel to be equipped with changes (Wliu)");
 			DrawPanelText(panel, "See next page");
 		}
-		
 		case 18: //2.0.0
 		{
 			DrawPanelText(panel, "10) Added knockback resistance and weighdown to Gentlespy (Wliu)");
@@ -248,7 +240,6 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "Gangplank will have a Loose Cannon rage next update hopefully.");
 			DrawPanelText(panel, "Will also be working on more weapon balance changes.");
 		}
-		
 		case 17: //2.0.0a2
 		{
 			DrawPanelText(panel, "1) [Players] Nerfed Gentlespy's knife (Wliu)");
@@ -258,28 +249,23 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) [Players] Updated to FF2 1.06h-some of the CM changes might not have made it in (Wliu)");
 			DrawPanelText(panel, "See next page");
 		}
-		
 		case 16: //2.0.0a2
 		{
 			DrawPanelText(panel, "6) [Players] Added in some CM changes (ChrisMiuchiz)");
 			DrawPanelText(panel, "7) [Players] Updated CBS model (Lawd)");
 		}
-		
 		case 15: //2.0.0a1
 		{
 			DrawPanelText(panel, "1) [Players] Added Gangplank and Gentlespy (Lawd)");
 		}
-		
 		case 14: // 1.06h
 		{
 		    DrawPanelText(panel, "1) [Players] Remove MvM powerup_bottle on Bosses. (RavensBro)");
 		}
-		
 		case 13: // 1.06g
 		{
 		    DrawPanelText(panel, "1) [Players] Fixed vote for charset. (RavensBro)");
 		}		
-		
 		case 12: // 1.06f
 		{
 			DrawPanelText(panel, "1) [Players] Changelog now divided into [Players] and [Dev] sections. (Otokiru)");
@@ -288,7 +274,6 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) [Players] Fixed hale HP bar. (Valve) lol?");
 			DrawPanelText(panel, "5) [Dev] Fixed \"GetEntProp\" reported: Entity XXX (XXX) is invalid on checkFirstHale(). (Otokiru)");
 		}
-		
 		case 11: // 1.06e
 		{
 
@@ -297,7 +282,6 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "3) [Dev] Change how FF2 check for player weapons. Now also checks when spawned in the middle of the round. (Otokiru)");
 			DrawPanelText(panel, "4) [Dev] Changed some FF2 warning messages color such as \"First-Hale Checker\" and \"Change class exploit\". (Otokiru)");
 		}
-		
 		case 10: // 1.06d
 		{
 			DrawPanelText(panel, "1) Fix first boss having missing health or abilities. (Otokiru)");
@@ -305,8 +289,6 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "3) Health bar cedes control to Monoculus if he is summoned. (Powerlord)");
 			DrawPanelText(panel, "4) Health bar instantly updates if enabled or disabled via cvar mid-game. (Powerlord)");
 		}
-		
-		
 		case 9: //1.06c
 		{
 			DrawPanelText(panel, "1) Remove weapons if a player tries to switch classes when they become boss to prevent an exploit. (Otokiru)");
@@ -559,11 +541,7 @@ public OnPluginStart()
 	AutoExecConfig(true, "FreakFortress2");
 
 	FF2Cookies = RegClientCookie("ff2_cookies_mk2", "", CookieAccess_Protected);
-	/*PointCookie = RegClientCookie("hale_queue_points", "Amount of VSH/FF2 Queue points player has", CookieAccess_Public);
-	MusicCookie = RegClientCookie("hale_music_setting", "BossMusic setting", CookieAccess_Public);
-	VoiceCookie = RegClientCookie("hale_voice_setting", "BossVoice setting", CookieAccess_Public);
-	ClassinfoCookie = RegClientCookie("hale_classinfo", "HaleClassinfo setting", CookieAccess_Public);
-	*/
+
 	jumpHUD = CreateHudSynchronizer();
 	rageHUD = CreateHudSynchronizer();
 	healthHUD = CreateHudSynchronizer();
@@ -581,22 +559,8 @@ public OnPluginStart()
 	LoadTranslations("freak_fortress_2.phrases");
 	LoadTranslations("common.phrases");
 	AddNormalSoundHook(HookSound);
+}
 
-/*	if(LibraryExists("updater"))
-	{
-		Updater_AddPlugin(UPDATE_URL);  //For auto-updates
-	}*/
-}
-/*
-public OnLibraryAdded(const String:name[])  //Autoupdates
-{
-	if (StrEqual(name, "updater"))
-	{
-		Updater_AddPlugin(UPDATE_URL);
-		LogMessage("FF2 UPDATER INITIALIZED!");  //DELETE THIS WHEN DONE
-	}
-}
-*/
 public OnConfigsExecuted()
 {
 	SetConVarString(FindConVar("ff2_version"), ff2versiontitles[maxversion]);
@@ -680,13 +644,15 @@ public AddToDownload()
 	BuildPath(Path_SM,s,PLATFORM_MAX_PATH,"configs/freak_fortress_2/characters.cfg");
 	if (!FileExists(s))
 	{
-		LogError("[FF2] Freak Fortress 2 disabled - can not found character config.");
+		LogError("[FF2] Freak Fortress 2 disabled - can not find characters.cfg!");
 		return;
 	}
 	new Handle:Kv = CreateKeyValues("");
 	FileToKeyValues(Kv, s);
 	for (new i=0; i <FF2CharSet; i++)
+	{
 		KvGotoNextKey(Kv);
+	}
 	KvGotoFirstSubKey(Kv);
 	KvGetSectionName(Kv, s, 64);
 	for (new i=1; i<MAXSPECIALS; i++)
@@ -709,13 +675,16 @@ public AddToDownload()
 EnableSubPlugins(bool:forse = false)
 {
 	if (isSubPluginsEnabled && !forse)
+	{
 		return;
+	}
 	isSubPluginsEnabled=true;
 	decl String:path[PLATFORM_MAX_PATH],String:fname[PLATFORM_MAX_PATH],String:fname_old[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/freaks");
 	decl FileType:filetype;
 	new Handle:dir = OpenDirectory(path);
 	while (ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
+	{
 		if (filetype == FileType_File && StrContains(fname, ".smx",false)!= -1)
 		{
 			Format(fname_old,PLATFORM_MAX_PATH,"%s/%s",path,fname);
@@ -724,25 +693,35 @@ EnableSubPlugins(bool:forse = false)
 			DeleteFile(fname);
 			RenameFile(fname,fname_old);
 		}
-
+	}
 	dir = OpenDirectory(path);
 	while (ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
+	{
 		if (filetype == FileType_File && StrContains(fname, ".ff2",false)!= -1)
+		{
 			ServerCommand("sm plugins load freaks/%s",fname);
+		}
+	}
 }
 
 DisableSubPlugins(bool:forse = false)
 {
 	if (!isSubPluginsEnabled && !forse)
+	{
 		return;
+	}
 	isSubPluginsEnabled=false;
 	decl String:path[PLATFORM_MAX_PATH],String:fname[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/freaks");
 	decl FileType:filetype;
 	new Handle:dir = OpenDirectory(path);
 	while (ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
+	{
 		if (filetype == FileType_File && StrContains(fname, ".ff2",false)!= -1)
+		{
 			ServerCommand("sm plugins unload freaks/%s",fname);
+		}
+	}
 }
 
 public LoadCharacter(const String:character[])
@@ -772,7 +751,9 @@ public LoadCharacter(const String:character[])
 			}
 		}
 		else
+		{
 			break;
+		}
 	}
 	KvRewind(BossKV[Specials]);
 	
@@ -796,7 +777,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				AddFileToDownloadsTable(s);
 			}
 		}
@@ -807,7 +790,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				PrecacheModel(s,true);
 			}
 		}
@@ -818,7 +803,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				for (is = 0;  is < sizeof(extensions);  is++)
 				{
 					Format(s2,PLATFORM_MAX_PATH,"%s%s",s,extensions[is]);
@@ -833,7 +820,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				Format(s2,PLATFORM_MAX_PATH,"%s.vtf",s);
 				AddFileToDownloadsTable(s2);
 				Format(s2,PLATFORM_MAX_PATH,"%s.vmt",s);
@@ -847,7 +836,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				PrecacheSound(s,true);
 			}
 		}
@@ -860,7 +851,10 @@ public CvarChange(Handle:convar, const String:oldValue[], const String:newValue[
 	if (convar == cvarPointDelay)
 	{
 		PointDelay = StringToInt(newValue);
-		if (PointDelay < 0) PointDelay*= -1;
+		if (PointDelay < 0)
+		{
+			PointDelay*= -1;
+		}
 	}
 	else if (convar == cvarAnnounce)
 	{
@@ -937,6 +931,13 @@ public Action:Timer_Announce(Handle:hTimer)
 				announcecount = 0;
 				CPrintToChatAll("{olive}[FF2]{default} %t","ff2_last_update",ff2versiontitles[maxversion],ff2versiondates[maxversion]);
 			}
+			case 6:
+			{
+				CPrintToChatAll("{olive}FF2-50DKP{default} is being worked on by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}Chris{default}.",ff2versiontitles[maxversion]);
+			}
+			case 7:
+			{
+				CPrintToChatAll("{default}Invisible bosses?  Can't hear any sounds?  Try this thread, courtesy of {olive}Lawd{default}!  {red}http://www.50dkp.com/forums/viewtopic.php?f=27&t=2188&p=33190#p33190{default});
 			default: 
 			{
 				CPrintToChatAll("{olive}[FF2]{default} %t","type_ff2_to_open_menu");
@@ -945,8 +946,6 @@ public Action:Timer_Announce(Handle:hTimer)
 	}
 	return Plugin_Continue;
 }
-
-
 
 public Action:OnGetGameDescription(String:gameDesc[64])
 {
@@ -997,7 +996,6 @@ stock bool:IsFF2Map()
 			return true;
 		}
 	}
-
 	CloseHandle(fileh);
 	return false;
 }
@@ -2385,8 +2383,8 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	{
 		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  0.1 ;  16 ;  5 ;  32 ;  0");
-			//5:  -10% firing speed
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  1.25 ;  16 ;  5 ;  32 ;  0");
+			//5:  -25% firing speed
 			//16:  +5 health on hit
 			//32:  0% chance to slow target
 			if(hItemOverride != INVALID_HANDLE)
@@ -2404,7 +2402,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 444:  //Mantreads.  Wliu:  Increased Mantreads damage by 5x (to ~1000).
+		case 444:  //Mantreads.  Wliu:  Increased Mantreads damage by 5x (to ~1000).  DOESN'T WORK
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  5.0");
 			if(hItemOverride != INVALID_HANDLE)
@@ -2422,9 +2420,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 226:  //Battalion's Backup
+		case 226:  //Battalion's Backup.  Wliu:  Increased Battalion's Backup health buff from 15 to 50 health.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "140 ;  50.0");  //Wliu:  Increased Battalion's Backup health buff from 15 to 50 health.
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "140 ;  50.0");
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2494,7 +2492,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		{
 			hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0 ;  179 ;  1.0");
 		}
-		else
+		else  //All other weapons
 		{
 			hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0");
 		}

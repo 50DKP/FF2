@@ -110,6 +110,7 @@ update_tf2.txt
 /cfg/sourcemod/p*.cfg
 /cfg/sourcemod/r*.cfg
 /cfg/sourcemod/s*.cfg
+/cfg/sourcemod/t*.cfg
 /cfg/sourcemod/u*.cfg
 /cfg/*.cfg
 /cfg/*.rc
