@@ -37,14 +37,13 @@
 /addons/sourcemod/logs/
 #SOURCEMOD PLUGINS
 /addons/sourcemod/plugins/disabled/
-/addons/sourcemod/plugins/freaks/ff2_d*.*
-/addons/sourcemod/plugins/freaks/ff2_p*.*
 /addons/sourcemod/plugins/a*.smx
 /addons/sourcemod/plugins/b*.smx
 /addons/sourcemod/plugins/c*.smx
 /addons/sourcemod/plugins/d*.smx
 /addons/sourcemod/plugins/fun*.smx
 /addons/sourcemod/plugins/g*.smx
+/addons/sourcemod/plugins/h*.smx
 /addons/sourcemod/plugins/l*.smx
 /addons/sourcemod/plugins/m*.smx
 /addons/sourcemod/plugins/n*.smx
@@ -58,7 +57,10 @@
 /addons/sourcemod/scripting/a*/
 /addons/sourcemod/scripting/b*/
 /addons/sourcemod/scripting/c*/
-/addons/sourcemod/scripting/f*/
+/addons/sourcemod/scripting/freaks/ff2_d*.sp
+/addons/sourcemod/scripting/freaks/ff2_p*.sp
+/addons/sourcemod/scripting/freaks/compiled/
+/addons/sourcemod/scripting/fun*/
 /addons/sourcemod/scripting/k*/
 /addons/sourcemod/scripting/i*/
 /addons/sourcemod/scripting/p*/
@@ -70,6 +72,7 @@
 /addons/sourcemod/scripting/d*.sp
 /addons/sourcemod/scripting/e*.sp
 /addons/sourcemod/scripting/g*.sp
+/addons/sourcemod/scripting/h*.sp
 /addons/sourcemod/scripting/k*.sp
 /addons/sourcemod/scripting/l*.sp
 /addons/sourcemod/scripting/m*.sp
@@ -99,8 +102,6 @@
 /bin/
 motd.txt
 update_tf2.txt
-#MOAR RANDOM STUFF
-/bz2/maps/
 #CONFIGS
 /cfg/sourcemod/c*.cfg
 /cfg/sourcemod/f*.cfg

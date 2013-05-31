@@ -2383,6 +2383,18 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	
 	switch (iItemDefinitionIndex)
 	{
+		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
+		{
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  0.1 ;  16 ;  5 ;  32 ;  0");
+			//5:  -10% firing speed
+			//16:  +5 health on hit
+			//32:  0% chance to slow target
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
 		case 648:  //Wrap Assasin
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "279 ;  2.0");
@@ -2392,9 +2404,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 444:  //Mantreads
+		case 444:  //Mantreads.  Wliu:  Increased Mantreads damage by 5x (to ~1000).
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  500");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  5.0");
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2428,7 +2440,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 56,1005:  //Huntsman+Festive Huntsman (CM11/Wliu)
+		case 56, 1005:  //Huntsman+Festive Huntsman (CM11/Wliu)
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "2 ;  1.5");
 			if (hItemOverride != INVALID_HANDLE)
@@ -2455,9 +2467,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 331:  //Fists of Steel
+		case 331:  //Fists of Steel.  Wliu:  Allow Fists of Steel with modified stats
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.8 ;  206 ;  9", true);  //Wliu:  Experimental stuff.
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.8 ;  206 ;  9", true);
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2614,11 +2626,6 @@ public Action:checkItems(Handle:hTimer,any:client)
 		index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch (index)
 		{
-			case 41:  //Natascha.  TODO:  ALLOW THIS, BUT INSTEAD MAKE IT GIVE YOU HEALTH, NOT SLOW BOSS.
-			{
-				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
-				weapon = SpawnWeapon(client,"tf_weapon_minigun",15,1,0,"");
-			}
 			case 402:  //Bazaar Bargain
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
@@ -3274,7 +3281,9 @@ public Action:ClientTimer(Handle:hTimer)
 			if (RedAlivePlayers == 2 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 				TF2_AddCondition(client,TFCond_Buffed,0.3);
 			if (bMedieval)
+			{
 				continue;
+			}
 			cond = TFCond_HalloweenCritCandy;
 			if (TF2_IsPlayerInCondition(client, TFCond_CritCola) && (class == TFClass_Scout || class == TFClass_Heavy))
 			{
@@ -4250,10 +4259,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						IncrementHeadCount(attacker);
 					}
-					case 214:  //Powerjack
+					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.
 					{
 						new health = GetClientHealth(attacker);
-						new newhealth = health+50;
+						new newhealth = health+10;
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
 						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
@@ -4265,7 +4274,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
 					}
-					case 357:  //Half-Zatoichi
+					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.
 					{
 						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
@@ -4780,7 +4789,10 @@ stock CalcBossHealthMax(index)
 		LogError("[FF2] Wrong Boss' health formula! Using default!");
 		health = RoundFloat(Pow(((760.0+playing)*(playing-1)),1.04));
 	}
-	else health = RoundFloat(summ[0]);
+	else
+	{
+		health = RoundFloat(summ[0]);
+	}
 	if (bMedieval) health = RoundFloat(health/3.6);
 	return health;
 }
