@@ -1,5 +1,6 @@
 //CHANGELOG:
 //----------
+//v1.1 (6/3/2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
 //v1.0 (5/30/2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
 
 //Current bosses that use this:  Fempyro
@@ -36,6 +37,10 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	if (!strcmp(ability_name,"rage_fempyro"))
 	{
 		Rage_Fempyro(index);
+	}
+	else if (!strcmp(ability_name,"rage_freeze"))
+	{
+		Rage_Freeze(index);
 	}
 	return Plugin_Continue;
 }
@@ -106,4 +111,60 @@ Rage_Fempyro(index)
 	//165:  Charged airblast
 	//171:  -50% airblast cost
 	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
+}
+
+Rage_Freeze(const String:ability_name[],index)
+{
+	decl Float:pos[3];
+	decl Float:pos2[3];
+	decl i;
+	new Float:duration=FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,1,5.0);
+	decl String:s[64];
+	FloatToString(duration,s,64);
+	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
+	GetEntPropVector(Boss, Prop_Send, "m_vecOrigin", pos);
+	new Float:ragedist=FF2_GetRageDist(index,this_plugin_name,ability_name);
+	for(i=1;i<=MaxClients;i++)
+	{
+		if(IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
+		{
+			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
+			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
+			{
+				SetEntityMoveType(i, MOVETYPE_NONE);
+				ColorizePlayer(i, COLOR_INVIS);
+			}
+			new iRagDoll = CreateRagdoll(i);
+			if(iRagDoll > MaxClients && IsValidEntity(iRagDoll))
+			{
+				AddEntityToClient(i, iRagDoll);
+				SetClientViewEntity(i, iRagDoll);
+				SetThirdPerson(i, true);
+			}
+		}
+	}
+/*	for(i=1;i<=MaxClients;i++)
+	{
+		if(IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
+		{
+			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
+			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
+			{
+				TF2_StunPlayer(i, duration, 0.0, TF_STUNFLAGS_GHOSTSCARE|TF_STUNFLAG_NOSOUNDOREFFECT, Boss);
+				CreateTimer(duration, RemoveEnt, EntIndexToEntRef(AttachParticle(i,"yikes_fx",75.0)));	
+			}
+		}
+	}*/
+	/*
+	SetEntityMoveType(client, MOVETYPE_NONE);
+	ColorizePlayer(client, COLOR_INVIS);
+	
+	new iRagDoll = CreateRagdoll(client);
+	if(iRagDoll > MaxClients && IsValidEntity(iRagDoll))
+	{
+		AddEntityToClient(client, iRagDoll);
+		SetClientViewEntity(client, iRagDoll);
+		SetThirdPerson(client, true);
+	}
+	*/
 }

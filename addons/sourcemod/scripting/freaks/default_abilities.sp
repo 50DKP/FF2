@@ -45,7 +45,7 @@ public OnPluginStart2()
 	HookEvent("player_death", event_player_death);
 	LoadTranslations("freak_fortress_2.phrases");
 	
-	cvarOldJump = CreateConVar("ff2_oldjump", "1", "Use old Saxton Hale jump equations", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	cvarOldJump = CreateConVar("ff2_oldjump", "1", "Use old Saxton Hale jump equations", FCVAR_PLUGIN, true, 0.0, true, 1.0);  //Wliu:  Enabled oldjump.
 }
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
@@ -92,54 +92,71 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 			Call_PushFloatRef(newdist);
 			Call_Finish(act);
 			if (act != Plugin_Continue && act != Plugin_Changed)
+			{
 				return Plugin_Continue;
+			}
 			if (act == Plugin_Changed) dist = newdist;
 		}
 	}
-	//slot 3
+
 	if (!strcmp(ability_name,"charge_weightdown"))
-		Charge_OnWeightDown(index,slot);	
-	//slot 1 and 2
+	{
+		Charge_OnWeightDown(index,slot);
+	}
 	else if (!strcmp(ability_name,"charge_bravejump"))
-		Charge_OnBraveJump(ability_name,index,slot,action);				//Brave Jump
+	{
+		Charge_OnBraveJump(ability_name,index,slot,action);  //Brave Jump
+	}
 	else if (!strcmp(ability_name,"charge_teleport"))
-		Charge_OnTeleporter(ability_name,index,slot,action);		//Teleporter (HHH)
-	//slot 0
-	else if (!strcmp(ability_name,"rage_uber"))	
-	{														//Uber-rage (Vagineer)
+	{
+		Charge_OnTeleporter(ability_name,index,slot,action);  //Teleporter (HHH)
+	}
+	else if (!strcmp(ability_name,"rage_uber"))  //Uber-rage (Vagineer)
+	{
 		new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 		TF2_AddCondition(Boss,TFCond_Ubercharged,FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,1,5.0));
 		SetEntProp(Boss, Prop_Data, "m_takedamage", 0);
 		CreateTimer(FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,1,5.0),Rage_Timer_UnuseUber,index);
 	}
-	else if (!strcmp(ability_name,"rage_stun"))	
-		Rage_UseStun(ability_name,index);						//Stun rage (a lot of bosses)
-	else if (!strcmp(ability_name,"rage_stunsg"))	
-		Rage_UseStunSG(ability_name,index);						//Stuns sentries (a lot of bosses, again)
-	else if (!strcmp(ability_name,"rage_preventtaunt"))	
-		CreateTimer(0.01, Rage_Timer_Break_Taunt,index);	//Remove taunt condition from boss
-	else if (!strcmp(ability_name,"rage_instant_teleport"))	
-	{														//(Unused ability) instant teleport to random enemy
+	else if (!strcmp(ability_name,"rage_stun"))  //Stun rage (a lot of bosses)
+	{
+		Rage_UseStun(ability_name,index);
+	}
+	else if (!strcmp(ability_name,"rage_stunsg"))  //Stuns sentries (a lot of bosses, again)
+	{
+		Rage_UseStunSG(ability_name,index);
+	}
+	else if (!strcmp(ability_name,"rage_preventtaunt"))  //Remove taunt condition from boss
+	{
+		CreateTimer(0.01, Rage_Timer_Break_Taunt,index);
+	}
+	else if (!strcmp(ability_name,"rage_instant_teleport"))  //Instant teleport to random enemy
+	{														
 		new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 		new pingas;
 		decl target,Float:pos[3];
 		new bool:RedAlivePlayers;
 		for(new i=1;i<=MaxClients;i++)
+		{
 			if(IsValidEdict(i) && IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
 			{
 				RedAlivePlayers=true;
 				break;
 			}
-		
+		}
 		if (!RedAlivePlayers)
+		{
 			return Plugin_Continue;
+		}
 		
 		do
 		{
 			pingas++;
 			target=GetRandomInt(1,MaxClients);
 			if (pingas==100)
+			{
 				return Plugin_Continue;
+			}
 		}
 		while (!IsValidEdict(target) || (GetClientTeam(target)==BossTeam) || !IsPlayerAlive(target));
 		
@@ -162,6 +179,7 @@ Rage_UseStun(const String:ability_name[],index)
 	GetEntPropVector(Boss, Prop_Send, "m_vecOrigin", pos);
 	new Float:ragedist=FF2_GetRageDist(index,this_plugin_name,ability_name);
 	for(i=1;i<=MaxClients;i++)
+	{
 		if(IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
 		{
 			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
@@ -171,6 +189,7 @@ Rage_UseStun(const String:ability_name[],index)
 				CreateTimer(duration, RemoveEnt, EntIndexToEntRef(AttachParticle(i,"yikes_fx",75.0)));	
 			}
 		}
+	}
 }
 
 public Action:Rage_Timer_UnuseUber(Handle:hTimer,any:index)
