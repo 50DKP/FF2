@@ -933,12 +933,13 @@ public Action:Timer_Announce(Handle:hTimer)
 			}
 			case 6:
 			{
-				CPrintToChatAll("{olive}FF2-50DKP{default} is being worked on by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}Chris{default}.",ff2versiontitles[maxversion]);
+				CPrintToChatAll("{olive}FF2-50DKP{default} is being worked on by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}Chris{default}.");
 			}
 			case 7:
 			{
-				CPrintToChatAll("{default}Invisible bosses?  Can't hear any sounds?  Try this thread, courtesy of {olive}Lawd{default}!  {red}http://www.50dkp.com/forums/viewtopic.php?f=27&t=2188&p=33190#p33190{default});
-			default: 
+				CPrintToChatAll("{default}Invisible bosses?  Can't hear any sounds?  Try this thread, courtesy of {olive}Lawd{default}!  {red}www.50dkp.com/forums/viewtopic.php?f=27&t=2188&p=33190#p33190{default}");
+			}
+			default:
 			{
 				CPrintToChatAll("{olive}[FF2]{default} %t","type_ff2_to_open_menu");
 			}
