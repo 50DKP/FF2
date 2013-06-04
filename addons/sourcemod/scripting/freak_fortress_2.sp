@@ -96,6 +96,8 @@ new Handle:cvarUseCountdown;
 
 new Handle:cvarHealthBar;
 
+new Handle:cvarAllowSpectators;
+
 new Handle:FF2Cookies;		// "queue_points music monologues classinfo rmb_help reload_help"
 
 new Handle:jumpHUD;
@@ -462,6 +464,8 @@ public OnPluginStart()
 	cvarUseCountdown = CreateConVar("ff2_countdown", "120", "Seconds of deathly countdown (begins when only 1 enemy lefts)", FCVAR_PLUGIN);
 	cvarSpecForceBoss = CreateConVar("ff2_spec_force_boss", "0", "Spectators are allowed in Boss' queue.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarHealthBar = CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0); // Added by Powerlord
+	cvarAllowSpectators = FindConVar("mp_allowspectators");
+
 	HookConVarChange(cvarHealthBar, HealthbarEnableChanged);
 
 	HookEvent("player_changeclass", OnChangeClass);
@@ -1067,13 +1071,18 @@ stock bool:CheckToChangeMapDoors()
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!GetConVarBool(cvarEnabled)) Enabled2 = false;
+	if (!GetConVarBool(cvarEnabled))
+	{
+		Enabled2 = false;
+	}
 	Enabled = Enabled2;
+
 	if (!Enabled)
 	{
 		return Plugin_Continue;
 	}
 	FF2RoundState = 0;
+
 	if (FileExists("bNextMapToFF2"))
 	{
 		DeleteFile("bNextMapToFF2");
@@ -1238,7 +1247,12 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			{
 				break;
 			}
-			Boss[i] = FindBosses(see);
+			new tempBoss = FindBosses(see);
+			if (!IsValidClient(tempBoss))
+			{
+				break;
+			}
+			Boss[i] = tempBoss;
 			if (PickSpecial(i,i-1))
 			{
 				KvRewind(BossKV[Special[i]]);
@@ -3019,7 +3033,9 @@ public Action:Command_MakeNextSpecial(client, args)
 public Action:Command_Points(client, args)
 {
 	if (!Enabled2)
+	{
 		return Plugin_Continue;
+	}
 	if (args != 2)
 	{
 		ReplyToCommand(client, "[FF2] Usage: ff2_addpoints < target > < points > ");
@@ -3042,15 +3058,7 @@ public Action:Command_Points(client, args)
 	new target_list[MAXPLAYERS], target_count;
 	new bool:tn_is_ml;
 
-	if ((target_count = ProcessTargetString(
-			targetname,
-			client,
-			target_list,
-			MaxClients,
-			0,
-			target_name,
-			sizeof(target_name),
-			tn_is_ml)) <= 0)
+	if ((target_count = ProcessTargetString(targetname,client,target_list,MaxClients,0,target_name,sizeof(target_name),tn_is_ml)) <= 0)
 	{
 		/* This function replies to the admin with a failure message */
 		ReplyToTargetError(client, target_count);
@@ -3059,6 +3067,10 @@ public Action:Command_Points(client, args)
 
 	for (new i = 0;  i < target_count;  i++)
 	{
+		if (IsClientSourceTV(target_list[i]) || IsClientReplay(target_list[i]))
+		{
+			continue;
+		}
 		SetClientQueuePoints(target_list[i],GetClientQueuePoints(target_list[i])+points);
 		ReplyToCommand(client, "[FF2] Added %d queue points to %s", points, target_name);
 	}
@@ -3066,10 +3078,12 @@ public Action:Command_Points(client, args)
 	return Plugin_Handled;
 }
 
-public Action:Command_StopMusic(client, args)
+public Action:Command_StopMusic(client, args)  //TODO:  REMOVE
 {
 	if (!Enabled2)
+	{
 		return Plugin_Continue;
+	}
 	Native_StopMusic(INVALID_HANDLE,0);
 	ReplyToCommand(client, "[FF2] Stopped boss music.");
 	return Plugin_Handled;
@@ -3119,13 +3133,13 @@ public Action:Command_ReloadSubPlugins(client, args)
 	return Plugin_Handled;
 }
 
-public Action:Command_Point_Disable(client, args)
+public Action:Command_Point_Disable(client, args)  //TODO:  REMOVE
 {
 	if (Enabled) SetControlPoint(false);
 	return Plugin_Handled;
 }
 
-public Action:Command_Point_Enable(client, args)
+public Action:Command_Point_Enable(client, args)  //TODO:  REMOVE
 {
 	if (Enabled) SetControlPoint(true);
 	return Plugin_Handled;
@@ -3678,19 +3692,90 @@ public Action:DoTaunt(client, const String:command[], argc)
 public Action:DoSuicide(client, const String:command[], argc)
 {
 	if (Enabled && IsBoss(client) && FF2RoundState <= 0)
+	{
 		return Plugin_Handled;
+	}
 	return Plugin_Continue;
 }
 
+public Action:DoJoinTeam(client, const String:command[], argc)
+{
+	if (!Enabled)
+	{
+		return Plugin_Continue;
+	}
+
+	if (RoundCount == 0 && GetConVarBool(cvarFirstRound))
+	{
+		return Plugin_Continue;
+	}
+
+	if (argc == 0)
+	{
+		return Plugin_Continue;
+	}
+
+	decl String:teamString[10];
+	GetCmdArg(1, teamString, sizeof(teamString));
+
+	new team = _:TFTeam_Unassigned;
+
+	if (StrEqual(teamString, "red", false))
+	{
+		team = _:TFTeam_Red;
+	}
+	else if (StrEqual(teamString, "blue", false))
+	{
+		team = _:TFTeam_Blue;
+	}
+	else if (StrEqual(teamString, "auto", false))
+	{
+		team = OtherTeam;
+	}
+	else if (StrEqual(teamString, "spectator", false))
+	{
+		if (GetConVarBool(cvarAllowSpectators))
+		{
+			team = _:TFTeam_Spectator;
+		}
+		else
+		{
+			team = OtherTeam;
+		}
+	}
+
+	if (team == BossTeam)
+	{
+		team = OtherTeam;
+	}
+
+	if (team > _:TFTeam_Unassigned)
+	{
+		ChangeClientTeam(client, team);
+	}
+
+	switch (team)
+	{
+		case TFTeam_Red:
+		{
+			ShowVGUIPanel(client, "class_red");
+		}
+		case TFTeam_Blue:
+		{
+			ShowVGUIPanel(client, "class_blue");
+		}
+	}
+	return Plugin_Handled;
+}
 
 public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if (Enabled && client && GetClientHealth(client) <= 0 && FF2RoundState == 1)
-	{
-		OnPlayerDeath(client,GetClientOfUserId(GetEventInt(event, "attacker")),(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
-	}
-	return Plugin_Continue;
+new client = GetClientOfUserId(GetEventInt(event, "userid"));
+if (Enabled && client && GetClientHealth(client) <= 0 && FF2RoundState == 1)
+{
+	OnPlayerDeath(client,GetClientOfUserId(GetEventInt(event, "attacker")),(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
+}
+return Plugin_Continue;
 }
 
 OnPlayerDeath(client,attacker,bool:fake = false)
@@ -5646,14 +5731,20 @@ public VoiceTogglePanelH(Handle:menu, MenuAction:action, param1, param2)
 public Action:HookSound(clients[64], &numClients, String:sample[PLATFORM_MAX_PATH], &ent, &channel, &Float:volume, &level, &pitch, &flags)
 {
 	if (!Enabled || ent<1 || ent>MaxClients || channel<1)
+	{
 		return Plugin_Continue;
+	}
 	new index = GetBossIndex(ent);
 	if (index == -1)
+	{
 		return Plugin_Continue;
+	}
 	if (!StrContains(sample,"vo") && !(FF2flags[Boss[index]] & FF2FLAG_TALKING))
 	{
 		if (bBlockVoice[Special[index]])
-			return Plugin_Handled;
+		{
+			return Plugin_Stop;
+		}
 		decl String:sample2[PLATFORM_MAX_PATH];
 		if (RandomSound("catch_phrase",sample2,PLATFORM_MAX_PATH,index))
 		{
@@ -5709,22 +5800,23 @@ stock GetHealingTarget(client,bool:checkgun = false)
 
 stock IsValidClient(client, bool:replaycheck = true)
 {
-	if (client <= 0 || client > MaxClients) return false;
-	if (!IsClientInGame(client)) return false;
-	if (GetEntProp(client, Prop_Send, "m_bIsCoaching")) return false;
+	if (client <= 0 || client > MaxClients)
+	{
+		return false;
+	}
+	if (!IsClientInGame(client))
+	{
+		return false;
+	}
+	if (GetEntProp(client, Prop_Send, "m_bIsCoaching"))
+	{
+		return false;
+	}
 	if (replaycheck)
 	{
-		decl String:adminname[32];
-	//	decl String:auth[32];
-		decl String:name[32];
-		new AdminId:admin;
-		GetClientName(client, name, sizeof(name));
-	//	GetClientAuthString(client, auth, sizeof(auth));
-		if (strcmp(name, "replay", false) == 0 && IsFakeClient(client)) return false;
-		if ((admin = GetUserAdmin(client)) != INVALID_ADMIN_ID)
+		if (IsClientSourceTV(client) || IsClientReplay(client))
 		{
-			GetAdminUsername(admin, adminname, sizeof(adminname));
-			if (strcmp(adminname, "Replay", false) == 0 || strcmp(adminname, "SourceTV", false) == 0) return false;
+			return false;
 		}
 	}
 	return true;
@@ -5737,7 +5829,9 @@ public NextmapPanelH(Handle:menu, MenuAction:action, param1, param2)
 		new clients[1];
 		clients[0] = param1;
 		if (!IsVoteInProgress())
+		{
 			VoteMenu(menu, clients,param1, 1,9001);
+		}
 	}
 	return;
 }

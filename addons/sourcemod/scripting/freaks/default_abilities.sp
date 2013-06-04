@@ -236,7 +236,9 @@ public Action:EnableSG(Handle:hTimer,any:iid)
 {
 	new i=EntRefToEntIndex(iid);
 	if (FF2_GetRoundState()==1 && i>MaxClients)
+	{
 		SetEntProp(i, Prop_Send, "m_bDisabled", 0);
+	}
 	return Plugin_Continue;
 }
 
@@ -266,7 +268,9 @@ Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 					ShowSyncHudText(Boss, jumpHUD,"%t","super_duper_jump");
 				}	
 				else
+				{
 					ShowSyncHudText(Boss, jumpHUD, "%t","jump_status",RoundFloat(charge));
+				}
 			}
 		}
 		case 3:
@@ -277,8 +281,13 @@ Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 			Call_PushCellRef(super);
 			Call_Finish(act);
 			if (act != Plugin_Continue && act != Plugin_Changed)
+			{
 				return;
-			if (act == Plugin_Changed) bEnableSuperDuperJump[index] = super;
+			}
+			if (act == Plugin_Changed)
+			{
+				bEnableSuperDuperJump[index] = super;
+			}
 			
 			decl Float:pos[3];
 			decl Float:vel[3];
@@ -294,7 +303,9 @@ Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 					bEnableSuperDuperJump[index] = false;
 				}
 				else
+				{
 					vel[2]=750 + (charge / 4) * 13.0;
+				}
 				SetEntProp(Boss, Prop_Send, "m_bJumping", 1);
 				vel[0] *= (1+Sine((charge / 4) * FLOAT_PI / 50));
 				vel[1] *= (1+Sine((charge / 4) * FLOAT_PI / 50));
@@ -325,11 +336,13 @@ Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 				EmitSoundToAll(s, Boss, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, Boss, pos, NULL_VECTOR, true, 0.0);
 			
 				for (new i=1; i<=MaxClients; i++)
+				{
 					if (IsClientInGame(i) && i!=Boss)
 					{
 						EmitSoundToClient(i,s, Boss, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, Boss, pos, NULL_VECTOR, true, 0.0);
 						EmitSoundToClient(i,s, Boss, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, Boss, pos, NULL_VECTOR, true, 0.0);
 					}
+				}
 			}
 		}
 	}
@@ -365,13 +378,20 @@ Charge_OnTeleporter(const String:ability_name[],index,slot,action)
 			Call_PushCellRef(super);
 			Call_Finish(act);
 			if (act != Plugin_Continue && act != Plugin_Changed)
-				return ;
-			if (act == Plugin_Changed) bEnableSuperDuperJump[index] = super;
+			{
+				return;
+			}
+			if (act == Plugin_Changed)
+			{
+				bEnableSuperDuperJump[index] = super;
+			}
 			
 			decl Float:pos[3];
 			decl target;
 			if (bEnableSuperDuperJump[index])
+			{
 				bEnableSuperDuperJump[index]=false;
+			}
 			else if (charge<100)
 			{
 				CreateTimer(0.1, Timer_ResetCharge,index*10000+slot);
@@ -380,11 +400,14 @@ Charge_OnTeleporter(const String:ability_name[],index,slot,action)
 			new pingas;
 			new bool:RedAlivePlayers;
 			for(new i=1;i<=MaxClients;i++)
+			{
 				if(IsValidEdict(i) && IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
 				{
 					RedAlivePlayers=true;
 					break;
 				}
+			}
+
 			do
 			{
 				pingas++;
@@ -393,6 +416,7 @@ Charge_OnTeleporter(const String:ability_name[],index,slot,action)
 					return;
 			}
 			while (RedAlivePlayers && (!IsValidEdict(target) || (target==Boss) || !IsPlayerAlive(target)));
+
 			GetEntPropVector(target, Prop_Data, "m_vecOrigin", pos);
 			decl String:s[PLATFORM_MAX_PATH];
 			FF2_GetAbilityArgumentString(index,this_plugin_name,ability_name,4,s,128);
@@ -413,10 +437,13 @@ Charge_OnTeleporter(const String:ability_name[],index,slot,action)
 					collisionvec[2] = 62.0;
 					SetEntPropVector(Boss, Prop_Send, "m_vecMaxs", collisionvec);
 					SetEntProp(Boss, Prop_Send, "m_bDucked", 1);
-					SetEntityFlags(Boss, FL_DUCKING);
+					SetEntityFlags(Boss, GetEntityFlags(Boss) | FL_DUCKING);
 					CreateTimer(0.2, Timer_StunBoss,index, TIMER_FLAG_NO_MAPCHANGE);
 				}
-				else TF2_StunPlayer(Boss, (bEnableSuperDuperJump ? 4.0 : 2.0), 0.0, TF_STUNFLAGS_GHOSTSCARE|TF_STUNFLAG_NOSOUNDOREFFECT, target);
+				else
+				{
+					TF2_StunPlayer(Boss, (bEnableSuperDuperJump ? 4.0 : 2.0), 0.0, TF_STUNFLAGS_GHOSTSCARE|TF_STUNFLAG_NOSOUNDOREFFECT, target);
+				}
 				TeleportEntity(Boss, pos, NULL_VECTOR, NULL_VECTOR);
 				if (strlen(s) > 0)
 				{	
@@ -430,11 +457,13 @@ Charge_OnTeleporter(const String:ability_name[],index,slot,action)
 				EmitSoundToAll(s, Boss, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, Boss, pos, NULL_VECTOR, true, 0.0);
 			
 				for (new i=1; i<=MaxClients; i++)
+				{
 					if (IsClientInGame(i) && i!=Boss)
 					{
 						EmitSoundToClient(i,s, Boss, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, Boss, pos, NULL_VECTOR, true, 0.0);
 						EmitSoundToClient(i,s, Boss, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, Boss, pos, NULL_VECTOR, true, 0.0);
 					}
+				}
 			}
 		}
 	}
@@ -450,7 +479,10 @@ public Action:Timer_ResetCharge(Handle:timer, any:index)
 public Action:Timer_StunBoss(Handle:timer, any:index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
-	if (!IsValidEdict(Boss)) return;
+	if (!IsValidEdict(Boss))
+	{
+		return;
+	}
 	TF2_StunPlayer(Boss, (bEnableSuperDuperJump[index] ? 4.0 : 2.0), 0.0, TF_STUNFLAGS_GHOSTSCARE|TF_STUNFLAG_NOSOUNDOREFFECT, Boss);
 }
 
@@ -458,7 +490,9 @@ Charge_OnWeightDown(index,slot)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	if (Boss<=0 || !(GetClientButtons(Boss) & IN_DUCK))
+	{
 		return;
+	}
 	new Float:charge=FF2_GetBossCharge(index,slot)+0.2;
 	if (!(GetEntityFlags(Boss) & FL_ONGROUND))
 	{
@@ -472,8 +506,9 @@ Charge_OnWeightDown(index,slot)
 				Call_StartForward(OnHaleWeighdown);
 				Call_Finish(act);
 				if (act != Plugin_Continue && act != Plugin_Changed)
-					return ;
-					
+				{
+					return;
+				}
 				new Float:fVelocity[3];
 				GetEntPropVector(Boss, Prop_Data, "m_vecVelocity", fVelocity);
 				fVelocity[2] = -1000.0;
@@ -485,16 +520,22 @@ Charge_OnWeightDown(index,slot)
 			}
 		}
 		else
+		{
 			FF2_SetBossCharge(index,slot,charge);
+		}
 	}
 	else if (charge>0.3 || charge<0)
+	{
 		FF2_SetBossCharge(index,slot,0.0);
+	}
 }
 
 public Action:Charge_Timer_GravityCat(Handle:timer, any:client)
 {
 	if (client && IsValidEdict(client))
+	{
 		SetEntityGravity(client, 1.0);
+	}
 	return Plugin_Continue;
 }
 
@@ -503,7 +544,9 @@ public Action:event_player_death(Handle:event, const String:name[], bool:dontBro
 {
 	new index=FF2_GetBossIndex(GetClientOfUserId(GetEventInt(event, "attacker")));
 	if (index!=-1 && FF2_HasAbility(index,this_plugin_name,"special_dissolve"))
+	{
 		CreateTimer(0.1,Timer_DissolveRagdoll,GetEventInt(event, "userid"));
+	}
 	return Plugin_Continue;
 }
 
@@ -512,9 +555,13 @@ public Action:Timer_DissolveRagdoll(Handle:timer, any:userid)
 	new victim = GetClientOfUserId(userid);
 	decl ragdoll;
 	if (victim>0 && IsClientConnected(victim))
+	{
 		ragdoll = GetEntPropEnt(victim, Prop_Send, "m_hRagdoll");
+	}
 	else
+	{
 		ragdoll = -1;
+	}
 	if (ragdoll != -1)
 	{
 		DissolveRagdoll(ragdoll);
@@ -526,7 +573,9 @@ DissolveRagdoll(ragdoll)
 	new dissolver = CreateEntityByName("env_entity_dissolver");
 
 	if (dissolver == -1)
+	{
 		return;
+	}
 
 	DispatchKeyValue(dissolver, "dissolvetype", "0");
 	DispatchKeyValue(dissolver, "magnitude", "200");
@@ -542,9 +591,13 @@ public Action:RemoveEnt(Handle:timer, any:entid)
 	if (IsValidEdict(ent))
 	{
 		if (ent>MaxClients)
+		{
 			AcceptEntityInput(ent, "Kill");
+		}
 		else
+		{
 			LogError("Kill player %i? You are kidding, right?",ent);
+		}
 	}
 }
 
@@ -580,8 +633,12 @@ public Action:event_deflect(Handle:event, const String:name[], bool:dontBroadcas
 {
 	new index=FF2_GetBossIndex(GetClientOfUserId(GetEventInt(event, "userid")));
 	if (index!=-1)
+	{
 		if (UberRageCount[index] > 11)
+		{
 			UberRageCount[index] -= 10;
+		}
+	}
 	return Plugin_Continue;
 }
 
@@ -589,6 +646,8 @@ public Action:FF2_OnTriggerHurt(index,triggerhurt,&Float:damage)
 {
 	bEnableSuperDuperJump[index]=true;
 	if (FF2_GetBossCharge(index,1)<0)
+	{
 		FF2_SetBossCharge(index,1,0.0);
+	}
 	return Plugin_Continue;
 }

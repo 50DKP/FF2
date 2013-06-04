@@ -12,13 +12,14 @@
 #include <tf2_stocks>
 #include <freak_fortress_2>
 #include <freak_fortress_2_subplugin>
-#define MB 3
 
-new bEnableSuperDuperJump[MB];
+#define PLUGIN_VERSION 1.1
 
 public Plugin:myinfo = {
 	name = "50DKP-FF2 Plugin",
 	author = "Wliu",
+	description = "A FF2 plugin for the 50DKP community",
+	version = PLUGIN_VERSION,
 };
 
 public OnPluginStart2()
@@ -41,15 +42,6 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	else if (!strcmp(ability_name,"rage_freeze"))
 	{
 		Rage_Freeze(index);
-	}
-	return Plugin_Continue;
-}
-
-public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	for(new i=0;i<MB;i++)
-	{
-		bEnableSuperDuperJump[i]=false;
 	}
 	return Plugin_Continue;
 }
