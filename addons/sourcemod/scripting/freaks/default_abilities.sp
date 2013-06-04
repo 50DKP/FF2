@@ -4,7 +4,7 @@
 #include <sdktools>
 #include <sdkhooks>
 #include <tf2_stocks>
-#include <colors>
+#include <morecolors>
 #include <freak_fortress_2>
 #include <freak_fortress_2_subplugin>
 

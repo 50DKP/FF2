@@ -7,13 +7,19 @@
 
 #pragma semicolon 1
 
-#include <sourcemod>
-#include <tf2items>
-#include <tf2_stocks>
 #include <freak_fortress_2>
 #include <freak_fortress_2_subplugin>
+#include <morecolors>
+#include <sdktools>
+#include <sdkhooks>
+#include <sourcemod>
+#include <tf2_stocks>
+#include <tf2items>
 
-#define PLUGIN_VERSION 1.1
+#define PLUGIN_VERSION "1.1"
+
+new bEnableSuperDuperJump[MAXPLAYERS+1];
+new BossTeam=_:TFTeam_Blue;
 
 public Plugin:myinfo = {
 	name = "50DKP-FF2 Plugin",
@@ -21,6 +27,7 @@ public Plugin:myinfo = {
 	description = "A FF2 plugin for the 50DKP community",
 	version = PLUGIN_VERSION,
 };
+
 
 public OnPluginStart2()
 {
@@ -41,7 +48,16 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	}
 	else if (!strcmp(ability_name,"rage_freeze"))
 	{
-		Rage_Freeze(index);
+		Rage_Freeze(ability_name,index);
+	}
+	return Plugin_Continue;
+}
+
+public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	for(new i=0;i<MaxClients;i++)
+	{
+		bEnableSuperDuperJump[i]=false;
 	}
 	return Plugin_Continue;
 }
@@ -96,12 +112,12 @@ Rage_Fempyro(index)
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
 	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "445 ; 1 ; 165 ; 1 ; 171 ; -50"));
-	//Weapon:  Rainblower
-	//Level:  101
-	//Quality:  Unique
-	//445:  Forces player to enter Pyrovision
-	//165:  Charged airblast
-	//171:  -50% airblast cost
+		//Weapon:  Rainblower
+		//Level:  101
+		//Quality:  Unique
+		//445:  Forces player to enter Pyrovision
+		//165:  Charged airblast
+		//171:  -50% airblast cost
 	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
 }
 
@@ -124,39 +140,32 @@ Rage_Freeze(const String:ability_name[],index)
 			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
 			{
 				SetEntityMoveType(i, MOVETYPE_NONE);
-				ColorizePlayer(i, COLOR_INVIS);
+				//ColorizePlayer(i, COLOR_INVIS);
 			}
-			new iRagDoll = CreateRagdoll(i);
+/*			new iRagDoll = CreateRagdoll(i);
 			if(iRagDoll > MaxClients && IsValidEntity(iRagDoll))
 			{
 				AddEntityToClient(i, iRagDoll);
 				SetClientViewEntity(i, iRagDoll);
 				SetThirdPerson(i, true);
-			}
+			}*/
 		}
 	}
-/*	for(i=1;i<=MaxClients;i++)
+}
+
+public Action:Timer_ResetCharge(Handle:timer, any:index)
+{
+	new slot=index%10000;
+	index/=1000;
+	FF2_SetBossCharge(index,slot,0.0);
+}
+
+public Action:FF2_OnTriggerHurt(index,triggerhurt,&Float:damage)
+{
+	bEnableSuperDuperJump[index]=true;
+	if (FF2_GetBossCharge(index,1)<0)
 	{
-		if(IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
-		{
-			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
-			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
-			{
-				TF2_StunPlayer(i, duration, 0.0, TF_STUNFLAGS_GHOSTSCARE|TF_STUNFLAG_NOSOUNDOREFFECT, Boss);
-				CreateTimer(duration, RemoveEnt, EntIndexToEntRef(AttachParticle(i,"yikes_fx",75.0)));	
-			}
-		}
-	}*/
-	/*
-	SetEntityMoveType(client, MOVETYPE_NONE);
-	ColorizePlayer(client, COLOR_INVIS);
-	
-	new iRagDoll = CreateRagdoll(client);
-	if(iRagDoll > MaxClients && IsValidEntity(iRagDoll))
-	{
-		AddEntityToClient(client, iRagDoll);
-		SetClientViewEntity(client, iRagDoll);
-		SetThirdPerson(client, true);
+		FF2_SetBossCharge(index,1,0.0);
 	}
-	*/
+	return Plugin_Continue;
 }
