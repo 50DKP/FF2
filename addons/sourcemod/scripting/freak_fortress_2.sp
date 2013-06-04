@@ -166,7 +166,9 @@ static const String:ff2versiontitles[][]=
 	"2.0.0",
 	"2.0.0",
 	"2.1.0",
-	"2.1.0"
+	"2.1.0",
+	"2.2.0",
+	"2.2.0"
 };
 
 static const String:ff2versiondates[][] = 
@@ -193,16 +195,36 @@ static const String:ff2versiondates[][] =
 	"May 13, 2013",
 	"May 13, 2013",
 	"May 29, 2013",
-	"May 29, 2013"
+	"May 29, 2013",
+	"June 4, 2013",
+	"June 4, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
+		case 24: //2.2.0
+		{
+			DrawPanelText(panel, "Introducing: The Overpowered Update!");
+			DrawPanelText(panel, "1) Powerjack has been nerfed, to +10 health on hit with no limit (Wliu)");
+			DrawPanelText(panel, "2) Old Nick's and Travis's damages have been nerfed (Wliu)");
+			DrawPanelText(panel, "3) Travis's cap rate has been reduced to 3, he now has a bat, and has no more double-jump (Wliu)");
+			DrawPanelText(panel, "4) Added Painis Cupcake (Lawd)");
+			DrawPanelText(panel, "See next page (press 2)");
+		}
+		case 23: //2.2.0
+		{
+			DrawPanelText(panel, "5) Allowed modified Natascha (+5 health on hit) (Wliu)");
+			DrawPanelText(panel, "6) Gave Fempyro more ammo on rage (Wliu)");
+			DrawPanelText(panel, "7) Reduced Gaben's rage requirement to 3000 (Wliu)");
+			DrawPanelText(panel, "8) Merged in a bunch of 1.07 changes (Wliu/Powerlord)");
+			DrawPanelText(panel, "9) Reduced Battalion's Backup's health bonus to +35, from +50 (Wliu)");
+			DrawPanelText(panel, "TODO:  Mantreads; Gangplank");
+		}
 		case 22: //2.1.0
 		{
-			DrawPanelText(panel, "And another update :3");
+			DrawPanelText(panel, "Introducing: The Back To Work Update!");
 			DrawPanelText(panel, "1) Half-Zatoichi and Powerjack now heals 50 health on hit and has no max health limit (Wliu)");
 			DrawPanelText(panel, "2) Concheror now gives you +50 max health (Wliu)");
 			DrawPanelText(panel, "3) Added Old Nick (Lawd)");
@@ -2435,9 +2457,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 226:  //Battalion's Backup.  Wliu:  Increased Battalion's Backup health buff from 15 to 50 health.
+		case 226:  //Battalion's Backup.  Wliu:  Increased Battalion's Backup health buff from 15 to 35 health.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "140 ;  50.0");
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "140 ;  35.0");
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
