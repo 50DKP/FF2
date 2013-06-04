@@ -16,10 +16,14 @@
 #include <tf2_stocks>
 #include <tf2items>
 
-#define PLUGIN_VERSION "1.1"
+#define SOUND_FREEZE	"physics/glass/glass_impact_bullet4.wav"
+#define PLUGIN_VERSION	"1.1"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
 new BossTeam=_:TFTeam_Blue;
+new Handle:g_FreezeTimers[MAXPLAYERS+1];
+new g_FreezeTracker[MAXPLAYERS+1];
+new g_GlowSprite;
 
 public Plugin:myinfo = {
 	name = "50DKP-FF2 Plugin",
@@ -27,7 +31,6 @@ public Plugin:myinfo = {
 	description = "A FF2 plugin for the 50DKP community",
 	version = PLUGIN_VERSION,
 };
-
 
 public OnPluginStart2()
 {
@@ -123,14 +126,14 @@ Rage_Fempyro(index)
 
 Rage_Freeze(const String:ability_name[],index)
 {
+	decl i;
 	decl Float:pos[3];
 	decl Float:pos2[3];
-	decl i;
-	new Float:duration=FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,1,5.0);
 	decl String:s[64];
-	FloatToString(duration,s,64);
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	GetEntPropVector(Boss, Prop_Send, "m_vecOrigin", pos);
+	new Float:duration=FF2_GetAbilityArgument(index,this_plugin_name,ability_name,1,5.0);
+	FloatToString(duration,s,64);
 	new Float:ragedist=FF2_GetRageDist(index,this_plugin_name,ability_name);
 	for(i=1;i<=MaxClients;i++)
 	{
@@ -139,18 +142,82 @@ Rage_Freeze(const String:ability_name[],index)
 			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
 			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
 			{
-				SetEntityMoveType(i, MOVETYPE_NONE);
-				//ColorizePlayer(i, COLOR_INVIS);
+				FreezeClient(i,duration);
 			}
-/*			new iRagDoll = CreateRagdoll(i);
-			if(iRagDoll > MaxClients && IsValidEntity(iRagDoll))
-			{
-				AddEntityToClient(i, iRagDoll);
-				SetClientViewEntity(i, iRagDoll);
-				SetThirdPerson(i, true);
-			}*/
 		}
 	}
+}
+
+FreezeClient(client, time)
+{
+	if (g_FreezeTimers[client] != INVALID_HANDLE)
+	{
+		UnfreezeClient(client);
+	}
+	SetEntityMoveType(client, MOVETYPE_NONE);
+	SetEntityRenderColor(client, 0, 128, 255, 192);
+	
+	new Float:vec[3];
+	GetClientEyePosition(client, vec);
+	EmitAmbientSound(SOUND_FREEZE, vec, client, SNDLEVEL_RAIDSIREN);
+
+	g_FreezeTimers[client] = CreateTimer(1.0, Timer_Freeze, client, TIMER_REPEAT);
+	g_FreezeTracker[client] = time;
+}
+
+UnfreezeClient(client)
+{
+	KillFreezeTimer(client);
+
+	new Float:vec[3];
+	GetClientAbsOrigin(client, vec);
+	vec[2] += 10;	
+	
+	GetClientEyePosition(client, vec);
+	EmitAmbientSound(SOUND_FREEZE, vec, client, SNDLEVEL_RAIDSIREN);
+
+	SetEntityMoveType(client, MOVETYPE_WALK);
+	SetEntityRenderColor(client, 255, 255, 255, 255);	
+}
+
+KillFreezeTimer(client)
+{
+	KillTimer(g_FreezeTimers[client]);
+	g_FreezeTimers[client] = INVALID_HANDLE;
+}
+
+public Action:Timer_Freeze(Handle:timer, any:client)
+{
+	if (!IsClientInGame(client))
+	{
+		KillFreezeTimer(client);
+		return Plugin_Continue;
+	}
+	
+	if (!IsPlayerAlive(client))
+	{
+		UnfreezeClient(client);
+		return Plugin_Continue;
+	}		
+	
+	g_FreezeTracker[client]--;
+	
+	SetEntityMoveType(client, MOVETYPE_NONE);
+	SetEntityRenderColor(client, 0, 128, 255, 135);
+	
+	new Float:vec[3];
+	GetClientAbsOrigin(client, vec);
+	vec[2] += 10;
+	
+	TE_SetupGlowSprite(vec, g_GlowSprite, 0.95, 1.5, 50);
+	TE_SendToAll();	
+
+	if (g_FreezeTracker[client] == 0)
+	{
+		UnfreezeClient(client);
+	}
+
+	return Plugin_Continue;
 }
 
 public Action:Timer_ResetCharge(Handle:timer, any:index)
