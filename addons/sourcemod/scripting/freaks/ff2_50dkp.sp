@@ -58,7 +58,7 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	for(new i=0;i<MaxClients;i++)
+	for (new i=0;i<MaxClients;i++)
 	{
 		bEnableSuperDuperJump[i]=false;
 	}
