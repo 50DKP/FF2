@@ -5,11 +5,19 @@ By Rainbolt Dash: programmer, modeller, mapper, painter.
 Author of Demoman The Pirate: http://www.randomfortress.ru/thepirate/
 And one of two creators of Floral Defence: http://www.polycount.com/forum/showthread.php?t=73688
 And author of VS Saxton Hale Mode
+<<<<<<< HEAD
 
 Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
 
 Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
 
+=======
+
+Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
+
+Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
+
+>>>>>>> origin/development
 50DKP version is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 */
 
@@ -27,7 +35,11 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
+<<<<<<< HEAD
 #define PLUGIN_VERSION "2.1.0"
+=======
+#define PLUGIN_VERSION "2.2.0"
+>>>>>>> origin/development
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -96,13 +108,9 @@ new Handle:cvarUseCountdown;
 
 new Handle:cvarHealthBar;
 
+new Handle:cvarAllowSpectators;
+
 new Handle:FF2Cookies;		// "queue_points music monologues classinfo rmb_help reload_help"
-/*
-new Handle:PointCookie;
-new Handle:MusicCookie;
-new Handle:VoiceCookie;
-new Handle:ClassinfoCookie
-*/
 
 new Handle:jumpHUD;
 new Handle:rageHUD;
@@ -170,7 +178,13 @@ static const String:ff2versiontitles[][]=
 	"2.0.0",
 	"2.0.0",
 	"2.1.0",
+<<<<<<< HEAD
 	"2.1.0"
+=======
+	"2.1.0",
+	"2.2.0",
+	"2.2.0"
+>>>>>>> origin/development
 };
 
 static const String:ff2versiondates[][] = 
@@ -197,16 +211,46 @@ static const String:ff2versiondates[][] =
 	"May 13, 2013",
 	"May 13, 2013",
 	"May 29, 2013",
+<<<<<<< HEAD
 	"May 29, 2013"
+=======
+	"May 29, 2013",
+	"June 4, 2013",
+	"June 4, 2013"
+>>>>>>> origin/development
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
+<<<<<<< HEAD
 		case 22: //2.1.0
 		{
 			DrawPanelText(panel, "And another update :3");
+=======
+		case 24: //2.2.0
+		{
+			DrawPanelText(panel, "Introducing: The Overpowered Update!");
+			DrawPanelText(panel, "1) Powerjack has been nerfed, to +10 health on hit with no limit (Wliu)");
+			DrawPanelText(panel, "2) Old Nick's and Travis's damages have been nerfed (Wliu)");
+			DrawPanelText(panel, "3) Travis's cap rate has been reduced to 3, he now has a bat, and has no more double-jump (Wliu)");
+			DrawPanelText(panel, "4) Added Painis Cupcake (Lawd)");
+			DrawPanelText(panel, "See next page (press 2)");
+		}
+		case 23: //2.2.0
+		{
+			DrawPanelText(panel, "5) Allowed modified Natascha (+5 health on hit) (Wliu)");
+			DrawPanelText(panel, "6) Gave Fempyro more ammo on rage (Wliu)");
+			DrawPanelText(panel, "7) Reduced Gaben's rage requirement to 3000 (Wliu)");
+			DrawPanelText(panel, "8) Merged in a bunch of 1.07 changes (Wliu/Powerlord)");
+			DrawPanelText(panel, "9) Reduced Battalion's Backup's health bonus to +35, from +50 (Wliu)");
+			DrawPanelText(panel, "TODO:  Mantreads; Gangplank");
+		}
+		case 22: //2.1.0
+		{
+			DrawPanelText(panel, "Introducing: The Back To Work Update!");
+>>>>>>> origin/development
 			DrawPanelText(panel, "1) Half-Zatoichi and Powerjack now heals 50 health on hit and has no max health limit (Wliu)");
 			DrawPanelText(panel, "2) Concheror now gives you +50 max health (Wliu)");
 			DrawPanelText(panel, "3) Added Old Nick (Lawd)");
@@ -228,7 +272,10 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Added more maps (Lawd/Carge)");
 			DrawPanelText(panel, "See next page");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 19: //2.0.0
 		{
 			DrawPanelText(panel, "5) Re-added CM8 Hale classchange detection (ChrisMiuchiz)");
@@ -238,7 +285,10 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "9) Allowed Fists of Steel to be equipped with changes (Wliu)");
 			DrawPanelText(panel, "See next page");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 18: //2.0.0
 		{
 			DrawPanelText(panel, "10) Added knockback resistance and weighdown to Gentlespy (Wliu)");
@@ -248,7 +298,10 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "Gangplank will have a Loose Cannon rage next update hopefully.");
 			DrawPanelText(panel, "Will also be working on more weapon balance changes.");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 17: //2.0.0a2
 		{
 			DrawPanelText(panel, "1) [Players] Nerfed Gentlespy's knife (Wliu)");
@@ -258,28 +311,43 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) [Players] Updated to FF2 1.06h-some of the CM changes might not have made it in (Wliu)");
 			DrawPanelText(panel, "See next page");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 16: //2.0.0a2
 		{
 			DrawPanelText(panel, "6) [Players] Added in some CM changes (ChrisMiuchiz)");
 			DrawPanelText(panel, "7) [Players] Updated CBS model (Lawd)");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 15: //2.0.0a1
 		{
 			DrawPanelText(panel, "1) [Players] Added Gangplank and Gentlespy (Lawd)");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 14: // 1.06h
 		{
 		    DrawPanelText(panel, "1) [Players] Remove MvM powerup_bottle on Bosses. (RavensBro)");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 13: // 1.06g
 		{
 		    DrawPanelText(panel, "1) [Players] Fixed vote for charset. (RavensBro)");
 		}		
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 12: // 1.06f
 		{
 			DrawPanelText(panel, "1) [Players] Changelog now divided into [Players] and [Dev] sections. (Otokiru)");
@@ -288,7 +356,10 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) [Players] Fixed hale HP bar. (Valve) lol?");
 			DrawPanelText(panel, "5) [Dev] Fixed \"GetEntProp\" reported: Entity XXX (XXX) is invalid on checkFirstHale(). (Otokiru)");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 11: // 1.06e
 		{
 
@@ -297,7 +368,10 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "3) [Dev] Change how FF2 check for player weapons. Now also checks when spawned in the middle of the round. (Otokiru)");
 			DrawPanelText(panel, "4) [Dev] Changed some FF2 warning messages color such as \"First-Hale Checker\" and \"Change class exploit\". (Otokiru)");
 		}
+<<<<<<< HEAD
 		
+=======
+>>>>>>> origin/development
 		case 10: // 1.06d
 		{
 			DrawPanelText(panel, "1) Fix first boss having missing health or abilities. (Otokiru)");
@@ -305,8 +379,11 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "3) Health bar cedes control to Monoculus if he is summoned. (Powerlord)");
 			DrawPanelText(panel, "4) Health bar instantly updates if enabled or disabled via cvar mid-game. (Powerlord)");
 		}
+<<<<<<< HEAD
 		
 		
+=======
+>>>>>>> origin/development
 		case 9: //1.06c
 		{
 			DrawPanelText(panel, "1) Remove weapons if a player tries to switch classes when they become boss to prevent an exploit. (Otokiru)");
@@ -480,6 +557,8 @@ public OnPluginStart()
 	cvarUseCountdown = CreateConVar("ff2_countdown", "120", "Seconds of deathly countdown (begins when only 1 enemy lefts)", FCVAR_PLUGIN);
 	cvarSpecForceBoss = CreateConVar("ff2_spec_force_boss", "0", "Spectators are allowed in Boss' queue.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarHealthBar = CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0); // Added by Powerlord
+	cvarAllowSpectators = FindConVar("mp_allowspectators");
+
 	HookConVarChange(cvarHealthBar, HealthbarEnableChanged);
 
 	HookEvent("player_changeclass", OnChangeClass);
@@ -559,11 +638,7 @@ public OnPluginStart()
 	AutoExecConfig(true, "FreakFortress2");
 
 	FF2Cookies = RegClientCookie("ff2_cookies_mk2", "", CookieAccess_Protected);
-	/*PointCookie = RegClientCookie("hale_queue_points", "Amount of VSH/FF2 Queue points player has", CookieAccess_Public);
-	MusicCookie = RegClientCookie("hale_music_setting", "BossMusic setting", CookieAccess_Public);
-	VoiceCookie = RegClientCookie("hale_voice_setting", "BossVoice setting", CookieAccess_Public);
-	ClassinfoCookie = RegClientCookie("hale_classinfo", "HaleClassinfo setting", CookieAccess_Public);
-	*/
+
 	jumpHUD = CreateHudSynchronizer();
 	rageHUD = CreateHudSynchronizer();
 	healthHUD = CreateHudSynchronizer();
@@ -581,6 +656,10 @@ public OnPluginStart()
 	LoadTranslations("freak_fortress_2.phrases");
 	LoadTranslations("common.phrases");
 	AddNormalSoundHook(HookSound);
+<<<<<<< HEAD
+=======
+}
+>>>>>>> origin/development
 
 /*	if(LibraryExists("updater"))
 	{
@@ -680,13 +759,19 @@ public AddToDownload()
 	BuildPath(Path_SM,s,PLATFORM_MAX_PATH,"configs/freak_fortress_2/characters.cfg");
 	if (!FileExists(s))
 	{
+<<<<<<< HEAD
 		LogError("[FF2] Freak Fortress 2 disabled - can not found character config.");
+=======
+		LogError("[FF2] Freak Fortress 2 disabled - can not find characters.cfg!");
+>>>>>>> origin/development
 		return;
 	}
 	new Handle:Kv = CreateKeyValues("");
 	FileToKeyValues(Kv, s);
 	for (new i=0; i <FF2CharSet; i++)
+	{
 		KvGotoNextKey(Kv);
+	}
 	KvGotoFirstSubKey(Kv);
 	KvGetSectionName(Kv, s, 64);
 	for (new i=1; i<MAXSPECIALS; i++)
@@ -709,13 +794,16 @@ public AddToDownload()
 EnableSubPlugins(bool:forse = false)
 {
 	if (isSubPluginsEnabled && !forse)
+	{
 		return;
+	}
 	isSubPluginsEnabled=true;
 	decl String:path[PLATFORM_MAX_PATH],String:fname[PLATFORM_MAX_PATH],String:fname_old[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/freaks");
 	decl FileType:filetype;
 	new Handle:dir = OpenDirectory(path);
 	while (ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
+	{
 		if (filetype == FileType_File && StrContains(fname, ".smx",false)!= -1)
 		{
 			Format(fname_old,PLATFORM_MAX_PATH,"%s/%s",path,fname);
@@ -724,25 +812,35 @@ EnableSubPlugins(bool:forse = false)
 			DeleteFile(fname);
 			RenameFile(fname,fname_old);
 		}
-
+	}
 	dir = OpenDirectory(path);
 	while (ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
+	{
 		if (filetype == FileType_File && StrContains(fname, ".ff2",false)!= -1)
+		{
 			ServerCommand("sm plugins load freaks/%s",fname);
+		}
+	}
 }
 
 DisableSubPlugins(bool:forse = false)
 {
 	if (!isSubPluginsEnabled && !forse)
+	{
 		return;
+	}
 	isSubPluginsEnabled=false;
 	decl String:path[PLATFORM_MAX_PATH],String:fname[PLATFORM_MAX_PATH];
 	BuildPath(Path_SM, path, PLATFORM_MAX_PATH, "plugins/freaks");
 	decl FileType:filetype;
 	new Handle:dir = OpenDirectory(path);
 	while (ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
+	{
 		if (filetype == FileType_File && StrContains(fname, ".ff2",false)!= -1)
+		{
 			ServerCommand("sm plugins unload freaks/%s",fname);
+		}
+	}
 }
 
 public LoadCharacter(const String:character[])
@@ -772,7 +870,9 @@ public LoadCharacter(const String:character[])
 			}
 		}
 		else
+		{
 			break;
+		}
 	}
 	KvRewind(BossKV[Specials]);
 	
@@ -796,7 +896,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				AddFileToDownloadsTable(s);
 			}
 		}
@@ -807,7 +909,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				PrecacheModel(s,true);
 			}
 		}
@@ -818,7 +922,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				for (is = 0;  is < sizeof(extensions);  is++)
 				{
 					Format(s2,PLATFORM_MAX_PATH,"%s%s",s,extensions[is]);
@@ -833,7 +939,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				Format(s2,PLATFORM_MAX_PATH,"%s.vtf",s);
 				AddFileToDownloadsTable(s2);
 				Format(s2,PLATFORM_MAX_PATH,"%s.vmt",s);
@@ -847,7 +955,9 @@ public LoadCharacter(const String:character[])
 				IntToString(i,s2,4);
 				KvGetString(BossKV[Specials], s2, s, PLATFORM_MAX_PATH);
 				if (!s[0])
+				{
 					break;
+				}
 				PrecacheSound(s,true);
 			}
 		}
@@ -860,7 +970,10 @@ public CvarChange(Handle:convar, const String:oldValue[], const String:newValue[
 	if (convar == cvarPointDelay)
 	{
 		PointDelay = StringToInt(newValue);
-		if (PointDelay < 0) PointDelay*= -1;
+		if (PointDelay < 0)
+		{
+			PointDelay*= -1;
+		}
 	}
 	else if (convar == cvarAnnounce)
 	{
@@ -937,7 +1050,15 @@ public Action:Timer_Announce(Handle:hTimer)
 				announcecount = 0;
 				CPrintToChatAll("{olive}[FF2]{default} %t","ff2_last_update",ff2versiontitles[maxversion],ff2versiondates[maxversion]);
 			}
-			default: 
+			case 6:
+			{
+				CPrintToChatAll("{olive}FF2-50DKP{default} is being worked on by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}Chris{default}.");
+			}
+			case 7:
+			{
+				CPrintToChatAll("{default}Invisible bosses?  Can't hear any sounds?  Try this thread, courtesy of {olive}Lawd{default}!  {red}www.50dkp.com/forums/viewtopic.php?f=27&t=2188&p=33190#p33190{default}");
+			}
+			default:
 			{
 				CPrintToChatAll("{olive}[FF2]{default} %t","type_ff2_to_open_menu");
 			}
@@ -945,8 +1066,6 @@ public Action:Timer_Announce(Handle:hTimer)
 	}
 	return Plugin_Continue;
 }
-
-
 
 public Action:OnGetGameDescription(String:gameDesc[64])
 {
@@ -1068,13 +1187,18 @@ stock bool:CheckToChangeMapDoors()
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if (!GetConVarBool(cvarEnabled)) Enabled2 = false;
+	if (!GetConVarBool(cvarEnabled))
+	{
+		Enabled2 = false;
+	}
 	Enabled = Enabled2;
+
 	if (!Enabled)
 	{
 		return Plugin_Continue;
 	}
 	FF2RoundState = 0;
+
 	if (FileExists("bNextMapToFF2"))
 	{
 		DeleteFile("bNextMapToFF2");
@@ -1239,7 +1363,16 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			{
 				break;
 			}
+<<<<<<< HEAD
 			Boss[i] = FindBosses(see);
+=======
+			new tempBoss = FindBosses(see);
+			if (!IsValidClient(tempBoss))
+			{
+				break;
+			}
+			Boss[i] = tempBoss;
+>>>>>>> origin/development
 			if (PickSpecial(i,i-1))
 			{
 				KvRewind(BossKV[Special[i]]);
@@ -2383,6 +2516,21 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	
 	switch (iItemDefinitionIndex)
 	{
+<<<<<<< HEAD
+=======
+		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
+		{
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  1.25 ;  16 ;  5 ;  32 ;  0");
+			//5:  -25% firing speed
+			//16:  +5 health on hit
+			//32:  0% chance to slow target
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+>>>>>>> origin/development
 		case 648:  //Wrap Assasin
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "279 ;  2.0");
@@ -2392,9 +2540,15 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
+<<<<<<< HEAD
 		case 444:  //Mantreads
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  500");  //Wliu:  Increased Mantreads damage by 5x (to ~1000).
+=======
+		case 444:  //Mantreads.  Wliu:  Increased Mantreads damage by 5x (to ~1000).  DOESN'T WORK
+		{
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  5.0");
+>>>>>>> origin/development
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2410,9 +2564,15 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
+<<<<<<< HEAD
 		case 226:  //Battalion's Backup
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "140 ;  50.0");  //Wliu:  Increased Battalion's Backup health buff from 15 to 50 health.
+=======
+		case 226:  //Battalion's Backup.  Wliu:  Increased Battalion's Backup health buff from 15 to 35 health.
+		{
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "140 ;  35.0");
+>>>>>>> origin/development
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2428,7 +2588,11 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
+<<<<<<< HEAD
 		case 56,1005:  //Huntsman+Festive Huntsman (CM11/Wliu)
+=======
+		case 56, 1005:  //Huntsman+Festive Huntsman (CM11/Wliu)
+>>>>>>> origin/development
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "2 ;  1.5");
 			if (hItemOverride != INVALID_HANDLE)
@@ -2455,9 +2619,15 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
+<<<<<<< HEAD
 		case 331:  //Fists of Steel
 		{
 			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.8 ;  206 ;  9", true);  //Wliu:  Experimental stuff.
+=======
+		case 331:  //Fists of Steel.  Wliu:  Allow Fists of Steel with modified stats
+		{
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.8 ;  206 ;  9", true);
+>>>>>>> origin/development
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2482,7 +2652,11 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		{
 			hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0 ;  179 ;  1.0");
 		}
+<<<<<<< HEAD
 		else
+=======
+		else  //All other weapons
+>>>>>>> origin/development
 		{
 			hItemOverride = PrepareItemHandle(_, _, "265 ;  99999.0");
 		}
@@ -2614,11 +2788,14 @@ public Action:checkItems(Handle:hTimer,any:client)
 		index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch (index)
 		{
+<<<<<<< HEAD
 			case 41:  //Natascha.  TODO:  ALLOW THIS, BUT INSTEAD MAKE IT GIVE YOU HEALTH, NOT SLOW BOSS.
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
 				weapon = SpawnWeapon(client,"tf_weapon_minigun",15,1,0,"");
 			}
+=======
+>>>>>>> origin/development
 			case 402:  //Bazaar Bargain
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
@@ -3013,7 +3190,9 @@ public Action:Command_MakeNextSpecial(client, args)
 public Action:Command_Points(client, args)
 {
 	if (!Enabled2)
+	{
 		return Plugin_Continue;
+	}
 	if (args != 2)
 	{
 		ReplyToCommand(client, "[FF2] Usage: ff2_addpoints < target > < points > ");
@@ -3036,15 +3215,7 @@ public Action:Command_Points(client, args)
 	new target_list[MAXPLAYERS], target_count;
 	new bool:tn_is_ml;
 
-	if ((target_count = ProcessTargetString(
-			targetname,
-			client,
-			target_list,
-			MaxClients,
-			0,
-			target_name,
-			sizeof(target_name),
-			tn_is_ml)) <= 0)
+	if ((target_count = ProcessTargetString(targetname,client,target_list,MaxClients,0,target_name,sizeof(target_name),tn_is_ml)) <= 0)
 	{
 		/* This function replies to the admin with a failure message */
 		ReplyToTargetError(client, target_count);
@@ -3053,6 +3224,10 @@ public Action:Command_Points(client, args)
 
 	for (new i = 0;  i < target_count;  i++)
 	{
+		if (IsClientSourceTV(target_list[i]) || IsClientReplay(target_list[i]))
+		{
+			continue;
+		}
 		SetClientQueuePoints(target_list[i],GetClientQueuePoints(target_list[i])+points);
 		ReplyToCommand(client, "[FF2] Added %d queue points to %s", points, target_name);
 	}
@@ -3060,10 +3235,12 @@ public Action:Command_Points(client, args)
 	return Plugin_Handled;
 }
 
-public Action:Command_StopMusic(client, args)
+public Action:Command_StopMusic(client, args)  //TODO:  REMOVE
 {
 	if (!Enabled2)
+	{
 		return Plugin_Continue;
+	}
 	Native_StopMusic(INVALID_HANDLE,0);
 	ReplyToCommand(client, "[FF2] Stopped boss music.");
 	return Plugin_Handled;
@@ -3113,13 +3290,13 @@ public Action:Command_ReloadSubPlugins(client, args)
 	return Plugin_Handled;
 }
 
-public Action:Command_Point_Disable(client, args)
+public Action:Command_Point_Disable(client, args)  //TODO:  REMOVE
 {
 	if (Enabled) SetControlPoint(false);
 	return Plugin_Handled;
 }
 
-public Action:Command_Point_Enable(client, args)
+public Action:Command_Point_Enable(client, args)  //TODO:  REMOVE
 {
 	if (Enabled) SetControlPoint(true);
 	return Plugin_Handled;
@@ -3274,7 +3451,9 @@ public Action:ClientTimer(Handle:hTimer)
 			if (RedAlivePlayers == 2 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 				TF2_AddCondition(client,TFCond_Buffed,0.3);
 			if (bMedieval)
+			{
 				continue;
+			}
 			cond = TFCond_HalloweenCritCandy;
 			if (TF2_IsPlayerInCondition(client, TFCond_CritCola) && (class == TFClass_Scout || class == TFClass_Heavy))
 			{
@@ -3670,19 +3849,90 @@ public Action:DoTaunt(client, const String:command[], argc)
 public Action:DoSuicide(client, const String:command[], argc)
 {
 	if (Enabled && IsBoss(client) && FF2RoundState <= 0)
+	{
 		return Plugin_Handled;
+	}
 	return Plugin_Continue;
 }
 
+public Action:DoJoinTeam(client, const String:command[], argc)
+{
+	if (!Enabled)
+	{
+		return Plugin_Continue;
+	}
+
+	if (RoundCount == 0 && GetConVarBool(cvarFirstRound))
+	{
+		return Plugin_Continue;
+	}
+
+	if (argc == 0)
+	{
+		return Plugin_Continue;
+	}
+
+	decl String:teamString[10];
+	GetCmdArg(1, teamString, sizeof(teamString));
+
+	new team = _:TFTeam_Unassigned;
+
+	if (StrEqual(teamString, "red", false))
+	{
+		team = _:TFTeam_Red;
+	}
+	else if (StrEqual(teamString, "blue", false))
+	{
+		team = _:TFTeam_Blue;
+	}
+	else if (StrEqual(teamString, "auto", false))
+	{
+		team = OtherTeam;
+	}
+	else if (StrEqual(teamString, "spectator", false))
+	{
+		if (GetConVarBool(cvarAllowSpectators))
+		{
+			team = _:TFTeam_Spectator;
+		}
+		else
+		{
+			team = OtherTeam;
+		}
+	}
+
+	if (team == BossTeam)
+	{
+		team = OtherTeam;
+	}
+
+	if (team > _:TFTeam_Unassigned)
+	{
+		ChangeClientTeam(client, team);
+	}
+
+	switch (team)
+	{
+		case TFTeam_Red:
+		{
+			ShowVGUIPanel(client, "class_red");
+		}
+		case TFTeam_Blue:
+		{
+			ShowVGUIPanel(client, "class_blue");
+		}
+	}
+	return Plugin_Handled;
+}
 
 public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if (Enabled && client && GetClientHealth(client) <= 0 && FF2RoundState == 1)
-	{
-		OnPlayerDeath(client,GetClientOfUserId(GetEventInt(event, "attacker")),(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
-	}
-	return Plugin_Continue;
+new client = GetClientOfUserId(GetEventInt(event, "userid"));
+if (Enabled && client && GetClientHealth(client) <= 0 && FF2RoundState == 1)
+{
+	OnPlayerDeath(client,GetClientOfUserId(GetEventInt(event, "attacker")),(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
+}
+return Plugin_Continue;
 }
 
 OnPlayerDeath(client,attacker,bool:fake = false)
@@ -4003,22 +4253,32 @@ public Action:event_hurt(Handle:event, const String:name[], bool:dontBroadcast)
 			KvRewind(BossKV[Special[index]]);
 			KvGetString(BossKV[Special[index]], "name", aname, 64," = Failed name = ");
 <<<<<<< HEAD
+<<<<<<< HEAD
 			if (BossLives[index] < 2)
 			{
 				Format(s,256,"%t","ff2_lives_left1",aname,BossLives[index]); 
 			}
 =======
+=======
+>>>>>>> origin/development
 			if (BossLives[index] < 2)  //ChrisMiuchiz:  Grammar stuffs
 			{
 				Format(s,256,"%t","ff2_lives_left1",aname,BossLives[index]); 
 			}
 
+<<<<<<< HEAD
+>>>>>>> origin/development
+=======
 >>>>>>> origin/development
 			if (BossLives[index] > 1)
 			{
 				Format(s,256,"%t","ff2_lives_left",aname,BossLives[index]); 
 			}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/development
 =======
 
 >>>>>>> origin/development
@@ -4260,10 +4520,17 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						IncrementHeadCount(attacker);
 					}
+<<<<<<< HEAD
 					case 214:  //Powerjack
 					{
 						new health = GetClientHealth(attacker);
 						new newhealth = health+50;
+=======
+					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.
+					{
+						new health = GetClientHealth(attacker);
+						new newhealth = health+10;
+>>>>>>> origin/development
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
 						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
@@ -4275,7 +4542,11 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
 					}
+<<<<<<< HEAD
 					case 357:  //Half-Zatoichi
+=======
+					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.
+>>>>>>> origin/development
 					{
 						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
@@ -4790,7 +5061,10 @@ stock CalcBossHealthMax(index)
 		LogError("[FF2] Wrong Boss' health formula! Using default!");
 		health = RoundFloat(Pow(((760.0+playing)*(playing-1)),1.04));
 	}
-	else health = RoundFloat(summ[0]);
+	else
+	{
+		health = RoundFloat(summ[0]);
+	}
 	if (bMedieval) health = RoundFloat(health/3.6);
 	return health;
 }
@@ -5645,14 +5919,20 @@ public VoiceTogglePanelH(Handle:menu, MenuAction:action, param1, param2)
 public Action:HookSound(clients[64], &numClients, String:sample[PLATFORM_MAX_PATH], &ent, &channel, &Float:volume, &level, &pitch, &flags)
 {
 	if (!Enabled || ent<1 || ent>MaxClients || channel<1)
+	{
 		return Plugin_Continue;
+	}
 	new index = GetBossIndex(ent);
 	if (index == -1)
+	{
 		return Plugin_Continue;
+	}
 	if (!StrContains(sample,"vo") && !(FF2flags[Boss[index]] & FF2FLAG_TALKING))
 	{
 		if (bBlockVoice[Special[index]])
-			return Plugin_Handled;
+		{
+			return Plugin_Stop;
+		}
 		decl String:sample2[PLATFORM_MAX_PATH];
 		if (RandomSound("catch_phrase",sample2,PLATFORM_MAX_PATH,index))
 		{
@@ -5708,22 +5988,23 @@ stock GetHealingTarget(client,bool:checkgun = false)
 
 stock IsValidClient(client, bool:replaycheck = true)
 {
-	if (client <= 0 || client > MaxClients) return false;
-	if (!IsClientInGame(client)) return false;
-	if (GetEntProp(client, Prop_Send, "m_bIsCoaching")) return false;
+	if (client <= 0 || client > MaxClients)
+	{
+		return false;
+	}
+	if (!IsClientInGame(client))
+	{
+		return false;
+	}
+	if (GetEntProp(client, Prop_Send, "m_bIsCoaching"))
+	{
+		return false;
+	}
 	if (replaycheck)
 	{
-		decl String:adminname[32];
-	//	decl String:auth[32];
-		decl String:name[32];
-		new AdminId:admin;
-		GetClientName(client, name, sizeof(name));
-	//	GetClientAuthString(client, auth, sizeof(auth));
-		if (strcmp(name, "replay", false) == 0 && IsFakeClient(client)) return false;
-		if ((admin = GetUserAdmin(client)) != INVALID_ADMIN_ID)
+		if (IsClientSourceTV(client) || IsClientReplay(client))
 		{
-			GetAdminUsername(admin, adminname, sizeof(adminname));
-			if (strcmp(adminname, "Replay", false) == 0 || strcmp(adminname, "SourceTV", false) == 0) return false;
+			return false;
 		}
 	}
 	return true;
@@ -5736,7 +6017,9 @@ public NextmapPanelH(Handle:menu, MenuAction:action, param1, param2)
 		new clients[1];
 		clients[0] = param1;
 		if (!IsVoteInProgress())
+		{
 			VoteMenu(menu, clients,param1, 1,9001);
+		}
 	}
 	return;
 }

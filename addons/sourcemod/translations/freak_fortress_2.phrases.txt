@@ -306,7 +306,11 @@
 	"ff2_lives_left"
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"#format" "{1:s},{2:i}"
+=======
+		"#format"	"{1:s},{2:i}"
+>>>>>>> origin/development
 =======
 		"#format"	"{1:s},{2:i}"
 >>>>>>> origin/development
@@ -315,7 +319,11 @@
 	"ff2_lives_left1"
 	{
 <<<<<<< HEAD
+<<<<<<< HEAD
 		"#format" "{1:s},{2:i}"
+=======
+		"#format"	"{1:s},{2:i}"
+>>>>>>> origin/development
 =======
 		"#format"	"{1:s},{2:i}"
 >>>>>>> origin/development
