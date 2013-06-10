@@ -7,6 +7,8 @@
     // Weapons usually use this lightwarp: "models/lightwarps/weapon_lightwarp"
     // Weapons are the more custom case, so we'll default to a good wearable lightwarp
     "$lightwarptexture"     "models/player/pyro/pyro_lightwarp"
+	
+	"$phongexponenttexture"	""
     "$phong"                "1"
     "$phongexponent"        "25"
     "$phongboost"           "0.1"
@@ -16,6 +18,7 @@
     "$rimlight"             "1"     // To enable rim lighting (requires phong)
     "$rimlightexponent"     "4"     // Exponent for phong component of rim 
     "$rimlightboost"        "2"     // Boost for ambient cube component of rim lighting
+	"$rimmask"				"0"
 	"$halflambert"			"0"
 
 	// Paintable material parameters

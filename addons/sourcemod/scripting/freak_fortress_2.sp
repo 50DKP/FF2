@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.2.0"
+#define PLUGIN_VERSION "2.2.1"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -78,7 +78,7 @@ new Float:KSpreeTimer[MAXPLAYERS+1];
 new KSpreeCount[MAXPLAYERS+1];
 new Float:GlowTimer[MAXPLAYERS+1];
 new TFClassType:LastClass[MAXPLAYERS+1];
-new shortname[MAXPLAYERS+1];			//new SetPointsToZeroTarget[MAXPLAYERS+1];
+new shortname[MAXPLAYERS+1];
 
 new timeleft;
 
@@ -168,7 +168,8 @@ static const String:ff2versiontitles[][]=
 	"2.1.0",
 	"2.1.0",
 	"2.2.0",
-	"2.2.0"
+	"2.2.0",
+	"2.2.1"
 };
 
 static const String:ff2versiondates[][] = 
@@ -197,13 +198,22 @@ static const String:ff2versiondates[][] =
 	"May 29, 2013",
 	"May 29, 2013",
 	"June 4, 2013",
-	"June 4, 2013"
+	"June 4, 2013",
+	"June 10, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
+		case 25: //2.2.1
+		{
+			DrawPanelText(panel, "~The Quick-Fix Update~");
+			DrawPanelText(panel, "1) Nerfed Natascha a bit more (Wliu)");
+			DrawPanelText(panel, "2) Buffed the Fists of Steel (Wliu)");
+			DrawPanelText(panel, "Sorry for the horrible buff on the Natascha ;_;");
+			DrawPanelText(panel, "Mantreads will most likely be in 2.3.0.");
+		}
 		case 24: //2.2.0
 		{
 			DrawPanelText(panel, "Introducing: The Overpowered Update!");
@@ -558,11 +568,11 @@ public OnPluginStart()
 	AddCommandListener(DoSuicide, "kill");  
 
 	RegAdminCmd("ff2_special", Command_MakeNextSpecial, ADMFLAG_CHEATS, "Call a special to next round.");
-	RegAdminCmd("ff2_addpoints", Command_Points, ADMFLAG_CHEATS, "ff2_addpoints < target > < points > - Add queue points to user.");
+/*	RegAdminCmd("ff2_addpoints", Command_Points, ADMFLAG_CHEATS, "ff2_addpoints < target > < points > - Add queue points to user.");
 	RegAdminCmd("ff2_point_enable", Command_Point_Enable, ADMFLAG_CHEATS, "Enable CP. Only with ff2_point_type = 0");
 	RegAdminCmd("ff2_point_disable", Command_Point_Disable, ADMFLAG_CHEATS, "Disable CP. Only with ff2_point_type = 0");
 	RegAdminCmd("ff2_stop_music", Command_StopMusic, ADMFLAG_CHEATS, "Stop any currently playing Boss music.");
-	RegAdminCmd("ff2_charset", Command_CharSet, ADMFLAG_CHEATS, "Stop any currently playing Boss music.");
+	RegAdminCmd("ff2_charset", Command_CharSet, ADMFLAG_CHEATS, "Stop any currently playing Boss music.");  Admins shouldn't need these commands.*/
 	RegAdminCmd("ff2_reload_subplugins", Command_ReloadSubPlugins, ADMFLAG_RCON, "Reload FF2's subplugins.");
 	AutoExecConfig(true, "FreakFortress2");
 
@@ -581,7 +591,6 @@ public OnPluginStart()
 	{
 		LogError("[Freak Fortress 2] Warning: your config may be outdated. Back up your tf/cfg/sourcemod/FreakFortress2.cfg and delete it, and this plugin will generate a new one that you can then modify to your original values.");
 	}
-	
 	LoadTranslations("freak_fortress_2.phrases");
 	LoadTranslations("common.phrases");
 	AddNormalSoundHook(HookSound);
@@ -670,7 +679,7 @@ public AddToDownload()
 	BuildPath(Path_SM,s,PLATFORM_MAX_PATH,"configs/freak_fortress_2/characters.cfg");
 	if (!FileExists(s))
 	{
-		LogError("[FF2] Freak Fortress 2 disabled - can not find characters.cfg!");
+		LogError("[FF2] Freak Fortress 2 has been disabled - can not find characters.cfg!");
 		return;
 	}
 	new Handle:Kv = CreateKeyValues("");
@@ -2332,7 +2341,7 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 		{
 			switch (GetEntProp(ent, Prop_Send, "m_iItemDefinitionIndex"))
 			{
-				case 438, 463, 167, 477, 493, 233, 234, 241, 280, 281, 282, 283, 284, 286, 288, 362, 364, 365, 536, 542:
+				case 438, 463, 167, 477, 493, 233, 234, 241, 280, 281, 282, 283, 284, 286, 288, 362, 364, 365, 536, 542:  //Director's Taunt, Schadenfruede, High Five, Meet the Medic, Noise Makers, Gifts, and Dueling Minigame Actions
 				{
 				}
 				default:
@@ -2404,7 +2413,7 @@ public Action:checkFirstHale(Handle:timer,any:i)
 	chkFirstHale++;
 }
 
-public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)
+public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)  //WEAPON BALANCE
 {
 	if (!Enabled2)
 	{	
@@ -2420,10 +2429,11 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	{
 		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  1.25 ;  16 ;  5 ;  32 ;  0");
-			//5:  -25% firing speed
-			//16:  +5 health on hit
-			//32:  0% chance to slow target
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  1.25 ;  16 ;  5 ;  32 ;  -1 ;  86 ;  1.6", true);
+				//5:  -25% firing speed
+				//16:  +5 health on hit
+				//32:  -100% chance to slow target
+				//86:  -60% spinup speed
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2502,9 +2512,11 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 331:  //Fists of Steel.  Wliu:  Allow Fists of Steel with modified stats
+		case 331:  //Fists of Steel.  Wliu:  Allow Fists of Steel with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.8 ;  206 ;  9", true);
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.2 ;  206 ;  9", true);
+				//205:  Reduce ranged damage by 80%
+				//206:  Increase melee damage by 900%
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2541,6 +2553,10 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 	}
 	return Plugin_Continue;
+}
+
+public Action:Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)  //TODO
+{
 }
 
 public Action:Timer_NoHonorBound(Handle:timer, any:userid)
@@ -2641,7 +2657,7 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 	return Plugin_Continue;
 }
 
-public Action:checkItems(Handle:hTimer,any:client)
+public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
 {
 	if (!IsValidClient(client) || !IsPlayerAlive(client) || FF2RoundState == 2 || IsBoss(client))
 	{
@@ -2706,7 +2722,7 @@ public Action:checkItems(Handle:hTimer,any:client)
 			}
 		}
 	}
-	if (FindPlayerBack(client))  //Razorback/Darwin's Danger Shield again?
+	if (FindPlayerBack(client))  //Any sniper back weapon
 	{
 		RemovePlayerBack(client);
 		weapon = SpawnWeapon(client,"tf_weapon_smg",16,1,0,"");
@@ -4056,7 +4072,9 @@ public Action:Timer_DrawGame(Handle:timer)
 public Action:event_hurt(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	if (!Enabled)
+	{
 		return Plugin_Continue;
+	}
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
 	new attacker = GetClientOfUserId(GetEventInt(event, "attacker"));
 	new damage = GetEventInt(event, "damageamount");
@@ -6563,6 +6581,5 @@ public HealthbarEnableChanged(Handle:convar, const String:oldValue[], const Stri
 		SetEntProp(g_healthBar, Prop_Send, HEALTHBAR_PROPERTY, 0);
 	}
 }
-
 
 #include < freak_fortress_2_vsh_feedback > 

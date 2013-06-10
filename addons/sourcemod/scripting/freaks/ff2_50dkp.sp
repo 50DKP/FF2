@@ -135,9 +135,9 @@ Rage_Freeze(const String:ability_name[],index)
 	new Float:duration=FF2_GetAbilityArgument(index,this_plugin_name,ability_name,1,5.0);
 	FloatToString(duration,s,64);
 	new Float:ragedist=FF2_GetRageDist(index,this_plugin_name,ability_name);
-	for(i=1;i<=MaxClients;i++)
+	for (i=1;i<=MaxClients;i++)
 	{
-		if(IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
+		if (IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
 		{
 			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
 			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
