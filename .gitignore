@@ -58,6 +58,7 @@
 /addons/sourcemod/scripting/b*/
 /addons/sourcemod/scripting/c*/
 /addons/sourcemod/scripting/freaks/ff2_d*.sp
+/addons/sourcemod/scripting/freaks/ff2_o*.sp
 /addons/sourcemod/scripting/freaks/ff2_p*.sp
 /addons/sourcemod/scripting/freaks/compiled/
 /addons/sourcemod/scripting/fun*/
@@ -90,6 +91,7 @@
 /addons/sourcemod/translations/a*.txt
 /addons/sourcemod/translations/b*.txt
 /addons/sourcemod/translations/c*.txt
+/addons/sourcemod/translations/ff2_o*.txt
 /addons/sourcemod/translations/fun*.txt
 /addons/sourcemod/translations/m*.txt
 /addons/sourcemod/translations/n*.txt

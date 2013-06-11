@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.2.1"
+#define PLUGIN_VERSION "2.3.0"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -2429,11 +2429,14 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	{
 		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  1.25 ;  16 ;  5 ;  32 ;  -1 ;  86 ;  1.6", true);
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ;  1.25 ;  15 ;  0 ;  16 ;  5 ;  32 ;  -1 ;  86 ;  1.6 ;  179 ;  1 ;  288 ;  1", true);
 				//5:  -25% firing speed
+				//15:  No random crits
 				//16:  +5 health on hit
 				//32:  -100% chance to slow target
 				//86:  -60% spinup speed
+				//179:  Minicrits become crits
+				//288:  Cannot be crit boosted
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2449,9 +2452,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 444:  //Mantreads.  Wliu:  Increased Mantreads damage by 5x (to ~1000).  DOESN'T WORK
+		case 444:  //Mantreads
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0 ;  2 ;  5.0");
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "58 ;  2.0");
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2514,9 +2517,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 331:  //Fists of Steel.  Wliu:  Allow Fists of Steel with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.2 ;  206 ;  9", true);
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "205 ;  0.8 ;  206 ;  9", true);
 				//205:  Reduce ranged damage by 80%
-				//206:  Increase melee damage by 900%
+				//206:  Increase melee damage by 800%
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2555,7 +2558,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	return Plugin_Continue;
 }
 
-public Action:Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)  //TODO
+public Action:Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)  //TODO (Mantreads)
 {
 }
 
