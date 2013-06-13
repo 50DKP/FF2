@@ -125,6 +125,8 @@ update_tf2.txt
 /downloadlists/
 #MAPS
 /maps/
+#MATERIALS
+/materials/models/player/items/templates/standard.vmt
 #MEDIA
 /media/
 #RANDOM STUFF
