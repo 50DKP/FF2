@@ -2558,10 +2558,6 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 	return Plugin_Continue;
 }
 
-public Action:Event_PlayerHurt(Handle:event, const String:name[], bool:dontBroadcast)  //TODO (Mantreads)
-{
-}
-
 public Action:Timer_NoHonorBound(Handle:timer, any:userid)
 {
 	new client = GetClientOfUserId(userid);
@@ -4417,6 +4413,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							TF2_RemoveCondition(attacker, TFCond_OnFire);
 						}
 					}
+					case 444:  //Mantreads.  Wliu:  Increase damage 5x, to ~1000.
+					{
+						damage *= 5.0;
+					}
 					case 528:  //Short Circuit
 					{
 						if(circuitStun > 0.0)
@@ -4520,7 +4520,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					}
 					SetEventInt(stabevent, "weaponid", TF_WEAPON_KNIFE);
 					FireEvent(stabevent);
-					if (wepindex == 225 || wepindex == 574)
+					if (wepindex == 225 || wepindex == 574)  //Your Eternal Reward, The Wanga Prick
 					{
 						CreateTimer(0.3, Timer_DisguiseBackstab, GetClientUserId(attacker));
 					}
@@ -4530,7 +4530,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						SetEntPropFloat(attacker, Prop_Send, "m_flStealthNextChangeTime", NextAttackTime);
 					}
-					else if (wepindex == 356)
+					else if (wepindex == 356)  //Conniver's Kunai
 					{
 						new health = GetClientHealth(attacker) + 100;
 						if (health > 270)
@@ -4559,9 +4559,13 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						if(IsValidClient(healers[i]) && IsPlayerAlive(healers[i]))
 						{
 							if (TF2_IsPlayerInCondition(healers[i], TFCond_Ubercharged))
+							{
 								Damage[healers[i]]+= RoundFloat(changedamage);
+							}
 							else
+							{
 								Damage[healers[i]]+= RoundFloat(changedamage/(healercount+1));
+							}
 						}
 					}
 					return Plugin_Changed;
@@ -4582,15 +4586,31 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					if (act!= Plugin_Stop && act!= Plugin_Handled)
 					{
 						if (act == Plugin_Changed)
+						{
 							damage = damage2;
+						}
+
 						if (damage > 1500.0)
+						{
 							damage = 1500.0;
-						if (strcmp(currentmap, "arena_arakawa_b3", false) == 0 && damage > 1000.0) damage = 490.0;
+						}
+
+						if (strcmp(currentmap, "arena_arakawa_b3", false) == 0 && damage > 1000.0)
+						{
+							damage = 490.0;
+						}
+
 						BossHealth[index]-= RoundFloat(damage);
 						BossCharge[index][0]+= damage*100/BossRageDamage[Special[index]];
-						if (BossHealth[index] <= 0) damage *= 5;
+						if (BossHealth[index] <= 0)
+						{
+							damage *= 5;
+						}
+
 						if (BossCharge[index][0] > 100)
+						{
 							BossCharge[index][0] = 100.0;
+						}
 						return Plugin_Changed;
 					}
 					else
@@ -4612,8 +4632,8 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						damage  /= 10.0;
 						return Plugin_Changed;
 					}
-				}/*
-				else if (IsValidEdict((weapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 226)
+				}
+/*				else if (IsValidEdict((weapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 226)
 				{					
 					new Float:charge = GetEntPropFloat(client, Prop_Send, "m_flRageMeter");
 					if (charge > 20)
@@ -6515,9 +6535,6 @@ public OnTakeDamagePost(client, attacker, inflictor, Float:damage, damagetype)
 		
 		if (TF2_IsPlayerInCondition(Boss[index],TFCond_Jarated))
 			TF2_RemoveCondition(Boss[index],TFCond_Jarated);
-		
-		//if (TF2_IsPlayerInCondition(Boss[index], TFCond_Milked))
-		//	TF2_RemoveCondition(Boss[index],TFCond_Milked);
 		
 		if (TF2_IsPlayerInCondition(Boss[index], TFCond_MarkedForDeath))
 			TF2_RemoveCondition(Boss[index], TFCond_MarkedForDeath);
