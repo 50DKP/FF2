@@ -20,10 +20,6 @@
 #define PLUGIN_VERSION	"1.2"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
-new BossTeam=_:TFTeam_Blue;
-new Handle:g_FreezeTimers[MAXPLAYERS+1];
-new g_FreezeTracker[MAXPLAYERS+1];
-new g_GlowSprite;
 
 public Plugin:myinfo = {
 	name = "50DKP-FF2 Plugin",
@@ -48,10 +44,6 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	if (!strcmp(ability_name,"rage_fempyro"))
 	{
 		Rage_Fempyro(index);
-	}
-	else if (!strcmp(ability_name,"rage_freeze"))
-	{
-		Rage_Freeze(ability_name,index);
 	}
 	return Plugin_Continue;
 }
