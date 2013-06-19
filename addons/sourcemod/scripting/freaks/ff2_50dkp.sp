@@ -1,5 +1,6 @@
 //CHANGELOG:
 //----------
+//v1.2 (6/18/2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
 //v1.1 (6/3/2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
 //v1.0 (5/30/2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
 
@@ -16,8 +17,7 @@
 #include <tf2_stocks>
 #include <tf2items>
 
-#define SOUND_FREEZE	"physics/glass/glass_impact_bullet4.wav"
-#define PLUGIN_VERSION	"1.1"
+#define PLUGIN_VERSION	"1.2"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
 new BossTeam=_:TFTeam_Blue;
@@ -110,121 +110,21 @@ stock SetAmmo(client, slot, ammo)
 	}
 }
 
+/*=========RAGES START=========*/
+
 Rage_Fempyro(index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
-	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "445 ; 1 ; 165 ; 1 ; 171 ; -50"));
+	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; -0.5"));
 		//Weapon:  Rainblower
 		//Level:  101
 		//Quality:  Unique
+		//422:  Only visible in Pyrovision
 		//445:  Forces player to enter Pyrovision
 		//165:  Charged airblast
 		//171:  -50% airblast cost
 	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
-}
-
-Rage_Freeze(const String:ability_name[],index)
-{
-	decl i;
-	decl Float:pos[3];
-	decl Float:pos2[3];
-	decl String:s[64];
-	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
-	GetEntPropVector(Boss, Prop_Send, "m_vecOrigin", pos);
-	new Float:duration=FF2_GetAbilityArgument(index,this_plugin_name,ability_name,1,5.0);
-	FloatToString(duration,s,64);
-	new Float:ragedist=FF2_GetRageDist(index,this_plugin_name,ability_name);
-	for (i=1;i<=MaxClients;i++)
-	{
-		if (IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
-		{
-			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
-			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
-			{
-				FreezeClient(i,duration);
-			}
-		}
-	}
-}
-
-FreezeClient(client, time)
-{
-	if (g_FreezeTimers[client] != INVALID_HANDLE)
-	{
-		UnfreezeClient(client);
-	}
-	SetEntityMoveType(client, MOVETYPE_NONE);
-	SetEntityRenderColor(client, 0, 128, 255, 192);
-	
-	new Float:vec[3];
-	GetClientEyePosition(client, vec);
-	EmitAmbientSound(SOUND_FREEZE, vec, client, SNDLEVEL_RAIDSIREN);
-
-	g_FreezeTimers[client] = CreateTimer(1.0, Timer_Freeze, client, TIMER_REPEAT);
-	g_FreezeTracker[client] = time;
-}
-
-UnfreezeClient(client)
-{
-	KillFreezeTimer(client);
-
-	new Float:vec[3];
-	GetClientAbsOrigin(client, vec);
-	vec[2] += 10;	
-	
-	GetClientEyePosition(client, vec);
-	EmitAmbientSound(SOUND_FREEZE, vec, client, SNDLEVEL_RAIDSIREN);
-
-	SetEntityMoveType(client, MOVETYPE_WALK);
-	SetEntityRenderColor(client, 255, 255, 255, 255);	
-}
-
-KillFreezeTimer(client)
-{
-	KillTimer(g_FreezeTimers[client]);
-	g_FreezeTimers[client] = INVALID_HANDLE;
-}
-
-public Action:Timer_Freeze(Handle:timer, any:client)
-{
-	if (!IsClientInGame(client))
-	{
-		KillFreezeTimer(client);
-		return Plugin_Continue;
-	}
-	
-	if (!IsPlayerAlive(client))
-	{
-		UnfreezeClient(client);
-		return Plugin_Continue;
-	}		
-	
-	g_FreezeTracker[client]--;
-	
-	SetEntityMoveType(client, MOVETYPE_NONE);
-	SetEntityRenderColor(client, 0, 128, 255, 135);
-	
-	new Float:vec[3];
-	GetClientAbsOrigin(client, vec);
-	vec[2] += 10;
-	
-	TE_SetupGlowSprite(vec, g_GlowSprite, 0.95, 1.5, 50);
-	TE_SendToAll();	
-
-	if (g_FreezeTracker[client] == 0)
-	{
-		UnfreezeClient(client);
-	}
-
-	return Plugin_Continue;
-}
-
-public Action:Timer_ResetCharge(Handle:timer, any:index)
-{
-	new slot=index%10000;
-	index/=1000;
-	FF2_SetBossCharge(index,slot,0.0);
 }
 
 public Action:FF2_OnTriggerHurt(index,triggerhurt,&Float:damage)

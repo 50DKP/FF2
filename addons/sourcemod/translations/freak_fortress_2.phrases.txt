@@ -80,19 +80,19 @@
 	}
 	"help_soldier"
 	{
-		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25 and its honorbound is removed on hit.\nBoots reduce fall damage and Mantreads create greater rocketjumps.\nAll guns minicrit Boss in midair (Direct Hit crits), and the Reserve Shooter has faster weapon switch and a small damage buff."
+		"en"	"The Battalion's Backup fills its meter when hit. Its buff causes nearby teammates to take very little damage.\nThe Half-Zatoichi heals 50HP on hit and and its honorbound is removed on hit.\nBoots reduce fall damage and Mantreads create greater rocketjumps.\nAll guns minicrit Boss in midair (Direct Hit crits), and the Reserve Shooter has faster weapon switch and a small damage buff."
 	}
 	"help_pyro"
 	{
-		"en"	"Postal Pummeler and skins uses stats of Fire Axe.\nThe Flare Gun is replaced by the MegaDetonator.\nAirblasting the boss builds rage and lengthens the Vagineer's uber."
+		"en"	"Postal Pummeler and skins uses stats of Fire Axe.\nThe Flare Gun is replaced by the Mega Detonator.\nAirblasting the boss builds rage and lengthens the boss's uber."
 	}
 	"help_demo"
 	{
-		"en"	"All shields block one hit from Boss.\nUsing the shields grants criticals.\nEyelander/reskins gain heads on hit.\nThe Half-Zatoichi heals 35HP on hit and can overheal to +25. Honorbound is removed on hit."
+		"en"	"All shields block one hit from Boss.\nUsing the shields grants criticals.\nEyelander/reskins gain heads on hit.\nThe Half-Zatoichi heals 50HP on hit. Honorbound is removed on hit."
 	}
 	"help_heavy"
 	{
-		"en"	"Natascha, the KGB, and the Fists of Steel are replaced with the\nMinigun, Gloves of Running, and Fists, respectively.\nThe Gloves of Running are quite quick but cause you to lose more health.\nThe Holiday Punch will remove any stun on you if you hit Boss while stunned."
+		"en"	"The KGB is replaced with the Gloves of Running.\nThe Gloves of Running are quite quick but cause you to lose 7 health/sec.\nThe Holiday Punch will remove any stun on you if you hit Boss while stunned."
 	}
 	"help_eggineer"
 	{
@@ -100,7 +100,7 @@
 	}
 	"help_medic"
 	{
-		"en"	"Charge: Kritz+Uber. Charge starts at 41 percent.\nCharge lasts for 150 percent after activation.\nSyringe Guns: on hit: +5 to ubercharge, Overdose's speed effect.\nCrossbow: 100 percent crits, +150pct damage, +10 uber on hit."
+		"en"	"Charge: Kritz+Uber. Charge starts at 41 percent.\nCharge lasts for 150 percent after activation.\nSyringe Guns: on hit: +5 to ubercharge, Overdose's speed effect.\nCrossbow: 100 percent crits, +150% damage, +10 uber on hit."
 	}
 	"help_sniper"
 	{
@@ -108,7 +108,7 @@
 	}
 	"help_spie"
 	{
-		"en"	"Backstab does about 10 percent of Boss's max health.\nCloak and Dagger is replaced with normal watch.\nAll revolvers minicrit.\nYour Eternal Reward/Wanga Prick backstabs will disguise you instantly.\nKunai backstabs will give you a health bonus."
+		"en"	"Backstabs do about 10 percent of Boss's max health.\nCloak and Dagger is replaced with normal watch.\nAll revolvers minicrit.\nYour Eternal Reward/Wanga Prick backstabs will disguise you instantly.\nKunai backstabs will give you a health bonus."
 	}
 	"help_melee"
 	{
