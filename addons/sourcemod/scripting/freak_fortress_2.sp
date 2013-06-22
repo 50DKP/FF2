@@ -22,22 +22,12 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <morecolors>
 #include <tf2items>
 #include <clientprefs>
-#include <steamtools>
-
-enum FF2Stats
-{
-	FF2Stat_UserId=0,
-	FF2Stat_Damage,
-	FF2Stat_Healing,
-	FF2Stat_Lifelength,
-	FF2Stat_Points,
-};
+#include <steamtools>  //You'll see why soon.
 
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define SET_AND_BOSS_LENGTH 64
-#define PLUGIN_VERSION "2.3.0-dev"
+#define PLUGIN_VERSION "2.3.0"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -52,8 +42,8 @@ new bool:steamtools = false;
 new chkFirstHale;
 new bool:b_allowBossChgClass = false;
 new bool:b_BossChgClassDetected = false;
-new RedTeam=2;
-new BlueTeam=3;
+new OtherTeam=2;
+new BossTeam=3;
 new FF2RoundState;
 new playing;
 new healthcheckused;
@@ -109,14 +99,12 @@ new Handle:cvarFirstRound;
 new Handle:cvarCircuitStun;
 new Handle:cvarSpecForceBoss;
 new Handle:cvarUseCountdown;
-new Handle:cvarEnableEurekaEffect;
-new Handle:cvarForceBossTeam;
 
 new Handle:cvarHealthBar;
 
 new Handle:cvarAllowSpectators;
 
-new Handle:FF2Cookies;
+new Handle:FF2Cookies;		// "queue_points music monologues classinfo rmb_help reload_help"
 
 new Handle:jumpHUD;
 new Handle:rageHUD;
@@ -150,43 +138,16 @@ new FF2CharSet;
 new String:FF2CharSetStr[42];
 
 new tf_arena_use_queue;
-new mp_autobalance;
 new mp_teams_unbalance_limit;
 new tf_arena_first_blood;
 new mp_forcecamera;
-
 new Float:tf_scout_hype_pep_max;
 new Handle:cvarNextmap;
 new bool:isSubPluginsEnabled;
 
-new Handle:g_Array_BossSets;
-
-new String:g_CurrentBossSet[SET_AND_BOSS_LENGTH];
-new Handle:g_Array_Bosses;
-
-new g_CurrentStats[MAXPLAYERS+1][FF2Stats];
-new g_PlayersRemaining;
-new TFTeam:g_BlueTeam = TFTeam_Blue;
-new TFTeam:g_RedTeam = TFTeam_Red;
-
-new g_CurrentBossCount;
-new g_CurrentBosses[MAXPLAYERS];
-new Handle:g_KeyValues_CurrentBosses[MAXPLAYERS];
-
-new Handle:g_Array_AbilityList;
-new Handle:g_Trie_AbilityMap;
-
-new String:g_ConfigPath[PLATFORM_MAX_PATH];
-new bool:g_bEnabled;
-new bool:g_bFirstRound;
-new bool:g_bFF2Map;
-new bool:g_bActive;
-
-new g_RoundStartTime;
-new g_CurrentRound;
-
+//Healthbar-related things
 new g_healthBar = -1;
-new g_Monoculus = -1;
+new g_Monoculus = -1; //Track Monoculus for health bar
 
 static const String:ff2versiontitles[][]=
 {
@@ -458,7 +419,7 @@ stock FindVersionData(Handle:panel, versionindex)
 		default:
 		{
 			DrawPanelText(panel, "-- Somehow you've managed to find a glitched version page!");
-			DrawPanelText(panel, "-- Congratulations. Now go fight the Boss.");
+			DrawPanelText(panel, "-- Congratulations. Now go fight Boss.");
 		}
 	}
 }
@@ -479,19 +440,15 @@ new Float:BossSpeed[MAXSPECIALS];
 new Float:BossRageDamage[MAXSPECIALS];
 new String:ChancesString[64];
 
-public Plugin:myinfo =
-{
+public Plugin:myinfo = {
 	name = "Freak Fortress 2",
 	author = "Rainbolt Dash, FlaminSarge",
-	description = "A one-vs-all plugin, based off of VSH",
+	description = "RUUUUNN!! COWAAAARRDSS!",
 	version = PLUGIN_VERSION,
 };
 
 public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 {
-	
-	RegPluginLibrary("freak_fortress_2");
-
 	CreateNative("FF2_IsFF2Enabled",Native_IsEnabled);
 	CreateNative("FF2_GetBossUserId",Native_GetBoss);
 	CreateNative("FF2_GetBossIndex",Native_GetIndex);
@@ -524,6 +481,8 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	OnSpecialSelected = CreateGlobalForward("FF2_OnSpecialSelected",ET_Hook,Param_Cell,Param_CellByRef,Param_String);
 	OnAddQueuePoints = CreateGlobalForward("FF2_OnAddQueuePoints",ET_Hook,Param_Array);
 	
+	RegPluginLibrary("freak_fortress_2");
+	
 	AskPluginLoad_VSH();
 	MarkNativeAsOptional("Steam_SetGameDescription");
 	return APLRes_Success;
@@ -544,15 +503,9 @@ public OnPluginStart()
 	cvarCircuitStun = CreateConVar("ff2_circuit_stun", "2", "0 to disable Short Circuit stun, > 0 to make it stun Boss for x seconds", FCVAR_PLUGIN, true, 0.0);
 	cvarUseCountdown = CreateConVar("ff2_countdown", "120", "Seconds of deathly countdown (begins when only 1 enemy lefts)", FCVAR_PLUGIN);
 	cvarSpecForceBoss = CreateConVar("ff2_spec_force_boss", "0", "Spectators are allowed in Boss' queue.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-	cvarEnableEurekaEffect = CreateConVar("ff2_enable_eureka", "0", "1- allow Eureka Effect, else disallow", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-	cvarForceBossTeam = CreateConVar("ff2_force_team", "0", "0- Use plugin logic, 1- random team, 2- red, 3- blue", FCVAR_PLUGIN, true, 0.0, true, 3.0);
-	cvarHealthBar = CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	cvarHealthBar = CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0); // Added by Powerlord
 	cvarAllowSpectators = FindConVar("mp_allowspectators");
 
-	/*HookConVarChange(tf_arena_use_queue, CvarChange_ForceFalse);
-	HookConVarChange(mp_autobalance, CvarChange_ForceFalse);
-	SetConVarInt(mp_teams_unbalance_limit, CvarChange_ForceZero);
-	HookConVarChange(tf_arena_first_blood, CvarChange_ForceFalse);*/
 	HookConVarChange(cvarHealthBar, HealthbarEnableChanged);
 
 	HookEvent("player_changeclass", OnChangeClass);
@@ -651,20 +604,11 @@ public OnPluginStart()
 	LoadTranslations("freak_fortress_2.phrases");
 	LoadTranslations("common.phrases");
 	AddNormalSoundHook(HookSound);
-
 	AddMultiTargetFilter("@hale", BossTargetFilter, "all current Bosses", false);
 	AddMultiTargetFilter("@!hale", BossTargetFilter, "all non-Boss players", false);
 	AddMultiTargetFilter("@boss", BossTargetFilter, "all current Bosses", false);
 	AddMultiTargetFilter("@!boss", BossTargetFilter, "all non-Boss players", false);
 	
-	new cells = ByteCountToCells(SET_AND_BOSS_LENGTH);
-	g_Array_BossSets = CreateArray(cells);
-	g_Array_Bosses = CreateArray(cells);
-	g_Array_AbilityList = CreateArray(cells);
-	g_Trie_AbilityMap = CreateTrie();
-
-	BuildPath(Path_SM, g_ConfigPath, PLATFORM_MAX_PATH, "configs/freak_fortress_2");
-
 	steamtools = LibraryExists("SteamTools");
 }
 
@@ -709,200 +653,27 @@ public OnLibraryRemoved(const String:name[])
 
 public OnConfigsExecuted()
 {
-	g_bEnabled = GetConVarBool(cvarEnabled) && g_bFF2Map;
-	g_bActive = false;
-	g_bFirstRound = GetConVarBool(cvarFirstRound);
-	g_CurrentRound = 0;
-
-	if (g_bEnabled && g_bFirstRound)
-	{
-		PrepareFF2();
-		ChangeValveCvars();
-		if (steamtools)
-		{
-			decl String:gameDesc[64];
-			Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 (%s)", ff2versiontitles[maxversion]);
-			Steam_SetGameDescription(gameDesc);
-		}
-	}
-}
-
-/**
-* Called before players can move
-* Initial boss selection here.
-*/
-public Event_RoundStart(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	if (!g_bEnabled || !g_bFF2Map)
-	{
-		return;
-	}
-	g_CurrentRound++;
-
-	if (g_CurrentRound == 1 && !g_bFirstRound)
-	{
-		return;
-	}
-	
-	for (new i = 1; i <= MaxClients; i++)
-	{
-		for (new j = 0; j < _:FF2Stats; j++)
-		{
-			g_CurrentStats[i][j] = 0;
-		}
-	}
-}
-
-/**
-* Called when players unfreeze and can move around.  This is when the arena clock would start.
-* Force the boss back to the boss class and loadout here
-*/
-public Event_ArenaRoundStart(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	if (!g_bEnabled || !g_bFF2Map)
-	{
-		return;
-	}
-	g_PlayersRemaining = GetTeamClientCount(_:g_RedTeam);
-	g_RoundStartTime = GetTime();
-
-	for (new i = 1; i <= MaxClients; i++)
-	{
-		if (IsClientInGame(i) && TFTeam:GetClientTeam(i) == g_RedTeam)
-		{
-			new userId = GetClientUserId(i);
-			g_CurrentStats[i][FF2Stat_UserId] = userId;
-		}
-	}
-}
-
-public Event_RoundEnd(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	if (g_bEnabled && g_CurrentRound == 1 && !g_bFirstRound)
-	{
-		ChangeValveCvars();
-	}
-}
-
-public Action:Event_ArenaWinPanel(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	new Handle:top = CreateArray();
-
-	for (new i = 1; i < MaxClients; i++)
-	{
-		if (!IsBoss(i))
-		{
-			new damage = g_CurrentStats[i][FF2Stat_Damage];
-			if (damage == 0)
-			{
-				continue;
-			}
-			new size = GetArraySize(top);
-			new insertPoint = -1;
-
-			for (new j = 0; j < 3; j++)
-			{
-				if (size == j)
-				{
-					insertPoint = j;
-					break;
-				}
-
-				if (damage > GetArrayCell(top, j))
-				{
-					insertPoint = j;
-					break;
-				}
-			}
-
-			if (insertPoint > -1)
-			{
-				ShiftArrayUp(top, insertPoint);
-				SetArrayCell(top, insertPoint, i);
-			}
-		}
-	}
-	ResizeArray(top, 3);
-
-	new TFTeam:winner = TFTeam:GetEventInt(event, "winning_team");
-	new currentPlayer;
-	if (winner == g_BlueTeam)
-	{
-		currentPlayer = 4;
-	}
-	else
-	{
-		currentPlayer = 1;
-	}
-
-	for (new i = 0; i < 3; i++)
-	{
-		decl String:player[9];
-		decl String:player_damage[16];
-		decl String:player_healing[17];
-		decl String:player_lifetime[17];
-		decl String:player_kills[14];
-
-		Format(player, sizeof(player), "%s%d", "player_", currentPlayer);
-
-		Format(player_damage, sizeof(player_damage), "%s%s", player, "_damage");
-		Format(player_healing, sizeof(player_healing), "%s%s", player, "_healing");
-		Format(player_lifetime, sizeof(player_lifetime), "%s%s", player, "_lifetime");
-		Format(player_kills, sizeof(player_kills), "%s%s", player, "_kills");
-
-		new client = GetArrayCell(top, i);
-
-		SetEventInt(event, player, g_CurrentStats[client][FF2Stat_UserId]);
-		SetEventInt(event, player_damage, g_CurrentStats[client][FF2Stat_Damage]);
-		SetEventInt(event, player_healing, g_CurrentStats[client][FF2Stat_Healing]);
-		SetEventInt(event, player_lifetime, g_CurrentStats[client][FF2Stat_Lifelength]);
-		SetEventInt(event, player_kills, g_CurrentStats[client][FF2Stat_Points]);
-
-		currentPlayer++;
-	}
-	return Plugin_Changed;
-}
-
-public Event_Player_Healed(Handle:event, const String:name[], bool:dontBroadcast)
-{
-	new client = GetClientOfUserId(GetEventInt(event, "healer"));
-	new amount = GetEventInt(event, "amount");
-
-	g_CurrentStats[client][FF2Stat_Healing] += amount;
-}
-
-/**
-* Prepare the next round for FF2
-*/
-PrepareFF2()
-{
-	g_bActive = true;
-	ChangeValveCvars();
-}
-
-ChangeValveCvars()
-{
-	SetConVarInt(FindConVar("tf_arena_use_queue"),tf_arena_use_queue);
-	SetConVarInt(FindConVar("mp_teams_unbalance_limit"),mp_teams_unbalance_limit);
-	SetConVarInt(FindConVar("tf_arena_first_blood"),tf_arena_first_blood);
-	SetConVarInt(FindConVar("mp_forcecamera"),mp_forcecamera);
-	SetConVarFloat(FindConVar("tf_scout_hype_pep_max"), tf_scout_hype_pep_max);
 	SetConVarString(FindConVar("ff2_version"), ff2versiontitles[maxversion]);
 	Announce = GetConVarFloat(cvarAnnounce);
 	PointType = GetConVarInt(cvarPointType);
 	PointDelay = GetConVarInt(cvarPointDelay);
-	if (PointDelay < 0)
-	{
-		PointDelay *= -1;
-	}
+	if (PointDelay < 0) PointDelay *= -1;
 	AliveToEnable = GetConVarInt(cvarAliveToEnable);
 	BossCrits = GetConVarBool(cvarCrits);
 	circuitStun = GetConVarFloat(cvarCircuitStun);
 
 	if (IsFF2Map() && GetConVarBool(cvarEnabled))
 	{
+		tf_arena_use_queue = GetConVarInt(FindConVar("tf_arena_use_queue"));
+		mp_teams_unbalance_limit = GetConVarInt(FindConVar("mp_teams_unbalance_limit"));
+		tf_arena_first_blood = GetConVarInt(FindConVar("tf_arena_first_blood"));
+		mp_forcecamera = GetConVarInt(FindConVar("mp_forcecamera"));
 		tf_scout_hype_pep_max = GetConVarFloat(FindConVar("tf_scout_hype_pep_max"));
 
+		SetConVarInt(FindConVar("tf_arena_use_queue"),0);
+		SetConVarInt(FindConVar("mp_teams_unbalance_limit"),0);
+		SetConVarInt(FindConVar("tf_arena_first_blood"),0);
+		SetConVarInt(FindConVar("mp_forcecamera"),0);
 		SetConVarFloat(FindConVar("tf_scout_hype_pep_max"), 100.0);
 		
 		if (steamtools)
@@ -928,6 +699,7 @@ ChangeValveCvars()
 
 		bMedieval = FindEntityByClassname(-1, "tf_logic_medieval")!= -1 || bool:GetConVarInt(FindConVar("tf_medieval"));
 
+		// For healthbar
 		FindHealthBar();
 	}
 	else
@@ -935,107 +707,6 @@ ChangeValveCvars()
 		Enabled = false;
 		Enabled2 = false;
 	}
-}
-
-public CvarChange_ForceFalse(Handle:convar, const String:oldValue[], const String:newValue[])
-{
-	if (!g_bEnabled)
-	{
-		return;
-	}
-
-	if (GetConVarBool(convar))
-	{
-		SetConVarBool(convar, false);
-	}
-}
-
-public CvarChange_ForceZero(Handle:convar, const String:oldValue[], const String:newValue[])
-{
-	if (!g_bEnabled)
-	{
-		return;
-	}
-
-	if (!GetConVarInt(convar))
-	{
-		SetConVarInt(convar, 0);
-	}
-}
-
-public ResetData()
-{
-	for (new i = 1; i <= MaxClients; i++)
-	{
-		for (new j = 0; j < _:FF2Stats; j++)
-		{
-			g_CurrentStats[i][j] = 0;
-		}
-	}
-}
-
-public GetCharacterSets()
-{
-	ClearArray(g_Array_BossSets);
-	new Handle:characterKv = OpenCharacterKv();
-	do
-	{
-		decl String:charSet[SET_AND_BOSS_LENGTH];
-		KvGetString(characterKv, NULL_STRING, charSet, sizeof(charSet));
-		if (!StrEqual(charSet, ""))
-		{
-			PushArrayString(g_Array_BossSets, charSet);
-		}
-	}
-	while (KvGotoNextKey(characterKv));
-	CloseHandle(characterKv);
-}
-
-public bool:DownloadBossSet(String:setName[])
-{
-	new Handle:characterKv = OpenCharacterKv();
-	if (!KvJumpToKey(characterKv, setName) || !KvGotoFirstSubKey(characterKv, false))
-	{
-		return false;
-	}
-
-	do
-	{
-		decl String:bossName[SET_AND_BOSS_LENGTH];
-		KvGetString(characterKv, NULL_STRING, bossName, SET_AND_BOSS_LENGTH);
-		if (!StrEqual(bossName, ""))
-		{
-			decl String:bossFile[PLATFORM_MAX_PATH];
-			Format(bossFile, PLATFORM_MAX_PATH, "%s/%s.%s", g_ConfigPath, bossName, ".cfg");
-			new Handle:bossKv = CreateKeyValues("Character");
-			if (!FileToKeyValues(bossKv, bossFile))
-			{
-				CloseHandle(bossKv);
-				continue;
-			}
-		}
-	}
-	while (KvGotoNextKey(characterKv, false));
-	CloseHandle(characterKv);
-	return true;
-}
-
-public Handle:OpenCharacterKv()
-{
-	decl String:characterFile[PLATFORM_MAX_PATH];
-	Format(characterFile, PLATFORM_MAX_PATH, "%s/%s", g_ConfigPath, "characters.cfg");
-   
-	new Handle:characterKv = CreateKeyValues("Boss Sets");
-	if (!FileToKeyValues(characterKv, characterFile))
-	{
-		CloseHandle(characterKv);
-		SetFailState("Could not locate boss character set file: %s", characterFile);
-	}
-	return characterKv;
-}
-
-public Handle:LoadBoss(client, String:bossName[])
-{
 }
 
 public OnMapStart()
@@ -1055,33 +726,6 @@ public OnMapStart()
 	{
 		BossKV[i] = INVALID_HANDLE;
 	}
-	
-	g_bFF2Map = false;
-   
-	decl String:mapName[64];
-	GetCurrentMap(mapName, sizeof(mapName));
-
-	decl String:mapConfig[PLATFORM_MAX_PATH];
-	Format(mapConfig, PLATFORM_MAX_PATH, "%s/%s", g_ConfigPath, "maps.cfg");
-
-	new Handle:fh = OpenFile(mapConfig, "r");
-
-	new pos = FindCharInString(mapName, '_');
-	decl String:mapPrefix[10];
-	strcopy(mapPrefix, (pos < sizeof(mapPrefix) ? pos : sizeof(mapPrefix)), mapName);
-
-	while (!IsEndOfFile(fh))
-	{
-		decl String:line[10];
-		ReadFileLine(fh, line, sizeof(line));
-		TrimString(line);
-		if (StrEqual(mapPrefix, line, false))
-		{
-			g_bFF2Map = true;
-			break;
-		}
-	}
-	CloseHandle(fh);
 }
 
 public OnMapEnd()
@@ -1609,33 +1253,33 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			}
 			else if (RoundCounter >= 3 && GetRandomInt(0, 1))
 			{
-				bBluBoss = (BlueTeam != 3);
+				bBluBoss = (BossTeam != 3);
 				RoundCounter = 0;
 			}
 			else
 			{
-				bBluBoss = (BlueTeam == 3);
+				bBluBoss = (BossTeam == 3);
 			}
 		}
 	}
 
 	if (bBluBoss)
 	{
-		new score1 = GetTeamScore(RedTeam);
-		new score2 = GetTeamScore(BlueTeam);
+		new score1 = GetTeamScore(OtherTeam);
+		new score2 = GetTeamScore(BossTeam);
 		SetTeamScore(2,score1);
 		SetTeamScore(3,score2);
-		RedTeam = 2;
-		BlueTeam = 3;
+		OtherTeam = 2;
+		BossTeam = 3;
 	}
 	else
 	{
-		new score1 = GetTeamScore(BlueTeam);
-		new score2 = GetTeamScore(RedTeam);
+		new score1 = GetTeamScore(BossTeam);
+		new score2 = GetTeamScore(OtherTeam);
 		SetTeamScore(2,score1);
 		SetTeamScore(3,score2);
-		BlueTeam = 2;
-		RedTeam = 3;
+		BossTeam = 2;
+		OtherTeam = 3;
 	}
 	playing = 0;
 	for (new ionplay = 1;  ionplay <= MaxClients;  ionplay++)
@@ -1713,7 +1357,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 		if (IsValidClient(Boss[0]))
 		{
 			//SetEntProp(Boss[0], Prop_Send, "m_lifeState", 2);
-			ChangeClientTeam(Boss[0], BlueTeam);
+			ChangeClientTeam(Boss[0], BossTeam);
 			//SetEntProp(Boss[0], Prop_Send, "m_lifeState", 0);
 			TF2_RespawnPlayer(Boss[0]);
 		}
@@ -1722,7 +1366,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			if (IsValidClient(i) && !IsBoss(i) && GetClientTeam(i) > _:TFTeam_Spectator)
 			{
 				SetEntProp(i, Prop_Send, "m_lifeState", 2);
-				ChangeClientTeam(i, RedTeam);
+				ChangeClientTeam(i, OtherTeam);
 				SetEntProp(i, Prop_Send, "m_lifeState", 0);
 				TF2_RespawnPlayer(i);
 				CreateTimer(0.1, MakeNotBoss, GetClientUserId(i));
@@ -1983,7 +1627,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 	}
 
 	FF2RoundState = 2;
-	if ((GetEventInt(event, "team") == BlueTeam))
+	if ((GetEventInt(event, "team") == BossTeam))
 	{
 		if (RandomSound("sound_win",s,PLATFORM_MAX_PATH))
 		{
@@ -2758,7 +2402,7 @@ public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
             TFClassType:oldclass = TF2_GetPlayerClass(iClient), 
             iTeam = GetClientTeam(iClient); 
      
-    if (iTeam==BlueTeam && !b_allowBossChgClass && IsPlayerAlive(iClient))  
+    if (iTeam==BossTeam && !b_allowBossChgClass && IsPlayerAlive(iClient))  
     { 
         b_BossChgClassDetected = true;
         TF2_SetPlayerClass(iClient, oldclass);
@@ -2773,11 +2417,11 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 	}
 	KvRewind(BossKV[Special[index]]);
 	TF2_SetPlayerClass(Boss[index], TFClassType:KvGetNum(BossKV[Special[index]], "class",1));
-	if (GetClientTeam(Boss[index]) != BlueTeam)
+	if (GetClientTeam(Boss[index]) != BossTeam)
 	{
 		b_allowBossChgClass = true;
 		SetEntProp(Boss[index], Prop_Send, "m_lifeState", 2);
-		ChangeClientTeam(Boss[index], BlueTeam);
+		ChangeClientTeam(Boss[index], BossTeam);
 		SetEntProp(Boss[index], Prop_Send, "m_lifeState", 0);
 		TF2_RespawnPlayer(Boss[index]);
 		b_allowBossChgClass = false;
@@ -2940,7 +2584,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "5 ; 1.25 ; 15 ; 0 ; 16 ; 5 ; 32 ; -1 ; 86 ; 1.6 ; 179 ; 1 ; 288 ; 1", true);
+			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ; 1.25 ; 15 ; 0 ; 16 ; 5 ; 32 ; -1 ; 86 ; 1.6 ; 179 ; 1 ; 288 ; 1", true);
 				//5:  -25% firing speed
 				//15:  No random crits
 				//16:  +5 health on hit
@@ -3124,9 +2768,6 @@ public Action:Timer_NoHonorBound(Handle:timer, any:userid)
 
 stock Handle:PrepareItemHandle(Handle:hItem, String:name[] = "", index = -1, const String:att[] = "", bool:dontpreserve = false)
 {
-	static Handle:hWeapon;
-	new addattribs = 0;
-
 	new String:weaponAttribsArray[32][32];
 	new attribCount = ExplodeString(att, " ; ", weaponAttribsArray, 32, 32);
 
@@ -3225,10 +2866,10 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 		HelpPanel2(client);
 	}
 	SetEntProp(client, Prop_Send, "m_bGlowEnabled", 0); 
-	if (GetClientTeam(client) != RedTeam)
+	if (GetClientTeam(client) != OtherTeam)
 	{
 		SetEntProp(client, Prop_Send, "m_lifeState", 2);
-		ChangeClientTeam(client, RedTeam);
+		ChangeClientTeam(client, OtherTeam);
 		SetEntProp(client, Prop_Send, "m_lifeState", 0);
 		TF2_RespawnPlayer(client);
 	}
@@ -3330,12 +2971,17 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
 			}
 			case 589:  //Eureka Effect
 			{
+<<<<<<< HEAD
 				if (!GetConVarBool(cvarEnableEurekaEffect))
 				{
 					TF2_RemoveWeaponSlot(client, TFWeaponSlot_Melee);
 					weapon = SpawnWeapon(client, "tf_weapon_wrench", 7, 1, 0, "");
 						//NOOP
 				}
+=======
+				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Melee);
+				weapon = SpawnWeapon(client, "tf_weapon_wrench", 7, 1, 0, "");
+>>>>>>> parent of 26a6107... 1.07/2.0.0 merge
 			}
 		}
 	}
@@ -4448,7 +4094,7 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 	}
 	else if (StrEqual(teamString, "auto", false))
 	{
-		team = RedTeam;
+		team = OtherTeam;
 	}
 	else if (StrEqual(teamString, "spectator", false))
 	{
@@ -4458,13 +4104,13 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 		}
 		else
 		{
-			team = RedTeam;
+			team = OtherTeam;
 		}
 	}
 
-	if (team == BlueTeam)
+	if (team == BossTeam)
 	{
-		team = RedTeam;
+		team = OtherTeam;
 	}
 
 	if (team > _:TFTeam_Unassigned)
@@ -4610,8 +4256,12 @@ public Action:Timer_RestoreLastClass(Handle:timer, any:userid)
 		TF2_SetPlayerClass(client,LastClass[client]);
 	}
 	LastClass[client] = TFClass_Unknown;
+<<<<<<< HEAD
 	if (BlueTeam == _:TFTeam_Red)
 	{
+=======
+	if (BossTeam == _:TFTeam_Red)
+>>>>>>> parent of 26a6107... 1.07/2.0.0 merge
 		ChangeClientTeam(client, _:TFTeam_Blue);
 	}
 	else
@@ -4691,29 +4341,21 @@ public Action:event_jarate(UserMsg:msg_id, Handle:bf, const players[], playersNu
 public Action:CheckAlivePlayers(Handle:hTimer)
 {
 	if (FF2RoundState == 2)
-	{
 		return Plugin_Continue;
-	}
 	RedAlivePlayers = 0;
 	new BlueAlivePlayers = 0;
 	for(new i = 1; i <= MaxClients; i++)
 	{
 		if(IsValidEdict(i) && IsClientInGame(i) && IsPlayerAlive(i))
 		{
-			if (GetClientTeam(i) == RedTeam)
-			{
+			if (GetClientTeam(i) == OtherTeam)
 				RedAlivePlayers++;
-			}
 			if (IsBoss(i))
-			{
 				BlueAlivePlayers++;
-			}
 		}
 	}
 	if (RedAlivePlayers == 0)
-	{
-		ForceTeamWin(BlueTeam);
-	}
+		ForceTeamWin(BossTeam);
 	else if ((RedAlivePlayers == 1) && BlueAlivePlayers && !DrawGameTimer)
 	{
 		if (BossHealth[0] > 2000 && UseCountdown>1)
@@ -4737,14 +4379,13 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 				EmitSoundToAll(s);
 			}
 		}
+		
 	}	
 	else if (!PointType && (RedAlivePlayers <= (AliveToEnable = GetConVarInt(cvarAliveToEnable))))
 	{
 		PrintHintTextToAll("%t","point_enable", AliveToEnable);
 		if (RedAlivePlayers == AliveToEnable)
-		{
 			EmitSoundToAll("vo/announcer_am_capenabled02.wav");
-		}
 		SetControlPoint(true);
 	}
 	return Plugin_Continue;
@@ -5568,14 +5209,8 @@ stock RandomlyDisguise(client)
 
 public Action:TF2_CalcIsAttackCritical(client, weapon, String:weaponname[], &bool:result)
 {
-	if (!Enabled)
-	{
-		return Plugin_Continue;
-	}
-	if (FF2RoundState != 1)
-	{
-		return Plugin_Continue;
-	}
+	if (!Enabled) return Plugin_Continue;
+	if (FF2RoundState != 1) return Plugin_Continue;
 	if (IsBoss(client) && !BossCrits)
 	{
 		result = false;
@@ -6318,18 +5953,10 @@ bool:GetClientClassinfoCookie(client)
 
 GetClientQueuePoints(client)
 {
-	if (!IsValidClient(client))
-	{
-		return 0;
-	}
+	if (!IsValidClient(client)) return 0;
 	if (IsFakeClient(client))
-	{
 		return botqueuepoints;
-	}
-	if (!AreClientCookiesCached(client))
-	{
-		return 0;
-	}
+	if (!AreClientCookiesCached(client)) return 0;
 	decl String:s[24];
 	decl String:ff2cookies_values[8][5];
 	GetClientCookie(client, FF2Cookies, s,24);
@@ -6339,20 +5966,9 @@ GetClientQueuePoints(client)
 
 SetClientQueuePoints(client, points)
 {
-	if (!IsValidClient(client))
-	{
-		return;
-	}
-
-	if (IsFakeClient(client))
-	{
-		return;
-	}
-
-	if (!AreClientCookiesCached(client))
-	{
-		return;
-	}
+	if (!IsValidClient(client)) return;
+	if (IsFakeClient(client)) return;
+	if (!AreClientCookiesCached(client)) return;
 	decl String:s[24];
 	decl String:ff2cookies_values[8][5];
 	GetClientCookie(client, FF2Cookies, s,24);
@@ -6363,19 +5979,6 @@ SetClientQueuePoints(client, points)
 
 stock IsBoss(client)
 {
-	if (!g_bActive)
-	{
-		return false;
-	}
-
-	for (new i = 0; i <= g_CurrentBossCount; i++)
-	{
-		if (g_CurrentBosses[i] == client)
-		{
-			return true;
-		}
-	}
-
 	if (client <= 0)
 	{
 		return 0;
@@ -7063,7 +6666,7 @@ public Native_GetIndex(Handle:plugin,numParams)
 
 public Native_GetTeam(Handle:plugin,numParams)
 {
-	return BlueTeam;
+	return BossTeam;
 }
 
 public Native_GetSpecial(Handle:plugin,numParams)
@@ -7345,7 +6948,7 @@ public Action:VSH_OnGetSaxtonHaleTeam(&result)
 {
 	if (Enabled)
 	{
-		result = BlueTeam; 	
+		result = BossTeam; 	
 		return Plugin_Changed;
 	}
 	return Plugin_Continue;
