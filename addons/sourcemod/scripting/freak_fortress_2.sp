@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev"
+#define PLUGIN_VERSION "2.3.0-dev-1"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -99,6 +99,8 @@ new Handle:cvarFirstRound;
 new Handle:cvarCircuitStun;
 new Handle:cvarSpecForceBoss;
 new Handle:cvarUseCountdown;
+new Handle:cvarEnableEurekaEffect;
+new Handle:cvarForceBossTeam;
 
 new Handle:cvarHealthBar;
 
@@ -2563,15 +2565,25 @@ public Action:checkFirstHale(Handle:timer,any:i)
 	chkFirstHale++;
 }
 
-public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)  //WEAPON BALANCE
+public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)  //WEAPON BALANCE 1
 {
 	if (!Enabled2)
 	{	
 		return Plugin_Continue;
 	}
-	
+
 	switch (iItemDefinitionIndex)
 	{
+		case 38, 457:  //Axtinguisher, Postal Pummeler
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "", true);
+				//NOOP
+			if (hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
 		case 39, 351:  //Flare Gun, Detonator
 		{
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "25 ; 0.5 ; 207 ; 1.33 ; 144 ; 1.0 ; 58 ; 3.2", true);
@@ -2597,7 +2609,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(_, _, "5 ; 1.25 ; 15 ; 0 ; 16 ; 5 ; 32 ; -1 ; 86 ; 1.6 ; 179 ; 1 ; 288 ; 1", true);
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "5 ; 1.25 ; 15 ; 0 ; 16 ; 5 ; 32 ; -1 ; 86 ; 1.6 ; 179 ; 1 ; 288 ; 1", true);
 				//5:  -25% firing speed
 				//15:  No random crits
 				//16:  +5 health on hit
@@ -2611,21 +2623,36 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 648:  //Wrap Assasin
+		case 43,239:  //KGB, GRU
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "279 ; 2.0");
-				//279:  Gives 2 wrapper balls
-			if(hItemOverride != INVALID_HANDLE)
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, 239, "107 ; 1.5 ; 1 ; 0.5 ; 128 ; 1 ; 191 ; -7", true);
+				//KGB:  Change to GRU
+				//107:  +50% faster move speed
+				//1:  -50% damage
+				//128:  Attribs are active only when weapon is active
+				//191:  -7 health/second
+			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
 			}
 		}
-		case 444:  //Mantreads
+		case 56, 1005:  //Huntsman, Festive Huntsman (CM11/Wliu)
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "58 ; 1.5");
-				//58:  +150% self damage push force
-			if(hItemOverride != INVALID_HANDLE)
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "2 ; 1.5");
+				//2:  +150% damage
+			if (hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 132, 266, 482:  //Eyelander, HHHH, Nessie's Nine Iron
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "202 ; 0.5 ; 125 ; -15", true);
+				//202:  +0.5 secs charge duration
+				//125:  -15 health
+			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
@@ -2662,51 +2689,6 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 56, 1005:  //Huntsman, Festive Huntsman (CM11/Wliu)
-		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "2 ; 1.5");
-				//2:  +150% damage
-			if (hItemOverride != INVALID_HANDLE)
-			{
-				hItem = hItemOverride;
-				return Plugin_Changed;
-			}
-		}
-		case 38, 457:  //Axtinguisher, Postal Pummeler
-		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "", true);
-				//NOOP
-			if (hItemOverride != INVALID_HANDLE)
-			{
-				hItem = hItemOverride;
-				return Plugin_Changed;
-			}
-		}
-		case 132, 266, 482:  //Eyelander, HHHH, Nessie's Nine Iron
-		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "202 ; 0.5 ; 125 ; -15", true);
-				//202:  +0.5 secs charge duration
-				//125:  -15 health
-			if (hItemOverride != INVALID_HANDLE)
-			{
-				hItem = hItemOverride;
-				return Plugin_Changed;
-			}
-		}
-		case 43,239:  //KGB, GRU
-		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, 239, "107 ; 1.5 ; 1 ; 0.5 ; 128 ; 1 ; 191 ; -7", true);
-				//KGB:  Change to GRU
-				//107:  +50% faster move speed
-				//1:  -50% damage
-				//128:  Attribs are active only when weapon is active
-				//191:  -7 health/second
-			if (hItemOverride != INVALID_HANDLE)
-			{
-				hItem = hItemOverride;
-				return Plugin_Changed;
-			}
-		}
 		case 331:  //Fists of Steel.  Wliu:  Allow Fists of Steel with modified stats.
 		{
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "205 ; 0.8 ; 206 ; 9", true);
@@ -2731,8 +2713,38 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
+		case 444:  //Mantreads
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "58 ; 1.5");
+				//58:  +150% self damage push force
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 648:  //Wrap Assasin
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "279 ; 2.0");
+				//279:  Gives 2 wrapper balls
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 730:  //Beggar's Bazooka.  Wliu:  +20% faster reload time.
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "97 ; 0.8");  //TODO
+				//97:  20% faster reload time
+			if (hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
 	}
-	
+
 	if (TF2_GetPlayerClass(client) == TFClass_Soldier && (strncmp(classname, "tf_weapon_rocketlauncher", 24, false) == 0 || strncmp(classname, "tf_weapon_shotgun", 17, false) == 0))
 	{
 		new Handle:hItemOverride;
@@ -2783,6 +2795,8 @@ public Action:Timer_NoHonorBound(Handle:timer, any:userid)
 
 stock Handle:PrepareItemHandle(Handle:hItem, String:name[] = "", index = -1, const String:att[] = "", bool:dontpreserve = false)
 {
+	static Handle:hWeapon;
+	new addattribs = 0;
 	new String:weaponAttribsArray[32][32];
 	new attribCount = ExplodeString(att, " ; ", weaponAttribsArray, 32, 32);
 
@@ -3281,7 +3295,7 @@ public Action:Command_MakeNextSpecial(client, args)
 		if (StrContains(Special_Name,arg,false) >= 0)
 		{
 			Incoming[0] = i;
-			ReplyToCommand(client, "[FF2] Set the next Special to %s", Special_Name);
+			ReplyToCommand(client, "[FF2] Set the next boss to %s", Special_Name);
 			return Plugin_Handled;
 		}
 		KvGetString(BossKV[i], "filename",Special_Name, 64);
@@ -3289,7 +3303,7 @@ public Action:Command_MakeNextSpecial(client, args)
 		{
 			Incoming[0] = i;
 			KvGetString(BossKV[i], "name",Special_Name, 64);
-			ReplyToCommand(client, "[FF2] Set the next Special to %s", Special_Name);
+			ReplyToCommand(client, "[FF2] Set the next boss to %s", Special_Name);
 			return Plugin_Handled;
 		}
 	}
@@ -3335,7 +3349,17 @@ public Action:Command_Points(client, args)
 		SetClientQueuePoints(target_list[i],GetClientQueuePoints(target_list[i])+points);
 		ReplyToCommand(client, "[FF2] Added %d queue points to %s", points, target_name);
 	}
+	return Plugin_Handled;
+}
 
+public Action:Command_StopMusic(client, args)
+{
+	if (!Enabled2)
+	{
+		return Plugin_Continue;
+	}
+	Native_StopMusic(INVALID_HANDLE,0);
+	ReplyToCommand(client, "[FF2] Stopped boss music.");
 	return Plugin_Handled;
 }
 
@@ -4250,6 +4274,7 @@ public Action:Timer_RestoreLastClass(Handle:timer, any:userid)
 	LastClass[client] = TFClass_Unknown;
 
 	if (BossTeam == _:TFTeam_Red)
+	{
 		ChangeClientTeam(client, _:TFTeam_Blue);
 	}
 	else
