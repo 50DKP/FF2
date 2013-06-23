@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-1"
+#define PLUGIN_VERSION "2.3.0-dev-2"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -42,8 +42,8 @@ new bool:steamtools = false;
 new chkFirstHale;
 new bool:b_allowBossChgClass = false;
 new bool:b_BossChgClassDetected = false;
-new OtherTeam=2;
-new BossTeam=3;
+new RedTeam=2;
+new BlueTeam=3;
 new FF2RoundState;
 new playing;
 new healthcheckused;
@@ -100,7 +100,7 @@ new Handle:cvarCircuitStun;
 new Handle:cvarSpecForceBoss;
 new Handle:cvarUseCountdown;
 new Handle:cvarEnableEurekaEffect;
-new Handle:cvarForceBossTeam;
+new Handle:cvarForceBlueTeam;
 
 new Handle:cvarHealthBar;
 
@@ -453,7 +453,7 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	CreateNative("FF2_IsFF2Enabled",Native_IsEnabled);
 	CreateNative("FF2_GetBossUserId",Native_GetBoss);
 	CreateNative("FF2_GetBossIndex",Native_GetIndex);
-	CreateNative("FF2_GetBossTeam",Native_GetTeam);
+	CreateNative("FF2_GetBlueTeam",Native_GetTeam);
 	CreateNative("FF2_GetBossSpecial",Native_GetSpecial);
 	CreateNative("FF2_GetBossMax",Native_GetHealth);
 	CreateNative("FF2_GetBossMaxHealth",Native_GetHealthMax);
@@ -1242,7 +1242,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	DrawGameTimer = INVALID_HANDLE;
 	
 	new bool:bBluBoss;
-	new convarsetting = GetConVarInt(cvarForceBossTeam);
+	new convarsetting = GetConVarInt(cvarForceBlueTeam);
 	switch (convarsetting)
 	{
 		case 1:
@@ -1265,33 +1265,33 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			}
 			else if (RoundCounter >= 3 && GetRandomInt(0, 1))
 			{
-				bBluBoss = (BossTeam != 3);
+				bBluBoss = (BlueTeam != 3);
 				RoundCounter = 0;
 			}
 			else
 			{
-				bBluBoss = (BossTeam == 3);
+				bBluBoss = (BlueTeam == 3);
 			}
 		}
 	}
 
 	if (bBluBoss)
 	{
-		new score1 = GetTeamScore(OtherTeam);
-		new score2 = GetTeamScore(BossTeam);
+		new score1 = GetTeamScore(RedTeam);
+		new score2 = GetTeamScore(BlueTeam);
 		SetTeamScore(2,score1);
 		SetTeamScore(3,score2);
-		OtherTeam = 2;
-		BossTeam = 3;
+		RedTeam = 2;
+		BlueTeam = 3;
 	}
 	else
 	{
-		new score1 = GetTeamScore(BossTeam);
-		new score2 = GetTeamScore(OtherTeam);
+		new score1 = GetTeamScore(BlueTeam);
+		new score2 = GetTeamScore(RedTeam);
 		SetTeamScore(2,score1);
 		SetTeamScore(3,score2);
-		BossTeam = 2;
-		OtherTeam = 3;
+		BlueTeam = 2;
+		RedTeam = 3;
 	}
 	playing = 0;
 	for (new ionplay = 1;  ionplay <= MaxClients;  ionplay++)
@@ -1368,7 +1368,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	{
 		if (IsValidClient(Boss[0]))
 		{
-			ChangeClientTeam(Boss[0], BossTeam);
+			ChangeClientTeam(Boss[0], BlueTeam);
 			TF2_RespawnPlayer(Boss[0]);
 		}
 		for (new i = 1;  i <= MaxClients;  i++)
@@ -1376,7 +1376,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			if (IsValidClient(i) && !IsBoss(i) && GetClientTeam(i) > _:TFTeam_Spectator)
 			{
 				SetEntProp(i, Prop_Send, "m_lifeState", 2);
-				ChangeClientTeam(i, OtherTeam);
+				ChangeClientTeam(i, RedTeam);
 				SetEntProp(i, Prop_Send, "m_lifeState", 0);
 				TF2_RespawnPlayer(i);
 				CreateTimer(0.1, MakeNotBoss, GetClientUserId(i));
@@ -1641,7 +1641,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 	}
 
 	FF2RoundState = 2;
-	if ((GetEventInt(event, "team") == BossTeam))
+	if ((GetEventInt(event, "team") == BlueTeam))
 	{
 		if (RandomSound("sound_win",s,PLATFORM_MAX_PATH))
 		{
@@ -2415,7 +2415,7 @@ EquipBoss(index)
 public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast) 
 { 
     new iClient = GetClientOfUserId(GetEventInt(event, "userid")), TFClassType:oldclass = TF2_GetPlayerClass(iClient), iTeam = GetClientTeam(iClient); 
-    if (iTeam==BossTeam && !b_allowBossChgClass && IsPlayerAlive(iClient))  
+    if (iTeam==BlueTeam && !b_allowBossChgClass && IsPlayerAlive(iClient))  
     { 
         b_BossChgClassDetected = true;
         TF2_SetPlayerClass(iClient, oldclass);
@@ -2430,11 +2430,11 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 	}
 	KvRewind(BossKV[Special[index]]);
 	TF2_SetPlayerClass(Boss[index], TFClassType:KvGetNum(BossKV[Special[index]], "class",1));
-	if (GetClientTeam(Boss[index]) != BossTeam)
+	if (GetClientTeam(Boss[index]) != BlueTeam)
 	{
 		b_allowBossChgClass = true;
 		SetEntProp(Boss[index], Prop_Send, "m_lifeState", 2);
-		ChangeClientTeam(Boss[index], BossTeam);
+		ChangeClientTeam(Boss[index], BlueTeam);
 		SetEntProp(Boss[index], Prop_Send, "m_lifeState", 0);
 		TF2_RespawnPlayer(Boss[index]);
 		b_allowBossChgClass = false;
@@ -2609,11 +2609,10 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 41:  //Natascha.  Wliu:  Allow players to have Natascha with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "5 ; 1.25 ; 15 ; 0 ; 16 ; 5 ; 32 ; -1 ; 86 ; 1.6 ; 179 ; 1 ; 288 ; 1", true);
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "5 ; 1.25 ; 15 ; 0 ; 16 ; 5 ; 86 ; 1.6 ; 179 ; 1 ; 288 ; 1", true);
 				//5:  -25% firing speed
 				//15:  No random crits
 				//16:  +5 health on hit
-				//32:  -100% chance to slow target
 				//86:  -60% spinup speed
 				//179:  Minicrits become crits
 				//288:  Cannot be crit boosted
@@ -2641,6 +2640,17 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		{
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "2 ; 1.5");
 				//2:  +150% damage
+			if (hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 57, 231:  //Razorback, Darwin's Danger Shield.  Wliu:  Allowed modified Razorback/Darwin's Danger Shield.
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, 231, "402 ; 1 ; 26 ; 100", true);
+				//402:  Cannot be backstabbed
+				//26:  +100 max health on wearer
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2718,6 +2728,16 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "58 ; 1.5");
 				//58:  +150% self damage push force
 			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 642:  //Cozy Camper.  Wliu:  +7 health/second.
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "57 ; 7", true);
+				//57:  +7 health/second
+			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
@@ -2897,10 +2917,10 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 	}
 
 	SetEntProp(client, Prop_Send, "m_bGlowEnabled", 0); 
-	if (GetClientTeam(client) != OtherTeam)
+	if (GetClientTeam(client) != RedTeam)
 	{
 		SetEntProp(client, Prop_Send, "m_lifeState", 2);
-		ChangeClientTeam(client, OtherTeam);
+		ChangeClientTeam(client, RedTeam);
 		SetEntProp(client, Prop_Send, "m_lifeState", 0);
 		TF2_RespawnPlayer(client);
 	}
@@ -2928,11 +2948,12 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
 		index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch (index)
 		{
-			case 402:  //Bazaar Bargain
+			case 17, 204, 36, 412:  //Syringe Guns
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
-				SpawnWeapon(client,"tf_weapon_sniperrifle",14,1,0,"");
-					//NOOP
+				SpawnWeapon(client,"tf_weapon_syringegun_medic",17,1,10,"17 ;  0.05 ;  144 ;  1");
+					//17:  +5% uber on hit
+					//144:  NOOP
 			}
 			case 237:  //Rocket Jumper
 			{
@@ -2941,12 +2962,11 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
 					//NOOP
 				SetAmmo(client, 0, 20);
 			}
-			case 17, 204, 36, 412:  //Syringe Guns
+			case 402:  //Bazaar Bargain
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
-				SpawnWeapon(client,"tf_weapon_syringegun_medic",17,1,10,"17 ;  0.05 ;  144 ;  1");
-					//17:  +5% uber on hit
-					//144:  NOOP
+				SpawnWeapon(client,"tf_weapon_sniperrifle",14,1,0,"");
+					//NOOP
 			}
 		}
 	}
@@ -2956,19 +2976,6 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
 		index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 		switch (index)
 		{
-			case 57, 231:  //Razorback+Darwin's Danger Shield
-			{
-				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
-				weapon = SpawnWeapon(client,"tf_weapon_smg",16,1,0,"");
-					//NOOP
-			}
-			case 265:  //Sticky Jumper
-			{
-				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
-				weapon = SpawnWeapon(client,"tf_weapon_pipebomblauncher",20,1,0,"");
-					//NOOP
-				SetAmmo(client,1,24);
-			}
 			case 39, 351:  //Flare Gun+Detonator
 			{
 				if (GetEntProp(weapon, Prop_Send, "m_iEntityQuality") != 10)
@@ -2981,15 +2988,23 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
 						//58:  +500% self-push force
 				}
 			}
+			case 265:  //Sticky Jumper
+			{
+				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
+				weapon = SpawnWeapon(client,"tf_weapon_pipebomblauncher",20,1,0,"");
+					//NOOP
+				SetAmmo(client,1,24);
+			}
 		}
 	}
+/*  //Remove once Razorback/Darwin's Danger Shield are working
 	if (FindPlayerBack(client))  //Any sniper back weapon
 	{
 		RemovePlayerBack(client);
 		weapon = SpawnWeapon(client,"tf_weapon_smg",16,1,0,"");
 			//NOOP
-	}
-	
+	}*/
+
 	weapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Melee);
 	if (weapon && IsValidEdict(weapon))
 	{
@@ -3053,7 +3068,7 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
 	}
 	return Plugin_Continue;
 }
-
+/*  //Remove once Razorback/Darwin's Danger Shield are working
 stock RemovePlayerBack(client)
 {
 	new edict = MaxClients+1;
@@ -3080,14 +3095,14 @@ stock FindPlayerBack(client)
 		if (GetEntityNetClass(edict, netclass, sizeof(netclass)) && StrEqual(netclass, "CTFWearable"))
 		{
 			new idx = GetEntProp(edict, Prop_Send, "m_iItemDefinitionIndex");
-			if ((idx == 57 || idx == 231) && GetEntPropEnt(edict, Prop_Send, "m_hOwnerEntity") == client && !GetEntProp(edict, Prop_Send, "m_bDisguiseWearable"))
+			if ((idx == 57 || idx == 231) && GetEntPropEnt(edict, Prop_Send, "m_hOwnerEntity") == client && !GetEntProp(edict, Prop_Send, "m_bDisguiseWearable"))  //Razorback, Darwin's Danger Shield
 			{
 				return true;
 			}
 		}
 	}
 	return false;
-}
+}*/
 
 public Action:event_destroy(Handle:event, const String:name[], bool:dontBroadcast)
 {
@@ -4111,7 +4126,7 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 	}
 	else if (StrEqual(teamString, "auto", false))
 	{
-		team = OtherTeam;
+		team = RedTeam;
 	}
 	else if (StrEqual(teamString, "spectator", false))
 	{
@@ -4121,13 +4136,13 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 		}
 		else
 		{
-			team = OtherTeam;
+			team = RedTeam;
 		}
 	}
 
-	if (team == BossTeam)
+	if (team == BlueTeam)
 	{
-		team = OtherTeam;
+		team = RedTeam;
 	}
 
 	if (team > _:TFTeam_Unassigned)
@@ -4273,7 +4288,7 @@ public Action:Timer_RestoreLastClass(Handle:timer, any:userid)
 	}
 	LastClass[client] = TFClass_Unknown;
 
-	if (BossTeam == _:TFTeam_Red)
+	if (BlueTeam == _:TFTeam_Red)
 	{
 		ChangeClientTeam(client, _:TFTeam_Blue);
 	}
@@ -4364,7 +4379,7 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 	{
 		if(IsValidEdict(i) && IsClientInGame(i) && IsPlayerAlive(i))
 		{
-			if (GetClientTeam(i) == OtherTeam)
+			if (GetClientTeam(i) == RedTeam)
 			{
 				RedAlivePlayers++;
 			}
@@ -4378,7 +4393,7 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 
 	if (RedAlivePlayers == 0)
 	{
-		ForceTeamWin(BossTeam);
+		ForceTeamWin(BlueTeam);
 	}
 	else if ((RedAlivePlayers == 1) && BlueAlivePlayers && !DrawGameTimer)
 	{
@@ -4759,6 +4774,87 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				new wepindex = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 				switch (wepindex)  //WEAPON BALANCE 3
 				{
+					case 14, 201, 664, 851, 792, 801, 881, 890, 899, 908, 752, 957, 966: //CM:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 664 Festive, 851 AWPer Hand, 792 Botkiller (Silver), 801 Gold Botkiller, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 752 Hitman's Heatmaker, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
+					{
+						new Float:chargelevel = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
+						new Float:time = 2.0;
+						time += 4*(chargelevel/100);
+						SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
+						GlowTimer[index]+= RoundToCeil(time);
+						if (GlowTimer[index] > 30.0)
+						{
+							GlowTimer[index] = 30.0;
+						}
+					}
+					case 61:  //Ambassador.  Wliu:  Highlight Hale on Ambassador headshot for 5 seconds.  TODO:  FIX.
+					{
+						if(damage>=102)
+						{
+							new Float:time = 5.0;
+							SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
+							GlowTimer[index]+= RoundToCeil(time);
+							if(GlowTimer[index]>30.0)
+							{
+								GlowTimer[index]=30.0;
+							}
+						}
+					}
+					case 132, 266, 482:  //Swords
+					{
+						IncrementHeadCount(attacker);
+					}
+					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.
+					{
+						new health = GetClientHealth(attacker);
+						new newhealth = health+10;
+						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
+						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
+						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
+						{
+							TF2_RemoveCondition(attacker, TFCond_OnFire);
+						}
+					}
+					case 317:  //Candycane
+					{
+						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
+					}
+					case 355:  //Sydney Sleeper
+					{
+						BossCharge[index][0] -= 5.0;
+						if (BossCharge[index][0] < 0)
+						{
+							BossCharge[index][0] = 0.0;
+						}
+					}
+					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.
+					{
+						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
+						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
+						{
+							SetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy", 1);
+						}
+						new health = GetClientHealth(attacker);
+						new newhealth = health+50;
+						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
+						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
+						if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
+						{
+							TF2_RemoveCondition(attacker, TFCond_OnFire);
+						}
+					}
+/*					case 444:  //Mantreads.  Wliu:  Increase damage 5x, to ~1000.  Remove once Mantreads are working.
+					{
+						damage *= 5.0;
+					}*/
+					case 528:  //Short Circuit
+					{
+						if(circuitStun > 0.0)
+						{
+							TF2_StunPlayer(client, circuitStun, 0.0, TF_STUNFLAGS_SMALLBONK|TF_STUNFLAG_NOSOUNDOREFFECT, attacker);
+							EmitSoundToAll("weapons/barret_arm_zap.wav", client);
+							EmitSoundToClient(client, "weapons/barret_arm_zap.wav");
+						}
+					}
 					case 593:	//Third Degree
 					{
 						new healers[MAXPLAYERS];
@@ -4800,87 +4896,6 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							}
 						}
 					}
-					case 14,201,664,851,792,801,881,890,899,908,752,957,966: //CM:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 664 Festive, 851 AWPer Hand, 792 Botkiller (Silver), 801 Gold Botkiller, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 752 Hitman's Heatmaker, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
-					{
-						new Float:chargelevel = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
-						new Float:time = 2.0;
-						time += 4*(chargelevel/100);
-						SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
-						GlowTimer[index]+= RoundToCeil(time);
-						if (GlowTimer[index] > 30.0)
-						{
-							GlowTimer[index] = 30.0;
-						}
-					}
-					case 355:  //Sydney Sleeper
-					{
-						BossCharge[index][0] -= 5.0;
-						if (BossCharge[index][0] < 0)
-						{
-							BossCharge[index][0] = 0.0;
-						}
-					}
-					case 61:  //Ambassador.  Wliu:  Highlight Hale on Ambassador headshot for 5 seconds.  TODO:  FIX.
-					{
-						if(damage>=102)
-						{
-							new Float:time = 5.0;
-							SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
-							GlowTimer[index]+= RoundToCeil(time);
-							if(GlowTimer[index]>30.0)
-							{
-								GlowTimer[index]=30.0;
-							}
-						}
-					}
-					case 132, 266, 482:  //Swords
-					{
-						IncrementHeadCount(attacker);
-					}
-					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.
-					{
-						new health = GetClientHealth(attacker);
-						new newhealth = health+10;
-						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
-						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
-						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
-						{
-							TF2_RemoveCondition(attacker, TFCond_OnFire);
-						}
-					}
-					case 317:  //Candycane
-					{
-						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
-					}
-					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.
-					{
-						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
-						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
-						{
-							SetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy", 1);
-						}
-						new health = GetClientHealth(attacker);
-						new newhealth = health+50;
-						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
-						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
-						if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
-						{
-							TF2_RemoveCondition(attacker, TFCond_OnFire);
-						}
-					}
-/*					case 444:  //Mantreads.  Wliu:  Increase damage 5x, to ~1000.
-					{
-						damage *= 5.0;
-					}  See above*/
-					case 528:  //Short Circuit
-					{
-						if(circuitStun > 0.0)
-						{
-							TF2_StunPlayer(client, circuitStun, 0.0, TF_STUNFLAGS_SMALLBONK|TF_STUNFLAG_NOSOUNDOREFFECT, attacker);
-							EmitSoundToAll("weapons/barret_arm_zap.wav", client);
-							EmitSoundToClient(client, "weapons/barret_arm_zap.wav");
-						}
-					}
 					case 656:  //Holiday Punch
 					{
 						CreateTimer(0.1, Timer_StopTickle, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
@@ -4894,7 +4909,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				if (activeweapon == GetPlayerWeaponSlot(attacker, TFWeaponSlot_Primary))
 				{
 					new windex = (IsValidEntity(activeweapon) && activeweapon > MaxClients ? GetEntProp(activeweapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
-					if (windex == 14 || windex == 201)
+					if (windex == 14 || windex == 201)  //Sniper rifle, upgradeable sniper rifle
 					{
 						new Float:chargelevel = (IsValidEntity(activeweapon) && activeweapon > MaxClients ? GetEntPropFloat(activeweapon, Prop_Send, "m_flChargedDamage") : 0.0);
 						new Float:time = 2.0;
@@ -4907,7 +4922,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						}
 					}
 				}
-				
+
 				new bool:bIsBackstab = false;
 				if (GetFeatureStatus(FeatureType_Capability, "SDKHook_DmgCustomInOTD") == FeatureStatus_Available)
 				{
@@ -4916,7 +4931,6 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						bIsBackstab = true;
 					}
 				}
-
 				else if (activeweapon == GetPlayerWeaponSlot(attacker, TFWeaponSlot_Melee) && damage > 1000.0)
 				{
 					decl String:wepclassname[32];
@@ -6763,7 +6777,7 @@ public Native_GetIndex(Handle:plugin,numParams)
 
 public Native_GetTeam(Handle:plugin,numParams)
 {
-	return BossTeam;
+	return BlueTeam;
 }
 
 public Native_GetSpecial(Handle:plugin,numParams)
@@ -7045,7 +7059,7 @@ public Action:VSH_OnGetSaxtonHaleTeam(&result)
 {
 	if (Enabled)
 	{
-		result = BossTeam; 	
+		result = BlueTeam; 	
 		return Plugin_Changed;
 	}
 	return Plugin_Continue;
