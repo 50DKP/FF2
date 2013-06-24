@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-4"
+#define PLUGIN_VERSION "2.3.0-dev-5"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -1371,7 +1371,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			ChangeClientTeam(Boss[0], BossTeam);
 			TF2_RespawnPlayer(Boss[0]);
 		}
-		for (new i = 1;  i <= MaxClients;  i++)
+		for (new i = 1; i <= MaxClients; i++)
 		{
 			if (IsValidClient(i) && !IsBoss(i) && GetClientTeam(i) > _:TFTeam_Spectator)
 			{
@@ -1820,7 +1820,7 @@ stock CalcQueuePoints()
 					add_points2[i]=add_points[i];
 				}
 			}
-			else //if (!IsFakeClient(i) && (GetClientTeam(i) > _:TFTeam_Spectator || SpecForceBoss))  //Remove if this fixes the Blue team issue.
+			else if (!IsFakeClient(i) && (GetClientTeam(i) > _:TFTeam_Spectator || SpecForceBoss))
 			{
 				add_points[i]=10;
 				add_points2[i]=10;
@@ -6772,7 +6772,9 @@ public Native_GetBoss(Handle:plugin,numParams)
 {
 	new i = GetNativeCell(1);
 	if (i > -1 && i < MaxClients+1 && IsValidClient(Boss[i]))
+	{
 		return GetClientUserId(Boss[i]);
+	}
 	return -1;
 }
 
@@ -6983,7 +6985,9 @@ public Native_GetSpecialKV(Handle:plugin,numParams)
 		if (index!= -1 && index < MaxClients+1 && Special[index]!= -1 && Special[index] < MAXSPECIALS)
 		{
 			if (BossKV[Special[index]] != INVALID_HANDLE)
+			{
 				KvRewind(BossKV[Special[index]]);
+			}
 			return _:BossKV[Special[index]];
 		}
 	}
