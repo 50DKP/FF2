@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-3"
+#define PLUGIN_VERSION "2.3.0-dev-4"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -42,8 +42,8 @@ new bool:steamtools = false;
 new chkFirstHale;
 new bool:b_allowBossChgClass = false;
 new bool:b_BossChgClassDetected = false;
-new RedTeam=2;
-new BlueTeam=3;
+new OtherTeam=2;
+new BossTeam=3;
 new FF2RoundState;
 new playing;
 new healthcheckused;
@@ -100,7 +100,7 @@ new Handle:cvarCircuitStun;
 new Handle:cvarSpecForceBoss;
 new Handle:cvarUseCountdown;
 new Handle:cvarEnableEurekaEffect;
-new Handle:cvarForceBlueTeam;
+new Handle:cvarForceBossTeam;
 
 new Handle:cvarHealthBar;
 
@@ -453,7 +453,7 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	CreateNative("FF2_IsFF2Enabled",Native_IsEnabled);
 	CreateNative("FF2_GetBossUserId",Native_GetBoss);
 	CreateNative("FF2_GetBossIndex",Native_GetIndex);
-	CreateNative("FF2_GetBlueTeam",Native_GetTeam);
+	CreateNative("FF2_GetBossTeam",Native_GetTeam);
 	CreateNative("FF2_GetBossSpecial",Native_GetSpecial);
 	CreateNative("FF2_GetBossMax",Native_GetHealth);
 	CreateNative("FF2_GetBossMaxHealth",Native_GetHealthMax);
@@ -1242,7 +1242,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	DrawGameTimer = INVALID_HANDLE;
 	
 	new bool:bBluBoss;
-	new convarsetting = GetConVarInt(cvarForceBlueTeam);
+	new convarsetting = GetConVarInt(cvarForceBossTeam);
 	switch (convarsetting)
 	{
 		case 1:
@@ -1265,33 +1265,33 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			}
 			else if (RoundCounter >= 3 && GetRandomInt(0, 1))
 			{
-				bBluBoss = (BlueTeam != 3);
+				bBluBoss = (BossTeam != 3);
 				RoundCounter = 0;
 			}
 			else
 			{
-				bBluBoss = (BlueTeam == 3);
+				bBluBoss = (BossTeam == 3);
 			}
 		}
 	}
 
 	if (bBluBoss)
 	{
-		new score1 = GetTeamScore(RedTeam);
-		new score2 = GetTeamScore(BlueTeam);
+		new score1 = GetTeamScore(OtherTeam);
+		new score2 = GetTeamScore(BossTeam);
 		SetTeamScore(2,score1);
 		SetTeamScore(3,score2);
-		RedTeam = 2;
-		BlueTeam = 3;
+		OtherTeam = 2;
+		BossTeam = 3;
 	}
 	else
 	{
-		new score1 = GetTeamScore(BlueTeam);
-		new score2 = GetTeamScore(RedTeam);
+		new score1 = GetTeamScore(BossTeam);
+		new score2 = GetTeamScore(OtherTeam);
 		SetTeamScore(2,score1);
 		SetTeamScore(3,score2);
-		BlueTeam = 2;
-		RedTeam = 3;
+		BossTeam = 2;
+		OtherTeam = 3;
 	}
 	playing = 0;
 	for (new ionplay = 1;  ionplay <= MaxClients;  ionplay++)
@@ -1368,7 +1368,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	{
 		if (IsValidClient(Boss[0]))
 		{
-			ChangeClientTeam(Boss[0], BlueTeam);
+			ChangeClientTeam(Boss[0], BossTeam);
 			TF2_RespawnPlayer(Boss[0]);
 		}
 		for (new i = 1;  i <= MaxClients;  i++)
@@ -1376,7 +1376,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 			if (IsValidClient(i) && !IsBoss(i) && GetClientTeam(i) > _:TFTeam_Spectator)
 			{
 				SetEntProp(i, Prop_Send, "m_lifeState", 2);
-				ChangeClientTeam(i, RedTeam);
+				ChangeClientTeam(i, OtherTeam);
 				SetEntProp(i, Prop_Send, "m_lifeState", 0);
 				TF2_RespawnPlayer(i);
 				CreateTimer(0.1, MakeNotBoss, GetClientUserId(i));
@@ -1641,7 +1641,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 	}
 
 	FF2RoundState = 2;
-	if ((GetEventInt(event, "team") == BlueTeam))
+	if ((GetEventInt(event, "team") == BossTeam))
 	{
 		if (RandomSound("sound_win",s,PLATFORM_MAX_PATH))
 		{
@@ -2415,7 +2415,7 @@ EquipBoss(index)
 public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast) 
 { 
     new iClient = GetClientOfUserId(GetEventInt(event, "userid")), TFClassType:oldclass = TF2_GetPlayerClass(iClient), iTeam = GetClientTeam(iClient); 
-    if (iTeam==BlueTeam && !b_allowBossChgClass && IsPlayerAlive(iClient))  
+    if (iTeam==BossTeam && !b_allowBossChgClass && IsPlayerAlive(iClient))  
     { 
         b_BossChgClassDetected = true;
         TF2_SetPlayerClass(iClient, oldclass);
@@ -2430,11 +2430,11 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 	}
 	KvRewind(BossKV[Special[index]]);
 	TF2_SetPlayerClass(Boss[index], TFClassType:KvGetNum(BossKV[Special[index]], "class",1));
-	if (GetClientTeam(Boss[index]) != BlueTeam)
+	if (GetClientTeam(Boss[index]) != BossTeam)
 	{
 		b_allowBossChgClass = true;
 		SetEntProp(Boss[index], Prop_Send, "m_lifeState", 2);
-		ChangeClientTeam(Boss[index], BlueTeam);
+		ChangeClientTeam(Boss[index], BossTeam);
 		SetEntProp(Boss[index], Prop_Send, "m_lifeState", 0);
 		TF2_RespawnPlayer(Boss[index]);
 		b_allowBossChgClass = false;
@@ -2917,10 +2917,10 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 	}
 
 	SetEntProp(client, Prop_Send, "m_bGlowEnabled", 0); 
-	if (GetClientTeam(client) != RedTeam)
+	if (GetClientTeam(client) != OtherTeam)
 	{
 		SetEntProp(client, Prop_Send, "m_lifeState", 2);
-		ChangeClientTeam(client, RedTeam);
+		ChangeClientTeam(client, OtherTeam);
 		SetEntProp(client, Prop_Send, "m_lifeState", 0);
 		TF2_RespawnPlayer(client);
 	}
@@ -4126,7 +4126,7 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 	}
 	else if (StrEqual(teamString, "auto", false))
 	{
-		team = RedTeam;
+		team = OtherTeam;
 	}
 	else if (StrEqual(teamString, "spectator", false))
 	{
@@ -4136,13 +4136,13 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 		}
 		else
 		{
-			team = RedTeam;
+			team = OtherTeam;
 		}
 	}
 
-	if (team == BlueTeam)
+	if (team == BossTeam)
 	{
-		team = RedTeam;
+		team = OtherTeam;
 	}
 
 	if (team > _:TFTeam_Unassigned)
@@ -4288,7 +4288,7 @@ public Action:Timer_RestoreLastClass(Handle:timer, any:userid)
 	}
 	LastClass[client] = TFClass_Unknown;
 
-	if (BlueTeam == _:TFTeam_Red)
+	if (BossTeam == _:TFTeam_Red)
 	{
 		ChangeClientTeam(client, _:TFTeam_Blue);
 	}
@@ -4379,7 +4379,7 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 	{
 		if(IsValidEdict(i) && IsClientInGame(i) && IsPlayerAlive(i))
 		{
-			if (GetClientTeam(i) == RedTeam)
+			if (GetClientTeam(i) == OtherTeam)
 			{
 				RedAlivePlayers++;
 			}
@@ -4393,7 +4393,7 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 
 	if (RedAlivePlayers == 0)
 	{
-		ForceTeamWin(BlueTeam);
+		ForceTeamWin(BossTeam);
 	}
 	else if ((RedAlivePlayers == 1) && BlueAlivePlayers && !DrawGameTimer)
 	{
@@ -6783,7 +6783,7 @@ public Native_GetIndex(Handle:plugin,numParams)
 
 public Native_GetTeam(Handle:plugin,numParams)
 {
-	return BlueTeam;
+	return BossTeam;
 }
 
 public Native_GetSpecial(Handle:plugin,numParams)
@@ -7065,7 +7065,7 @@ public Action:VSH_OnGetSaxtonHaleTeam(&result)
 {
 	if (Enabled)
 	{
-		result = BlueTeam; 	
+		result = BossTeam; 	
 		return Plugin_Changed;
 	}
 	return Plugin_Continue;

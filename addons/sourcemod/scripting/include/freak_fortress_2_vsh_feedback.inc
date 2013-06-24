@@ -99,7 +99,7 @@ public Native_VSHGetHale(Handle:plugin, numParams)
 
 public Native_VSHGetTeam(Handle:plugin, numParams)
 {
-	new result=BlueTeam;
+	new result=BossTeam;
 	new result2=result;
 	
 	new Action:act = Plugin_Continue;
