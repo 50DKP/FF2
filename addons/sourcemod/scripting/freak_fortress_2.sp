@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-2"
+#define PLUGIN_VERSION "2.3.0-dev-3"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -683,7 +683,7 @@ public OnConfigsExecuted()
 		if (steamtools)
 		{
 			decl String:gameDesc[64];
-			Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 (%s)", ff2versiontitles[maxversion]);
+			Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 %s", PLUGIN_VERSION);
 			Steam_SetGameDescription(gameDesc);
 		}
 		Enabled = true;
@@ -1022,7 +1022,7 @@ public CvarChange(Handle:convar, const String:oldValue[], const String:newValue[
 			if (steamtools)
 			{
 				decl String:gameDesc[64];
-				Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 (%s)", ff2versiontitles[maxversion]);
+				Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 %s", PLUGIN_VERSION);
 				Steam_SetGameDescription(gameDesc);
 			}
 		}
@@ -1820,7 +1820,7 @@ stock CalcQueuePoints()
 					add_points2[i]=add_points[i];
 				}
 			}
-			else if (!IsFakeClient(i) && (GetClientTeam(i) > _:TFTeam_Spectator || SpecForceBoss))
+			else //if (!IsFakeClient(i) && (GetClientTeam(i) > _:TFTeam_Spectator || SpecForceBoss))  //Remove if this fixes the Blue team issue.
 			{
 				add_points[i]=10;
 				add_points2[i]=10;
@@ -3425,7 +3425,7 @@ public Action:Command_ReloadSubPlugins(client, args)
 
 stock SetControlPoint(bool:enable)
 {
-	new CPm = MaxClients+1; 	
+	new CPm = MaxClients+1;
 	while ((CPm = FindEntityByClassname2(CPm, "team_control_point")) != -1)
 	{
 		if (CPm > MaxClients && IsValidEdict(CPm))
@@ -4774,7 +4774,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				new wepindex = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
 				switch (wepindex)  //WEAPON BALANCE 3
 				{
-					case 14, 201, 664, 851, 792, 801, 881, 890, 899, 908, 752, 957, 966: //CM:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 664 Festive, 851 AWPer Hand, 792 Botkiller (Silver), 801 Gold Botkiller, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 752 Hitman's Heatmaker, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
+					case 14, 201, 664, 851, 792, 801, 881, 890, 899, 908, 752, 957, 966:  //ChrisMiuchiz:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 664 Festive, 851 AWPer Hand, 792 Botkiller (Silver), 801 Gold Botkiller, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 752 Hitman's Heatmaker, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
 					{
 						new Float:chargelevel = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
 						new Float:time = 2.0;
@@ -4786,13 +4786,12 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							GlowTimer[index] = 30.0;
 						}
 					}
-					case 61:  //Ambassador.  Wliu:  Highlight Hale on Ambassador headshot for 5 seconds.  TODO:  FIX.
+					case 61:  //Ambassador.  Wliu:  Highlight Hale on Ambassador headshot for 5 seconds.
 					{
 						if(damage>=102)
 						{
-							new Float:time = 5.0;
 							SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
-							GlowTimer[index]+= RoundToCeil(time);
+							GlowTimer[index]+= RoundToCeil(5.0);
 							if(GlowTimer[index]>30.0)
 							{
 								GlowTimer[index]=30.0;
@@ -4896,7 +4895,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							}
 						}
 					}
-					case 656:  //Holiday Punch
+					case 656:  //Holiday Punch.  TODO
 					{
 						CreateTimer(0.1, Timer_StopTickle, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 						if(TF2_IsPlayerInCondition(attacker, TFCond_Dazed))
@@ -4905,11 +4904,12 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						}
 					}
 				}
+
 				new activeweapon = GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon");
 				if (activeweapon == GetPlayerWeaponSlot(attacker, TFWeaponSlot_Primary))
 				{
 					new windex = (IsValidEntity(activeweapon) && activeweapon > MaxClients ? GetEntProp(activeweapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
-					if (windex == 14 || windex == 201)  //Sniper rifle, upgradeable sniper rifle
+					if (windex == 14 || windex == 201)  //Sniper Rifle, Upgradeable Sniper Rifle
 					{
 						new Float:chargelevel = (IsValidEntity(activeweapon) && activeweapon > MaxClients ? GetEntPropFloat(activeweapon, Prop_Send, "m_flChargedDamage") : 0.0);
 						new Float:time = 2.0;
@@ -4921,20 +4921,24 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							GlowTimer[index] = 30.0;
 						}
 					}
+					else if (windex == 61)  //Ambassador.  Wliu:  Highlight Hale on Ambassador headshot for 5 seconds.
+					{
+						if(damage>=102)
+						{
+							SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
+							GlowTimer[index]+= RoundToCeil(5.0);
+							if(GlowTimer[index]>30.0)
+							{
+								GlowTimer[index]=30.0;
+							}
+						}
+					}
 				}
 
 				new bool:bIsBackstab = false;
 				if (GetFeatureStatus(FeatureType_Capability, "SDKHook_DmgCustomInOTD") == FeatureStatus_Available)
 				{
 					if (damagecustom == TF_CUSTOM_BACKSTAB)
-					{
-						bIsBackstab = true;
-					}
-				}
-				else if (activeweapon == GetPlayerWeaponSlot(attacker, TFWeaponSlot_Melee) && damage > 1000.0)
-				{
-					decl String:wepclassname[32];
-					if (GetEdictClassname(activeweapon, wepclassname, sizeof(wepclassname)) && strcmp(wepclassname, "tf_weapon_knife", false) == 0)
 					{
 						bIsBackstab = true;
 					}
@@ -4966,12 +4970,12 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					SetEntPropFloat(attacker, Prop_Send, "m_flNextAttack", NextAttackTime);
 					if (!(FF2flags[attacker] & FF2FLAG_HUDDISABLED))
 					{
-						PrintCenterText(attacker,"You backstabbed him!");
+						PrintCenterText(attacker,"You backstabbed the boss!");
 					}
 
 					if (!(FF2flags[client] & FF2FLAG_HUDDISABLED))
 					{
-						PrintCenterText(client,"You were just backstabbed!");
+						PrintCenterText(client,"You just got backstabbed!");
 					}
 					new Handle:stabevent = CreateEvent("player_hurt", true);
 					SetEventInt(stabevent, "userid", GetClientUserId(client));
@@ -6066,7 +6070,9 @@ GetClientQueuePoints(client)
 {
 	if (!IsValidClient(client)) return 0;
 	if (IsFakeClient(client))
+	{
 		return botqueuepoints;
+	}
 	if (!AreClientCookiesCached(client)) return 0;
 	decl String:s[24];
 	decl String:ff2cookies_values[8][5];
