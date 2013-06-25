@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-6"
+#define PLUGIN_VERSION "2.3.0-dev-7"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -2567,7 +2567,7 @@ public Action:checkFirstHale(Handle:timer,any:i)
 	chkFirstHale++;
 }
 
-public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)  //WEAPON BALANCE 1
+public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)  //WEAPON BALANCE 1 (custom attributes)
 {
 	if (!Enabled2)
 	{	
@@ -2727,8 +2727,18 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 444:  //Mantreads
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "58 ; 1.5");
-				//58:  +150% self damage push force
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "58 ; 2.0");
+				//58:  +100% self damage push force
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 625:  //Holiday Punch.  Wliu:  Slows enemy by 40% for 2 secs on hit
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "182 ; 2");
+				//182:  Slows enemy by 40% for 2 secs
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2930,7 +2940,7 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 	return Plugin_Continue;
 }
 
-public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2
+public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check weapons)
 {
 	if (!IsValidClient(client) || !IsPlayerAlive(client) || FF2RoundState == 2 || IsBoss(client))
 	{
@@ -3505,7 +3515,7 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 		b_BossChgClassDetected = false; 
 	}
 
-	if (GetBossIndex(client)!=-1 && FF2RoundState==0)  //CHRIS!
+	if (GetBossIndex(client)!=-1 && FF2RoundState==0)
 	{
 		TF2_RemoveAllWeapons(client);
 	} 
@@ -3652,7 +3662,7 @@ public Action:ClientTimer(Handle:hTimer)
 						cond = TFCond_Buffed;
 					}
 				}
-				case 656:  //Holiday Punch.  TODO
+				case 656:  //Holiday Punch.
 				{
 					addthecrit = true;
 					cond = TFCond_Buffed;
@@ -4774,7 +4784,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				}
 
 				new wepindex = (IsValidEntity(weapon) && weapon > MaxClients ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") : -1);
-				switch (wepindex)  //WEAPON BALANCE 3
+				switch (wepindex)  //WEAPON BALANCE 3 (on hit)
 				{
 					case 14, 201, 664, 851, 792, 801, 881, 890, 899, 908, 752, 957, 966:  //ChrisMiuchiz:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 664 Festive, 851 AWPer Hand, 792 Botkiller (Silver), 801 Gold Botkiller, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 752 Hitman's Heatmaker, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
 					{
@@ -4897,10 +4907,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							}
 						}
 					}
-					case 656:  //Holiday Punch.  TODO
+					case 656:  //Holiday Punch.
 					{
 						CreateTimer(0.1, Timer_StopTickle, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
-						if(TF2_IsPlayerInCondition(attacker, TFCond_Dazed))
+						if (TF2_IsPlayerInCondition(attacker, TFCond_Dazed))
 						{
 							TF2_RemoveCondition(attacker, TFCond_Dazed);
 						}
@@ -5183,6 +5193,7 @@ stock IncrementHeadCount(client)
 	SetEntProp(client, Prop_Send, "m_iHealth", health+15);
 	TF2_AddCondition(client, TFCond_SpeedBuffAlly, 0.01);
 }
+
 stock SwitchToOtherWeapon(client)
 {
 	new ammo = GetAmmo(client, 0);
@@ -6480,6 +6491,7 @@ stock SetAmmo(client, slot, ammo)
 		SetEntData(client, iAmmoTable+iOffset, ammo, 4, true);
 	}
 }
+
 stock GetAmmo(client, slot)
 {
 	if (!IsValidClient(client)) return 0;
