@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-5"
+#define PLUGIN_VERSION "2.3.0-dev-6"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -474,16 +474,16 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	CreateNative("FF2_SetFF2flags",Native_SetFF2flags);
 	CreateNative("FF2_GetQueuePoints",Native_GetQueuePoints);
 	CreateNative("FF2_SetQueuePoints",Native_SetQueuePoints);
-	
+
 	PreAbility = CreateGlobalForward("FF2_PreAbility",ET_Hook,Param_Cell,Param_String,Param_String,Param_Cell,Param_CellByRef);
 	OnAbility = CreateGlobalForward("FF2_OnAbility",ET_Hook,Param_Cell,Param_String,Param_String,Param_Cell);
 	OnMusic = CreateGlobalForward("FF2_OnMusic", ET_Hook, Param_String, Param_FloatByRef);
 	OnTriggerHurt = CreateGlobalForward("FF2_OnTriggerHurt",ET_Hook,Param_Cell,Param_Cell,Param_FloatByRef);
 	OnSpecialSelected = CreateGlobalForward("FF2_OnSpecialSelected",ET_Hook,Param_Cell,Param_CellByRef,Param_String);
 	OnAddQueuePoints = CreateGlobalForward("FF2_OnAddQueuePoints",ET_Hook,Param_Array);
-	
+
 	RegPluginLibrary("freak_fortress_2");
-	
+
 	AskPluginLoad_VSH();
 	MarkNativeAsOptional("Steam_SetGameDescription");
 	return APLRes_Success;
@@ -502,9 +502,11 @@ public OnPluginStart()
 	cvarCrits = CreateConVar("ff2_crits", "1", "Can Boss get crits?", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarFirstRound = CreateConVar("ff2_first_round", "0", "Disable(0) or Enable(1) FF2 in 1st round.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarCircuitStun = CreateConVar("ff2_circuit_stun", "2", "0 to disable Short Circuit stun, > 0 to make it stun Boss for x seconds", FCVAR_PLUGIN, true, 0.0);
-	cvarUseCountdown = CreateConVar("ff2_countdown", "120", "Seconds of deathly countdown (begins when only 1 enemy lefts)", FCVAR_PLUGIN);
+	cvarUseCountdown = CreateConVar("ff2_countdown", "120", "Seconds of deathly countdown (begins when only 1 enemy is left)", FCVAR_PLUGIN);
 	cvarSpecForceBoss = CreateConVar("ff2_spec_force_boss", "0", "Spectators are allowed in Boss' queue.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-	cvarHealthBar = CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0); // Added by Powerlord
+	cvarEnableEurekaEffect = CreateConVar("ff2_enable_eureka", "0", "1- allow Eureka Effect, else disallow", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	cvarForceBossTeam = CreateConVar("ff2_force_team", "0", "0- Use plugin logic, 1- random team, 2- red, 3- blue", FCVAR_PLUGIN, true, 0.0, true, 3.0);
+	cvarHealthBar = CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarAllowSpectators = FindConVar("mp_allowspectators");
 
 	HookConVarChange(cvarHealthBar, HealthbarEnableChanged);
@@ -548,7 +550,7 @@ public OnPluginStart()
 	RegConsoleCmd("ff2_voice", VoiceTogglePanelCmd);
 	RegConsoleCmd("ff2_resetpoints", ResetQueuePointsCmd);
 	RegConsoleCmd("ff2resetpoints", ResetQueuePointsCmd);
-	
+
 	RegConsoleCmd("hale", FF2Panel);
 	RegConsoleCmd("hale_hp", Command_GetHPCmd);
 	RegConsoleCmd("halehp", Command_GetHPCmd);
@@ -564,11 +566,11 @@ public OnPluginStart()
 	RegConsoleCmd("hale_voice", VoiceTogglePanelCmd);
 	RegConsoleCmd("hale_resetpoints", ResetQueuePointsCmd);
 	RegConsoleCmd("haleresetpoints", ResetQueuePointsCmd);
-	
+
 	RegConsoleCmd("nextmap", NextMapCmd);
 	RegConsoleCmd("say", SayCmd);
 	RegConsoleCmd("say_team", SayCmd);
-	
+
 	AddCommandListener(DoTaunt, "taunt");
 	AddCommandListener(DoTaunt, "+taunt");
 	AddCommandListener(DoTaunt, "+use_action_slot_item_server");
@@ -577,7 +579,7 @@ public OnPluginStart()
 	AddCommandListener(DoSuicide, "kill");
 	AddCommandListener(Destroy, "destroy");
 
-	RegAdminCmd("ff2_special", Command_MakeNextSpecial, ADMFLAG_CHEATS, "Call a special to next round.");
+	RegAdminCmd("ff2_special", Command_MakeNextSpecial, ADMFLAG_CHEATS, "Set the next round's boss.");
 /*	Admins shouldn't need the following commands:	
 	RegAdminCmd("ff2_addpoints", Command_Points, ADMFLAG_CHEATS, "ff2_addpoints < target > < points > - Add queue points to user.");
 	RegAdminCmd("ff2_point_enable", Command_Point_Enable, ADMFLAG_CHEATS, "Enable CP. Only with ff2_point_type = 0");
@@ -798,9 +800,9 @@ public AddToDownload()
 	PrecacheSound("vo/announcer_ends_2min.wav", true);
 }
 
-EnableSubPlugins(bool:forse = false)
+EnableSubPlugins(bool:force = false)
 {
-	if (isSubPluginsEnabled && !forse)
+	if (isSubPluginsEnabled && !force)
 	{
 		return;
 	}
@@ -830,9 +832,9 @@ EnableSubPlugins(bool:forse = false)
 	}
 }
 
-DisableSubPlugins(bool:forse = false)
+DisableSubPlugins(bool:force = false)
 {
-	if (!isSubPluginsEnabled && !forse)
+	if (!isSubPluginsEnabled && !force)
 	{
 		return;
 	}
@@ -857,7 +859,7 @@ public LoadCharacter(const String:character[])
 	BuildPath(Path_SM,s,PLATFORM_MAX_PATH,"configs/freak_fortress_2/%s.cfg",character);
 	if (!FileExists(s))
 	{
-		LogError("Character %s is not exists",character);
+		LogError("Character %s does not exist",character);
 		return;
 	}
 	BossKV[Specials] = CreateKeyValues("character");
@@ -1130,7 +1132,7 @@ stock bool:IsFF2Map(bool:forceRecalc = false)
 			pingas++;
 			if (pingas == 100)
 			{
-				LogError("[FF2] Breaking infinite loop when trying to check the map.");
+				LogError("[FF2] Breaking infinite loop while trying to check the map.");
 			}
 			Format(s, strlen(s)-1, s);
 			if (strncmp(s, "//", 2, false) == 0)
