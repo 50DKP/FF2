@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-7"
+#define PLUGIN_VERSION "2.3.0-dev-8"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -420,7 +420,7 @@ stock FindVersionData(Handle:panel, versionindex)
 		default:
 		{
 			DrawPanelText(panel, "-- Somehow you've managed to find a glitched version page!");
-			DrawPanelText(panel, "-- Congratulations. Now go fight Boss.");
+			DrawPanelText(panel, "-- Congratulations. Now go fight the Boss.");
 		}
 	}
 }
@@ -611,7 +611,7 @@ public OnPluginStart()
 	AddMultiTargetFilter("@!hale", BossTargetFilter, "all non-Boss players", false);
 	AddMultiTargetFilter("@boss", BossTargetFilter, "all current Bosses", false);
 	AddMultiTargetFilter("@!boss", BossTargetFilter, "all non-Boss players", false);
-	
+
 	steamtools = LibraryExists("SteamTools");
 }
 
@@ -2735,16 +2735,6 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
-		case 625:  //Holiday Punch.  Wliu:  Slows enemy by 40% for 2 secs on hit
-		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "182 ; 2");
-				//182:  Slows enemy by 40% for 2 secs
-			if(hItemOverride != INVALID_HANDLE)
-			{
-				hItem = hItemOverride;
-				return Plugin_Changed;
-			}
-		}
 		case 642:  //Cozy Camper.  Wliu:  +7 health/second.
 		{
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "57 ; 7", true);
@@ -2759,6 +2749,16 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		{
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "279 ; 2.0");
 				//279:  Gives 2 wrapper balls
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem = hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 656:  //Holiday Punch.  Wliu:  Slows enemy by 40% for 2 secs on hit
+		{
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "182 ; 2");
+				//182:  Slows enemy by 40% for 2 secs
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -3009,13 +3009,6 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check we
 			}
 		}
 	}
-/*  //Remove once Razorback/Darwin's Danger Shield are working
-	if (FindPlayerBack(client))  //Any sniper back weapon
-	{
-		RemovePlayerBack(client);
-		weapon = SpawnWeapon(client,"tf_weapon_smg",16,1,0,"");
-			//NOOP
-	}*/
 
 	weapon = GetPlayerWeaponSlot(client, TFWeaponSlot_Melee);
 	if (weapon && IsValidEdict(weapon))
@@ -3080,41 +3073,6 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check we
 	}
 	return Plugin_Continue;
 }
-/*  //Remove once Razorback/Darwin's Danger Shield are working
-stock RemovePlayerBack(client)
-{
-	new edict = MaxClients+1;
-	while ((edict = FindEntityByClassname2(edict, "tf_wearable")) != -1)
-	{
-		decl String:netclass[32];
-		if (GetEntityNetClass(edict, netclass, sizeof(netclass)) && StrEqual(netclass, "CTFWearable"))
-		{
-			new idx = GetEntProp(edict, Prop_Send, "m_iItemDefinitionIndex");
-			if ((idx == 57 || idx == 231) && GetEntPropEnt(edict, Prop_Send, "m_hOwnerEntity") == client && !GetEntProp(edict, Prop_Send, "m_bDisguiseWearable"))
-			{
-				AcceptEntityInput(edict, "Kill");
-			}
-		}
-	}
-}
-
-stock FindPlayerBack(client)
-{
-	new edict = MaxClients+1;
-	while ((edict = FindEntityByClassname2(edict, "tf_wearable")) != -1)
-	{
-		decl String:netclass[32];
-		if (GetEntityNetClass(edict, netclass, sizeof(netclass)) && StrEqual(netclass, "CTFWearable"))
-		{
-			new idx = GetEntProp(edict, Prop_Send, "m_iItemDefinitionIndex");
-			if ((idx == 57 || idx == 231) && GetEntPropEnt(edict, Prop_Send, "m_hOwnerEntity") == client && !GetEntProp(edict, Prop_Send, "m_bDisguiseWearable"))  //Razorback, Darwin's Danger Shield
-			{
-				return true;
-			}
-		}
-	}
-	return false;
-}*/
 
 public Action:event_destroy(Handle:event, const String:name[], bool:dontBroadcast)
 {
@@ -4853,10 +4811,6 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							TF2_RemoveCondition(attacker, TFCond_OnFire);
 						}
 					}
-/*					case 444:  //Mantreads.  Wliu:  Increase damage 5x, to ~1000.  Remove once Mantreads are working.
-					{
-						damage *= 5.0;
-					}*/
 					case 528:  //Short Circuit
 					{
 						if(circuitStun > 0.0)

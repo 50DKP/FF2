@@ -1,10 +1,12 @@
-//CHANGELOG:
-//----------
-//v1.2 (6/18/2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
-//v1.1 (6/3/2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
-//v1.0 (5/30/2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
+/*CHANGELOG:
+----------
+v1.3 (6/25/2013 A.D.):  Fixed Fempyro picking up ammo (Wliu).
+v1.2 (6/18/2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
+v1.1 (6/3/2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
+v1.0 (5/30/2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
 
-//Current bosses that use this:  Fempyro
+Current bosses that use this:  Fempyro
+*/
 
 #pragma semicolon 1
 
@@ -108,7 +110,7 @@ Rage_Fempyro(index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
-	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; -0.5"));
+	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; -0.5 ; 77 ; 0"));
 		//Weapon:  Rainblower
 		//Level:  101
 		//Quality:  Unique
@@ -116,6 +118,7 @@ Rage_Fempyro(index)
 		//445:  Forces player to enter Pyrovision
 		//165:  Charged airblast
 		//171:  -50% airblast cost
+		//77:  Clip size is 0
 	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
 }
 
