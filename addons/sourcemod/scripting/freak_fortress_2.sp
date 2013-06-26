@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-8"
+#define PLUGIN_VERSION "2.3.0-dev-9"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -2650,9 +2650,9 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 57, 231:  //Razorback, Darwin's Danger Shield.  Wliu:  Allowed modified Razorback/Darwin's Danger Shield.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, 231, "402 ; 1 ; 26 ; 100", true);
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, 231, "402 ; 1 ; 26 ; 75", true);
 				//402:  Cannot be backstabbed
-				//26:  +100 max health on wearer
+				//26:  +75 max health on wearer
 			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
@@ -2703,8 +2703,8 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 331:  //Fists of Steel.  Wliu:  Allow Fists of Steel with modified stats.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "205 ; 0.8 ; 206 ; 9", true);
-				//205:  Reduce ranged damage by 80%
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "205 ; 0.9 ; 206 ; 9", true);
+				//205:  Reduce ranged damage by 90%
 				//206:  Increase melee damage by 800%
 			if (hItemOverride != INVALID_HANDLE)
 			{
@@ -2729,7 +2729,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		{
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "58 ; 2.0");
 				//58:  +100% self damage push force
-			if(hItemOverride != INVALID_HANDLE)
+			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
@@ -2737,7 +2737,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 642:  //Cozy Camper.  Wliu:  +7 health/second.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "57 ; 7", true);
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "57 ; 7");
 				//57:  +7 health/second
 			if (hItemOverride != INVALID_HANDLE)
 			{
@@ -2748,18 +2748,18 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		case 648:  //Wrap Assasin
 		{
 			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "279 ; 2.0");
-				//279:  Gives 2 wrapper balls
-			if(hItemOverride != INVALID_HANDLE)
+				//279:  Gives 2 ornaments
+			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
 			}
 		}
-		case 656:  //Holiday Punch.  Wliu:  Slows enemy by 40% for 2 secs on hit
+		case 656:  //Holiday Punch.  Wliu:  +100% faster weapon switch time
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "182 ; 2");
-				//182:  Slows enemy by 40% for 2 secs
-			if(hItemOverride != INVALID_HANDLE)
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "178 ; 0.0");
+				//178:  +100% faster weapon switch time
+			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
@@ -2767,7 +2767,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		}
 		case 730:  //Beggar's Bazooka.  Wliu:  +20% faster reload time.
 		{
-			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "97 ; 0.8");  //TODO
+			new Handle:hItemOverride = PrepareItemHandle(hItem, _, _, "97 ; 0.8");
 				//97:  20% faster reload time
 			if (hItemOverride != INVALID_HANDLE)
 			{
@@ -2789,6 +2789,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 		else  //All other weapons
 		{
 			hItemOverride = PrepareItemHandle(hItem, _, _, "265 ; 99999.0");
+				//265:  Mini-crits airborne targets for 99999 seconds after being deployed
 		}
 
 		if (hItemOverride != INVALID_HANDLE)
@@ -4716,7 +4717,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 		{
 			if (attacker <= MaxClients)
 			{
-				if (!IsValidEntity(weapon) && (damagetype & DMG_CRUSH) == DMG_CRUSH && damage == 1000.0)	//THIS IS A TELEFRAG
+				if (!IsValidEntity(weapon) && (damagetype & DMG_CRUSH) == DMG_CRUSH && damage == 1000.0)  //Telefrag
 				{
 					damage = (BossHealth[index] > 9001 ? 9001.0 : float(GetEntProp(Boss[index], Prop_Send, "m_iHealth"))+90.0);
 					new teleowner = FindTeleOwner(attacker);
@@ -4806,7 +4807,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						new newhealth = health+50;
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
-						if(TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
+						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
 						{
 							TF2_RemoveCondition(attacker, TFCond_OnFire);
 						}
