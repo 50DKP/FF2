@@ -4804,7 +4804,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							SetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy", 1);
 						}
 						new health = GetClientHealth(attacker);
-						new newhealth = health+50;
+						new newhealth = health + 57 + (health^2 * -1/6000);
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
 						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
