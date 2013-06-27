@@ -4685,14 +4685,17 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 			{
 				case TFClass_Spy: if (GetEntProp(client, Prop_Send, "m_bFeignDeathReady") || TF2_IsPlayerInCondition(client, TFCond_DeadRingered))  //Dead Ringer
 				{
-					if (damagetype & DMG_CRIT) damagetype &= ~DMG_CRIT;
+					if (damagetype & DMG_CRIT)
+					{
+						damagetype &= ~DMG_CRIT;
+					}
 					damage = 620.0;
 					return Plugin_Changed;
 				}
 
 				case TFClass_Soldier: if (IsValidEdict((weapon = GetPlayerWeaponSlot(client, 1))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex") == 226 && !(FF2flags[client]&FF2FLAG_ISBUFFED))  //Battalion's Backup
 				{
-					SetEntPropFloat(client, Prop_Send, "m_flRageMeter",100.0);
+					SetEntPropFloat(client, Prop_Send, "m_flRageMeter", 100.0);
 					FF2flags[client] |= FF2FLAG_ISBUFFED;
 				}
 			}
@@ -4796,7 +4799,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							BossCharge[index][0] = 0.0;
 						}
 					}
-					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.
+					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.  As of 2.3.0, also nerfed the health gain to +5 if the soldier is being buffed by the Battalion's Backup.
 					{
 						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
@@ -4804,7 +4807,15 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							SetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy", 1);
 						}
 						new health = GetClientHealth(attacker);
-						new newhealth = health + 57 + ((health * health) * (-1/6000));
+						new newhealth = health;
+						if (FF2flags[client] |= FF2FLAG_ISBUFFED)  //LET'S DO THIS I DON'T EVEN KNOW WHAT THIS MEANS LET'S CRASH FF2!
+						{
+							newhealth = health + 5;
+						}
+						else
+						{
+							newhealth = health + 50;
+						}
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
 						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
@@ -4821,7 +4832,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							EmitSoundToClient(client, "weapons/barret_arm_zap.wav");
 						}
 					}
-					case 593:	//Third Degree
+					case 593:  //Third Degree
 					{
 						new healers[MAXPLAYERS];
 						new healercount = 0;
