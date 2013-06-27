@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-10"
+#define PLUGIN_VERSION "2.3.0-dev-11"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -177,7 +177,10 @@ static const String:ff2versiontitles[][]=
 	"2.1.0",
 	"2.2.0",
 	"2.2.0",
-	"2.2.1"
+	"2.2.1",
+	"2.3.0",
+	"2.3.0",
+	"2.3.0"
 };
 
 static const String:ff2versiondates[][] = 
@@ -207,13 +210,41 @@ static const String:ff2versiondates[][] =
 	"May 29, 2013",
 	"June 4, 2013",
 	"June 4, 2013",
-	"June 10, 2013"
+	"June 10, 2013",
+	"June 27, 2013",
+	"June 27, 2013",
+	"June 27, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
+		case 28: //2.3.0
+		{
+			DrawPanelText(panel, "Now featuring the Weapon Balance Update!");
+			DrawPanelText(panel, "1) Beggar's Bazooka reloads 20% faster (Wliu)");
+			DrawPanelText(panel, "2) Holiday Punch gives you instant weapon switch (Wliu)");
+			DrawPanelText(panel, "3) Buffed the Fists of Steel a bit more (Wliu)");
+			DrawPanelText(panel, "4) Half-Zatoichi now only gives you +5 health if you're buffed by the Battalion's Backup/ubercharged (Wliu)");
+			DrawPanelText(panel, "See next page (press 2)");
+		}
+		case 27: //2.3.0
+		{
+			DrawPanelText(panel, "5) Re-organized a bunch of files (Wliu/Lawd)");
+			DrawPanelText(panel, "6) Merged in some 1.07 changes (Wliu/Powerlord)");
+			DrawPanelText(panel, "7) Added the Administrator (Lawd/Wliu)");
+			DrawPanelText(panel, "8) Mantreads now do ~1000 damage (Wliu)");
+			DrawPanelText(panel, "9) Old Nick now has a freeze rage (Wliu)");
+			DrawPanelText(panel, "See next page (press 2)");
+		}
+		case 26: //2.3.0
+		{
+			DrawPanelText(panel, "10) Hopefully fixed Fempyro picking up ammo and infinite airblast (Wliu)");
+			DrawPanelText(panel, "11) Natascha can no longer get minicrits or crits (Wliu)");
+			DrawPanelText(panel, "12) Server list now correctly displays \"Freak Fortress 2 version\" instead of \"Team Fortress\" (Wliu)");
+			DrawPanelText(panel, "Expect the following in 2.4.0:  Gangplank rage, Spyper, and Cave Johnson!");
+		}
 		case 25: //2.2.1
 		{
 			DrawPanelText(panel, "~The Quick-Fix Update~");
@@ -491,7 +522,7 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 
 public OnPluginStart()
 {
-	LogMessage("=== Freak Fortress 2 v.%s Initializing === ",ff2versiontitles[maxversion]);
+	LogMessage("=== Freak Fortress 2 v.%s Initializing === ", PLUGIN_VERSION);
 
 	cvarVersion = CreateConVar("ff2_version", PLUGIN_VERSION, "Freak Fortress 2 Version", FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_DONTRECORD);
 	cvarPointType = CreateConVar("ff2_point_type", "0", "Select condition to enable point (0 - alive players, 1 - time)", FCVAR_PLUGIN, true, 0.0, true, 1.0);
@@ -2618,7 +2649,7 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				//86:  -60% spinup speed
 				//179:  Minicrits become crits
 				//288:  Cannot be crit boosted
-			if(hItemOverride != INVALID_HANDLE)
+			if (hItemOverride != INVALID_HANDLE)
 			{
 				hItem = hItemOverride;
 				return Plugin_Changed;
@@ -3560,8 +3591,16 @@ public Action:ClientTimer(Handle:hTimer)
 
 			if (RedAlivePlayers == 1 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 			{
-				TF2_AddCondition(client, TFCond_HalloweenCritCandy, 0.3);
 				new primary = GetPlayerWeaponSlot(client, TFWeaponSlot_Primary);
+				if (class == TFClass_Heavy && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) != 41)  //Wliu:  Don't allow Natascha to get crits
+				{
+					TF2_AddCondition(client, TFCond_HalloweenCritCandy, 0.3);
+				}
+				else if (class != TFClass_Heavy)
+				{
+					TF2_AddCondition(client, TFCond_HalloweenCritCandy, 0.3);
+				}
+
 				if (class == TFClass_Engineer && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) == 141 || 1004)  //CM/Wliu:  Festive Frontier Justice
 				{
 					SetEntProp(client, Prop_Send, "m_iRevengeCrits", 3);
@@ -3571,7 +3610,15 @@ public Action:ClientTimer(Handle:hTimer)
 
 			if (RedAlivePlayers == 2 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 			{
-				TF2_AddCondition(client,TFCond_Buffed,0.3);
+				new primary = GetPlayerWeaponSlot(client, TFWeaponSlot_Primary);
+				if (class == TFClass_Heavy && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) != 41)  //Wliu:  Don't allow Natascha to get minicrits
+				{
+					TF2_AddCondition(client,TFCond_Buffed, 0.3);
+				}
+				else if (class != TFClass_Heavy)
+				{
+					TF2_AddCondition(client,TFCond_Buffed, 0.3);
+				}
 			}
 
 			if (bMedieval)
@@ -4776,10 +4823,18 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						IncrementHeadCount(attacker);
 					}
-					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.
+					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.  As of 2.3.0, also nerfed the health gain to +1 if the pyro is being buffed by the Battalion's Backup or ubercharged.
 					{
 						new health = GetClientHealth(attacker);
-						new newhealth = health+10;
+						new newhealth;
+						if (TF2_IsPlayerInCondition(attacker, TFCond_DefenseBuffed) || TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
+						{
+							newhealth = health+1;
+						}
+						else
+						{
+							newhealth = health+10;
+						}
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
 						if (TF2_IsPlayerInCondition(attacker, TFCond_OnFire))
@@ -4799,7 +4854,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							BossCharge[index][0] = 0.0;
 						}
 					}
-					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.  As of 2.3.0, also nerfed the health gain to +5 if the soldier is being buffed by the Battalion's Backup.
+					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.  As of 2.3.0, also nerfed the health gain to +5 if the soldier is being buffed by the Battalion's Backup or ubercharged.
 					{
 						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 						if (GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
@@ -4807,14 +4862,14 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							SetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy", 1);
 						}
 						new health = GetClientHealth(attacker);
-						new newhealth = health;
-						if (FF2flags[client] |= FF2FLAG_ISBUFFED)  //LET'S DO THIS I DON'T EVEN KNOW WHAT THIS MEANS LET'S CRASH FF2!
+						new newhealth;
+						if (TF2_IsPlayerInCondition(attacker, TFCond_DefenseBuffed) || TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
 						{
-							newhealth = health + 5;
+							newhealth = health+5;
 						}
 						else
 						{
-							newhealth = health + 50;
+							newhealth = health+50;
 						}
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
