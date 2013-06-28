@@ -1,5 +1,6 @@
 /*CHANGELOG:
 ----------
+v1.4 (6/28/2013 A.D.):  Fixed Fempyro's airblast cost and ammo pickup again(Wliu).
 v1.3 (6/25/2013 A.D.):  Fixed Fempyro picking up ammo (Wliu).
 v1.2 (6/18/2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
 v1.1 (6/3/2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
@@ -19,11 +20,12 @@ Current bosses that use this:  Fempyro
 #include <tf2_stocks>
 #include <tf2items>
 
-#define PLUGIN_VERSION	"1.2"
+#define PLUGIN_VERSION	"1.4"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
 
-public Plugin:myinfo = {
+public Plugin:myinfo =
+{
 	name = "50DKP-FF2 Plugin",
 	author = "Wliu",
 	description = "A FF2 plugin for the 50DKP community",
@@ -110,7 +112,7 @@ Rage_Fempyro(index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
-	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; -0.5 ; 77 ; 0"));
+	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; 0.5 ; 77 ; 0 ; 258 ; 1 ; 37 ; 0"));
 		//Weapon:  Rainblower
 		//Level:  101
 		//Quality:  Unique
@@ -119,15 +121,17 @@ Rage_Fempyro(index)
 		//165:  Charged airblast
 		//171:  -50% airblast cost
 		//77:  Clip size is 0
+		//258:  All ammo becomes health
+		//37:  No ammo
 	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
 }
 
 public Action:FF2_OnTriggerHurt(index,triggerhurt,&Float:damage)
 {
 	bEnableSuperDuperJump[index]=true;
-	if (FF2_GetBossCharge(index,1)<0)
+	if (FF2_GetBossCharge(index,1) < 0)
 	{
-		FF2_SetBossCharge(index,1,0.0);
+		FF2_SetBossCharge(index, 1, 0.0);
 	}
 	return Plugin_Continue;
 }
