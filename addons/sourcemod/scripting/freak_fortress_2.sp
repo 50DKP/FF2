@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-12"
+#define PLUGIN_VERSION "2.3.0-dev-13"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -4870,7 +4870,46 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						}
 						else
 						{
-							newhealth = health+50;
+							if(health < 250)
+							{
+								newhealth = health + 50;
+							}
+							if(250 <= health < 300)
+							{
+								newhealth = health + 47;
+							}
+							if(300 <= health < 350)
+							{
+								newhealth = health + 43;
+							}
+							if(350 <= health < 400)
+							{
+								newhealth = health + 38;
+							}
+							if(400 <= health < 450)
+							{
+								newhealth = health + 34;
+							}
+							if(450 <= health < 500)
+							{
+								newhealth = health + 28;
+							}
+							if(500 <= health < 550)
+							{
+								newhealth = health + 22;
+							}
+							if(550 <= health < 600)
+							{
+								newhealth = health + 15;
+							}
+							if(600 <= health < 650)
+							{
+								newhealth = health + 8;
+							}
+							if(health > 650)
+							{
+								newhealth = health + 1;
+							}
 						}
 						SetEntProp(attacker, Prop_Data, "m_iHealth", newhealth);
 						SetEntProp(attacker, Prop_Send, "m_iHealth", newhealth);
