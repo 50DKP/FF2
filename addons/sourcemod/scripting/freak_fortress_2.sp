@@ -4868,6 +4868,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						{
 							newhealth = health+5;
 						}
+/*						//ChrisMiuchiz: Half Zatoichi heals less as player HP increases.
+* 						new Float:newhealth = health + ((-health^1.9) / 4000) + 56;
+*						Use this if it's possible to make the math work ingame
+* 						x + (-x^1.9)/4000 + 56  */
 						else
 						{
 							if(health < 250)
