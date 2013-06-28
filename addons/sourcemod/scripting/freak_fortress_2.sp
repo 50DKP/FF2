@@ -226,7 +226,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "1) Beggar's Bazooka reloads 20% faster (Wliu)");
 			DrawPanelText(panel, "2) Holiday Punch gives you instant weapon switch (Wliu)");
 			DrawPanelText(panel, "3) Buffed the Fists of Steel a bit more (Wliu)");
-			DrawPanelText(panel, "4) Half-Zatoichi now only gives you +5 health if you're buffed by the Battalion's Backup/ubercharged (Wliu)");
+			DrawPanelText(panel, "4) Half-Zatoichi now only gives you +5 health if you're buffed by the Battalion's Backup/ubercharged, and has a new health mechanism (Wliu/Chris)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
 		case 27: //2.3.0
@@ -4868,49 +4868,49 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						{
 							newhealth = health+5;
 						}
-/*						//ChrisMiuchiz: Half Zatoichi heals less as player HP increases.
-* 						new Float:newhealth = health + ((-health^1.9) / 4000) + 56;
-*						Use this if it's possible to make the math work ingame
-* 						x + (-x^1.9)/4000 + 56  */
+/*						ChrisMiuchiz: Half Zatoichi heals less as player HP increases.
+						new Float:newhealth = health + ((-health^1.9) / 4000) + 56;
+						Use this if it's possible to make the math work ingame
+						x + (-x^1.9)/4000 + 56  */
 						else
 						{
 							if(health < 250)
 							{
 								newhealth = health + 50;
 							}
-							if(250 <= health < 300)
+							else if(250 <= health < 300)
 							{
 								newhealth = health + 47;
 							}
-							if(300 <= health < 350)
+							else if(300 <= health < 350)
 							{
 								newhealth = health + 43;
 							}
-							if(350 <= health < 400)
+							else if(350 <= health < 400)
 							{
 								newhealth = health + 38;
 							}
-							if(400 <= health < 450)
+							else if(400 <= health < 450)
 							{
 								newhealth = health + 34;
 							}
-							if(450 <= health < 500)
+							else if(450 <= health < 500)
 							{
 								newhealth = health + 28;
 							}
-							if(500 <= health < 550)
+							else if(500 <= health < 550)
 							{
 								newhealth = health + 22;
 							}
-							if(550 <= health < 600)
+							else if(550 <= health < 600)
 							{
 								newhealth = health + 15;
 							}
-							if(600 <= health < 650)
+							else if(600 <= health < 650)
 							{
 								newhealth = health + 8;
 							}
-							if(health > 650)
+							else
 							{
 								newhealth = health + 1;
 							}
