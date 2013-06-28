@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-11"
+#define PLUGIN_VERSION "2.3.0-dev-12"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -231,18 +231,19 @@ stock FindVersionData(Handle:panel, versionindex)
 		}
 		case 27: //2.3.0
 		{
-			DrawPanelText(panel, "5) Re-organized a bunch of files (Wliu/Lawd)");
-			DrawPanelText(panel, "6) Merged in some 1.07 changes (Wliu/Powerlord)");
-			DrawPanelText(panel, "7) Added the Administrator (Lawd/Wliu)");
-			DrawPanelText(panel, "8) Mantreads now do ~1000 damage (Wliu)");
-			DrawPanelText(panel, "9) Old Nick now has a freeze rage (Wliu)");
+			DrawPanelText(panel, "5) Powerjack now only gives you +1 health if you're buffed by the Battalion's Backup (Wliu)");
+			DrawPanelText(panel, "6) Re-organized a bunch of files (Wliu/Lawd)");
+			DrawPanelText(panel, "7) Merged in some 1.07 changes (Wliu/Powerlord)");
+			DrawPanelText(panel, "8) Added the Administrator (Lawd/Wliu)");
+			DrawPanelText(panel, "9) Mantreads now do ~1000 damage (Wliu)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
 		case 26: //2.3.0
 		{
-			DrawPanelText(panel, "10) Hopefully fixed Fempyro picking up ammo and infinite airblast (Wliu)");
-			DrawPanelText(panel, "11) Natascha can no longer get minicrits or crits (Wliu)");
-			DrawPanelText(panel, "12) Server list now correctly displays \"Freak Fortress 2 version\" instead of \"Team Fortress\" (Wliu)");
+			DrawPanelText(panel, "10) Old Nick now has a freeze rage (Wliu)");
+			DrawPanelText(panel, "11) Hopefully fixed Fempyro picking up ammo and infinite airblast (Wliu)");
+			DrawPanelText(panel, "12) Natascha can no longer get minicrits or crits (Wliu)");
+			DrawPanelText(panel, "13) Server list now correctly displays \"Freak Fortress 2 version\" instead of \"Team Fortress\" (Wliu)");
 			DrawPanelText(panel, "Expect the following in 2.4.0:  Gangplank rage, Spyper, and Cave Johnson!");
 		}
 		case 25: //2.2.1
@@ -3592,11 +3593,11 @@ public Action:ClientTimer(Handle:hTimer)
 			if (RedAlivePlayers == 1 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 			{
 				new primary = GetPlayerWeaponSlot(client, TFWeaponSlot_Primary);
-				if (class == TFClass_Heavy && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) != 41)  //Wliu:  Don't allow Natascha to get crits
+				if (class == TFClass_Heavy && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) == 41)  //Wliu:  Don't allow Natascha to get crits
 				{
-					TF2_AddCondition(client, TFCond_HalloweenCritCandy, 0.3);
+					//NOOP
 				}
-				else if (class != TFClass_Heavy)
+				else
 				{
 					TF2_AddCondition(client, TFCond_HalloweenCritCandy, 0.3);
 				}
@@ -3611,11 +3612,11 @@ public Action:ClientTimer(Handle:hTimer)
 			if (RedAlivePlayers == 2 && !TF2_IsPlayerInCondition(client, TFCond_Cloaked))
 			{
 				new primary = GetPlayerWeaponSlot(client, TFWeaponSlot_Primary);
-				if (class == TFClass_Heavy && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) != 41)  //Wliu:  Don't allow Natascha to get minicrits
+				if (class == TFClass_Heavy && (IsValidEntity(primary) && primary > MaxClients ? GetEntProp(primary, Prop_Send, "m_iItemDefinitionIndex") : -1) == 41)  //Wliu:  Don't allow Natascha to get minicrits
 				{
-					TF2_AddCondition(client,TFCond_Buffed, 0.3);
+					//NOOP
 				}
-				else if (class != TFClass_Heavy)
+				else
 				{
 					TF2_AddCondition(client,TFCond_Buffed, 0.3);
 				}
@@ -4823,11 +4824,11 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						IncrementHeadCount(attacker);
 					}
-					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.  As of 2.3.0, also nerfed the health gain to +1 if the pyro is being buffed by the Battalion's Backup or ubercharged.
+					case 214:  //Powerjack.  Wliu:  Nerfed health gain to +10 but also removed the health cap.  As of 2.3.0, also nerfed the health gain to +1 if the pyro is being buffed by the Battalion's Backup.
 					{
 						new health = GetClientHealth(attacker);
 						new newhealth;
-						if (TF2_IsPlayerInCondition(attacker, TFCond_DefenseBuffed) || TF2_IsPlayerInCondition(attacker, TFCond_Ubercharged))
+						if (TF2_IsPlayerInCondition(attacker, TFCond_DefenseBuffed))
 						{
 							newhealth = health+1;
 						}
