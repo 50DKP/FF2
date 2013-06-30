@@ -193,7 +193,7 @@ Rage_CloneAttack(const String:ability_name[],index)
 				case 1:
 				{
 					TF2_RemoveAllWeapons(client);
-					weapon=SpawnWeapon(client,"tf_weapon_bottle",191,34,0,"68 ; -1");
+					weapon=SpawnWeapon(client,"tf_weapon_bottle",191,34,0,"68 ; -1");  //ChrisMiuchiz:  Disable minions' capture rate.
 					if (IsValidEdict(weapon))
 					{
 						SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
