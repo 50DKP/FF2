@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-14"
+#define PLUGIN_VERSION "2.3.0-dev-15"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -211,9 +211,9 @@ static const String:ff2versiondates[][] =
 	"June 4, 2013",
 	"June 4, 2013",
 	"June 10, 2013",
-	"June 27, 2013",
-	"June 27, 2013",
-	"June 27, 2013"
+	"July 1, 2013",
+	"July 1, 2013",
+	"July 1, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -242,7 +242,7 @@ stock FindVersionData(Handle:panel, versionindex)
 		{
 			DrawPanelText(panel, "10) Old Nick now has a freeze rage (Wliu)");
 			DrawPanelText(panel, "11) Fixed Fempyro picking up ammo and infinite airblast (Wliu)");
-			DrawPanelText(panel, "12) Natascha can no longer get minicrits or crits (Wliu)");
+			DrawPanelText(panel, "12) Natascha can no longer get minicrits or crits (Wliu/Arceaus)");
 			DrawPanelText(panel, "13) Server list now correctly displays \"Freak Fortress 2 version\" instead of \"Team Fortress\" (Wliu)");
 			DrawPanelText(panel, "Expect the following in 2.4.0:  Gangplank rage, Spyper, and Cave Johnson!");
 		}
@@ -612,10 +612,6 @@ public OnPluginStart()
 	AddCommandListener(Destroy, "destroy");
 
 	RegAdminCmd("ff2_special", Command_MakeNextSpecial, ADMFLAG_CHEATS, "Set the next round's boss.");
-/*	Admins shouldn't need the following commands:	
-	RegAdminCmd("ff2_addpoints", Command_Points, ADMFLAG_CHEATS, "ff2_addpoints < target > < points > - Add queue points to user.");
-	RegAdminCmd("ff2_point_enable", Command_Point_Enable, ADMFLAG_CHEATS, "Enable CP. Only with ff2_point_type = 0");
-	RegAdminCmd("ff2_point_disable", Command_Point_Disable, ADMFLAG_CHEATS, "Disable CP. Only with ff2_point_type = 0");*/
 	RegAdminCmd("ff2_stop_music", Command_StopMusic, ADMFLAG_CHEATS, "Stop any currently playing Boss music.");
 	RegAdminCmd("ff2_reload_subplugins", Command_ReloadSubPlugins, ADMFLAG_RCON, "Reload FF2's subplugins.");
 	AutoExecConfig(true, "FreakFortress2");
@@ -1092,7 +1088,7 @@ public Action:Timer_Announce(Handle:hTimer)
 			}
 			case 3:
 			{
-				CPrintToChatAll("{default} === Freak Fortress 2 v.%s (based on VS Saxton Hale Mode by {olive}RainBolt Dash{default} and {olive}FlaminSarge{default} edit by {olive}RavensBro{default}) === ",ff2versiontitles[maxversion]);
+				CPrintToChatAll("{default} === Freak Fortress 2 v.%s (based on VS Saxton Hale Mode by {olive}RainBolt Dash{default} and {olive}FlaminSarge{default} edit by {olive}RavensBro{default}) === ",PLUGIN_VERSION);
 			}
 			case 4:
 			{
@@ -1100,11 +1096,11 @@ public Action:Timer_Announce(Handle:hTimer)
 			}
 			case 5:
 			{
-				CPrintToChatAll("{olive}[FF2]{default} %t","ff2_last_update",ff2versiontitles[maxversion],ff2versiondates[maxversion]);
+				CPrintToChatAll("{olive}[FF2]{default} %t","ff2_last_update",PLUGIN_VERSION,ff2versiondates[maxversion]);
 			}
 			case 6:
 			{
-				CPrintToChatAll("{olive}FF2-50DKP{default} is being worked on by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}Chris{default}.");
+				CPrintToChatAll("{olive}FF2-50DKP{default} is being worked on by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}ChrisMiuchiz{default}.");
 			}
 			case 7:
 			{
