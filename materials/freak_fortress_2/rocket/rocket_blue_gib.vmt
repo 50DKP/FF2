@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "custom/therocket/soldier_blue_gib"
-	"$bumpmap" "custom/therocket/soldier_normal"
+	"$basetexture" "freak_fortress_2\rocket\rocket_blue_gib"
+	"$bumpmap" "freak_fortress_2\rocket\rocket_normal"
 
 	"$phong" "1"
 	"$phongexponenttexture" "models\player\soldier\soldier_exponent"

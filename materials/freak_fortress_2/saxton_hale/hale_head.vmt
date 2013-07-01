@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/player/saxton_hale/hale_head"
+	"$basetexture" "freak_fortress_2\saxton_hale\hale_head"
 	// $bumpmap is a shared 16x16 flat normal map, and is needed or lightwarp won't shade correctly.
-	"$bumpmap"     "models/player/saxton_hale/hale_body_normal"
+	"$bumpmap"     "freak_fortress_2\saxton_hale\hale_body_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "1"
 	"$detailblendfactor" .01

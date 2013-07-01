@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "custom/therocket/soldier_blue"
+	"$basetexture" "freak_fortress_2\rocket\rocket_blue"
 
-	"$bumpmap" "custom/therocket/soldier_normal"
+	"$bumpmap" "freak_fortress_2\rocket\rocket_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"
 	"$detailblendfactor" .01
@@ -10,8 +10,6 @@
 
 	"$yellow" "0"
 	"$one" "1"
-
-
 
 	"$phong" "1"
 	"$phongexponent" "20"

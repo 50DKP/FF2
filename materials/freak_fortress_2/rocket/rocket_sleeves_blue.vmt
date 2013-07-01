@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "custom/therocket/soldier_sleeves_blue"
+	"$basetexture" "freak_fortress_2\rocket\rocket_sleeves_blue"
 
-	"$bumpmap" "custom/therocket/soldier_sleeves_normal"
+	"$bumpmap" "freak_fortress_2\rocket\rocket_sleeves_normal"
 
 	"$phong" "1"
 	//"$phongexponenttexture" "models\player\soldier\soldier_exponent"

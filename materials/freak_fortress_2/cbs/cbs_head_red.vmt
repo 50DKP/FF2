@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models/player/saxton_hale/sniper_head"
+	"$basetexture" "freak_fortress_2\cbs\cbs_head"
 	"$bumpmap"     "models/player/shared/shared_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "1"

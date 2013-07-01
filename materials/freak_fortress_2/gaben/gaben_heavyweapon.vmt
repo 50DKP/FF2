@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models\player\hvyweapon\hvyweapon_gabe"
+	"$basetexture" "freak_fortress_2\gaben\gabenheavyweapon"
 	"$bumpmap" "models\player\hvyweapon\hvyweapon_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"

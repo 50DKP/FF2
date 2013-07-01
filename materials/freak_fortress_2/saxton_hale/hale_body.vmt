@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models\player\saxton_hale\hale_body"
+	"$basetexture" "freak_fortress_2\saxton_hale\hale_body"
 
-	"$bumpmap"     "models/player/saxton_hale/hale_body_normal"
+	"$bumpmap"     "freak_fortress_2\saxton_hale\hale_body_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "1"
 	"$detailblendfactor" .01

@@ -1,16 +1,23 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "freak_fortress_2\cbs\cbs_red"
-	"$bumpmap" "models\player\sniper\sniper_normal"
+	"$basetexture" "freak_fortress_2\cbs\eye"
+	// $bumpmap is a shared 16x16 flat normal map, and is needed or lightwarp won't shade correctly.
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
-	"$detailscale" "5"
+	"$detailscale" "1"
 	"$detailblendfactor" .01
 	"$detailblendmode" 6
-
 
 	"$yellow" "0"
 	"$one" "1"
 
+
+// "$bbqamount" "1"	
+// 	"$two" "2.35"
+// 	"$one" "1"
+// 	"$absburnminusone" "1"
+// 	"$burnminusone" "1"
+// 	"$finalburnlevel" "1"
+// 	"$burnlevel" "0"
 
 	"$phong" "1"
 	"$phongexponent" "20"
@@ -23,11 +30,6 @@
 	"$rimlight" "1"												// To enable rim lighting (requires phong)
 	"$rimlightexponent" "4"										// Exponent for phong component of rim lighting	
 	"$rimlightboost" "2"										// Boost for ambient cube component of rim lighting
-
-	// Cloaking
-	"$cloakPassEnabled" "1"
-
-	"360?$color2" "[ 0.7 0.7 0.7 ]"
 
 	"Proxies"
 	{

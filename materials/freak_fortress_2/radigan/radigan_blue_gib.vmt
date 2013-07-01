@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models/player/engineer/radigan_blue_gib"
+	"$basetexture"	"freak_fortress_2\radigan\radigan_blue_gib"
 	"$surfaceprop"	"flesh"
-	"$bumpmap" "models\player\engineer\radigan_normal"
+	"$bumpmap"	"freak_fortress_2\raidgan\radigan_normal"
 
 	"$phong" "1"
 	"$phongexponent" "15"

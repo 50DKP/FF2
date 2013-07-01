@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"custom/therocket/soldier_red_invun"
+	"$basetexture"	"freak_fortress_2\rocket\rocket_red_invun"
 	<dx90
 	{
 		 	"$bumpmap" "water/dx80_tfwater001_normal"

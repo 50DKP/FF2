@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "custom/therocket/soldier_hands"
+	"$basetexture" "freak_fortress_2\rocket\rocket_hands"
 	"$basemapalphaphongmask" "1"
 
 	"$phong" "1"

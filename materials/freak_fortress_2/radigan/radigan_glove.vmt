@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models\player\engineer\radigan_glove"
+	"$basetexture" "freak_fortress_2\radigan\radigan_glove"
 	"$basemapalphaphongmask" "1"
 
 	"$phong" "1"

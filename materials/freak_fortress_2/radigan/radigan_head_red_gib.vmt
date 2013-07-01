@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models/player/engineer/radigan_head_gib"
+	"$basetexture"	"freak_fortress_2\radigan\radigan_head_gib"
 	"$surfaceprop"	"flesh"
 	"$bumpmap" "models/player/shared/shared_normal"
 

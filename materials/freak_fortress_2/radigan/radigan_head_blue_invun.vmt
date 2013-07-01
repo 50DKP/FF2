@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"models/player/engineer/radigan_head_blue_invun"
+	"$basetexture"	"freak_fortress_2\radigan\radigan_head_blue_invun"
 	<dx90
 	{
 		 	"$bumpmap" "water/dx80_tfwater001_normal"

@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "models\player\engineer\radigan_red"
-	"$bumpmap" "models\player\engineer\radigan_normal"
+	"$basetexture" "freak_fortress_2\radigan\radigan_red"
+	"$bumpmap" "freak_fortress_2\radigan\radigan_normal"
 		"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"
 	"$detailblendfactor" .01
