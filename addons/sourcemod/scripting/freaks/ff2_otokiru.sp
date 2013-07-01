@@ -395,12 +395,11 @@ Charge_Salmon(const String:ability_name[],index,slot,action)
 						ChangeClientTeam(ii,BossTeam);
 						TF2_RespawnPlayer(ii);
 						TF2_AddCondition(ii, TFCond_Ubercharged, duration);
-						index = GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
-						new Handle:hItemOverride = PrepareItemHandle(hItem, _, index, "68 ; -1");  //Wliu:  Disable cap rate
-						if (hItemOverride != INVALID_HANDLE)
+						weapon=SpawnWeapon(client,"tf_weapon_pda_engineer_destroy",26,34,0,"68 ; -2");  //ChrisMiuchiz/Wliu:  Disable minions' capture rate.
+						if (IsValidEdict(weapon))
 						{
-							hItem = hItemOverride;
-							return Plugin_Changed;
+							SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
+							SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", -1);
 						}
 					}
 				}
