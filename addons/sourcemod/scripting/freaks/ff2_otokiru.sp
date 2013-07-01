@@ -383,19 +383,18 @@ Charge_Salmon(const String:ability_name[],index,slot,action)
 					EmitSoundToAll(ZEPH_SND);
 					EmitSoundToAll(ZEPH_SND);
 				}
-				
-				new ii;
+
 				for (new i=0; i<var4; i++)
 				{
-					ii = GetRandomDeadPlayer();
-					if(ii != -1)
+					new client = GetRandomDeadPlayer();
+					if(client != -1)
 					{
 						bSalmon = true;
-						FF2_SetFF2flags(ii,FF2_GetFF2flags(ii)|FF2FLAG_ALLOWSPAWNINBOSSTEAM);
-						ChangeClientTeam(ii,BossTeam);
-						TF2_RespawnPlayer(ii);
-						TF2_AddCondition(ii, TFCond_Ubercharged, duration);
-						weapon=SpawnWeapon(client,"tf_weapon_pda_engineer_destroy",26,34,0,"68 ; -2");  //ChrisMiuchiz/Wliu:  Disable minions' capture rate.
+						FF2_SetFF2flags(client,FF2_GetFF2flags(client)|FF2FLAG_ALLOWSPAWNINBOSSTEAM);
+						ChangeClientTeam(client,BossTeam);
+						TF2_RespawnPlayer(client);
+						TF2_AddCondition(client, TFCond_Ubercharged, duration);
+						new weapon=SpawnWeapon(client,"tf_weapon_pda_engineer_destroy",26,34,0,"68 ; -2");  //ChrisMiuchiz/Wliu:  Disable minions' capture rate.
 						if (IsValidEdict(weapon))
 						{
 							SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
