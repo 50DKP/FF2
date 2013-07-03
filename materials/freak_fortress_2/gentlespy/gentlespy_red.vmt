@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 
 {
-	"$basetexture" "freak_fortress_2\gentlespy_tex\stylish_spy_red"
-	"$bumpmap" "freak_fortress_2\gentlespy_tex\stylish_spy_normal"
+	"$basetexture" "freak_fortress_2\gentlespy\gentlespy_red"
+	"$bumpmap" "freak_fortress_2\gentlespy\gentlespy_normal"
 			"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"
 	"$detailblendfactor" .01

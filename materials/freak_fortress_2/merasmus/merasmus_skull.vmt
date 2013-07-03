@@ -1,6 +1,6 @@
 "VertexlitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\merasmus/merasmus_skull"
+	"$baseTexture" "freak_fortress_2\merasmus\merasmus_skull"
 
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512"
 	"$detailscale" "5"

@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 //"Ghostrobo"
 {
-	"$basetexture" "freak_fortress_2\merasmus/merasmus_skull_spectral"
+	"$basetexture" "freak_fortress_2\merasmus\merasmus_skull_spectral"
 	"$bumpmap" "models/player/sniper/sniper_normal"
 	
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	

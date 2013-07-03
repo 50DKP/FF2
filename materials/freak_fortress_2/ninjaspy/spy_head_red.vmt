@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 
 {
-	"$basetexture" "freak_fortress_2\ninjaspy/spy_head_red"
+	"$basetexture" "freak_fortress_2\ninjaspy\spy_head_red"
 	// $bumpmap is a shared 16x16 flat normal map, and is needed or lightwarp won't shade correctly.
 	"$bumpmap"     "models/player/shared/shared_normal"
 			"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	

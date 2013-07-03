@@ -1,6 +1,5 @@
 "VertexLitGeneric"
 {
-//	"$basetexture" "test/color005"
 
 	"$basetexture" "freak_fortress_2/oldnick/body"
 	"$bumpmap"     "freak_fortress_2/oldnick/body_normal"
