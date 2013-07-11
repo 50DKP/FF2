@@ -6,10 +6,10 @@
 	"$blendtintbybasealpha" "1"
 	"$blendtintcoloroverbase" "0"
 	
-	"$colortint_base" "{170 224 247}" 
+	"$colortint_base" "{134 51 43}" 
 	"$colortint_tmp" "{0 0 0}"
 
-	"$color2" "{170 224 247}" 
+	"$color2" "{251 166 187}" 
 
 	"$bumpmap" "models\player\shared\shared_normal"
 	"$phong" "1"

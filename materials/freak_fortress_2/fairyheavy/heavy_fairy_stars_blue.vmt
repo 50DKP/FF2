@@ -8,10 +8,10 @@
 	"$detailblendmode" 6
 	"$yellow" "0"
 
-	"$colortint_base" "{170 224 247}" 
+	"$colortint_base" "{251 166 187}" 
 	"$colortint_tmp" "{0 0 0}"
 
-	"$color2" "{170 224 247}" 
+	"$color2" "{251 166 187}" 
 
 	"$phong" "1"
 	"$phongexponent" "5"

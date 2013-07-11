@@ -1,10 +1,9 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "freak_fortress_2/fairyheavy/heavy_head"
-	// $bumpmap is a shared 16x16 flat normal map, and is needed or lightwarp won't shade correctly.
-	"$bumpmap"     "models/player/shared/shared_normal"
+	"$basetexture" "freak_fortress_2/fairyheavy/wand_blue"
+	"$bumpmap" "freak_fortress_2/fairyheavy/wand_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
-	"$detailscale" "1"
+	"$detailscale" "5"
 	"$detailblendfactor" .01
 	"$detailblendmode" 6
 
@@ -26,6 +25,9 @@
 
 	// Cloaking
 	"$cloakPassEnabled" "1"
+
+	"360?$color2" "[ 0.8 0.8 0.8 ]"
+
 	"Proxies"
 	{
 		"spy_invis"
