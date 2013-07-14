@@ -27,7 +27,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-15"
+#define PLUGIN_VERSION "2.3.0-dev-16"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -211,9 +211,9 @@ static const String:ff2versiondates[][] =
 	"June 4, 2013",
 	"June 4, 2013",
 	"June 10, 2013",
-	"July 1, 2013",
-	"July 1, 2013",
-	"July 1, 2013"
+	"July 13, 2013",
+	"July 13, 2013",
+	"July 13, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -244,7 +244,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "11) Fixed Fempyro picking up ammo and infinite airblast (Wliu)");
 			DrawPanelText(panel, "12) Natascha can no longer get minicrits or crits (Wliu/Arceaus)");
 			DrawPanelText(panel, "13) Server list now correctly displays \"Freak Fortress 2 version\" instead of \"Team Fortress\" (Wliu)");
-			DrawPanelText(panel, "Expect the following in 2.4.0:  Gangplank rage, Spyper, and Cave Johnson!");
+			DrawPanelText(panel, "Expect the following in 2.4.0:  Gangplank rage, Spyper, Robo-Robotic Soldier, Cave Johnson, and more!");
 		}
 		case 25: //2.2.1
 		{
@@ -1100,7 +1100,7 @@ public Action:Timer_Announce(Handle:hTimer)
 			}
 			case 6:
 			{
-				CPrintToChatAll("{olive}FF2-50DKP{default} is being worked on by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}ChrisMiuchiz{default}.");
+				CPrintToChatAll("{olive}FF2-50DKP{default} is brought to you by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}ChrisMiuchiz{default}.");
 			}
 			case 7:
 			{
