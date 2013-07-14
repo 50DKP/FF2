@@ -1,3 +1,11 @@
+/*
+CHANGELOG:
+----------
+v1.4 (July 13, 2013 A.D.):  Fixed minions getting x15 cap rate (Wliu).
+v1.3:  Tried to remove cap rate from minions (Wliu).
+v1.2:  Initial version commited to 50DKP/FF2 (Otokiru).
+*/
+
 #pragma semicolon 1
 
 #include <sourcemod>
@@ -394,7 +402,8 @@ Charge_Salmon(const String:ability_name[],index,slot,action)
 						ChangeClientTeam(client,BossTeam);
 						TF2_RespawnPlayer(client);
 						TF2_AddCondition(client, TFCond_Ubercharged, duration);
-						new weapon=SpawnWeapon(client,"tf_weapon_pda_engineer_destroy",26,34,0,"68 ; -2");  //ChrisMiuchiz/Wliu:  Disable minions' capture rate.
+						/* The following is incredibly hacky, find a way to fix it XD */
+						new weapon=SpawnWeapon(client,"tf_weapon_pda_engineer_destroy",26,34,0,"68 ; -1");  //ChrisMiuchiz/Wliu:  Disable minions' capture rate.
 						if (IsValidEdict(weapon))
 						{
 							SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
