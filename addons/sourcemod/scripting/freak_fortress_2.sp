@@ -4839,6 +4839,24 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							TF2_RemoveCondition(attacker, TFCond_OnFire);
 						}
 					}
+/*					case 307:  //Enable after 2.3.0
+					{
+						new detonations=0;
+						if(detonations <= 5)
+						{
+							ResetCaber(GetPlayerWeaponSlot(client, TFWeaponSlot_Melee));
+							detonations++;
+							if(detonations=5)
+							{
+								new bool:warn=true;
+							}	
+						}
+						else if(warn)
+						{
+							PrintCenterText(attacker,"No more cabers left!");
+							warn=false;
+						}
+					}*/
 					case 317:  //Candycane
 					{
 						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
