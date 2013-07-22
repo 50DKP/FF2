@@ -1,6 +1,7 @@
-/*CHANGELOG:
+/*
+CHANGELOG:
 ----------
-v1.5 (July 21, 2013 A.D.):  Added Gaben_Ban for Gaben when he kills somebody (Wliu).
+v1.5 (July 22, 2013 A.D.):  Added Gaben_Ban (workaround) for Gaben when he kills somebody (Wliu).
 v1.4 (June 28, 2013 A.D.):  Fixed Fempyro's airblast cost and ammo pickup again (Wliu).
 v1.3 (June 25, 2013 A.D.):  Fixed Fempyro picking up ammo (Wliu).
 v1.2 (June 18, 2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
@@ -24,6 +25,7 @@ Current bosses that use this:  Fempyro, Gaben
 #define PLUGIN_VERSION	"1.5"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
+new bool:gabenBan=false;
 
 public Plugin:myinfo =
 {
@@ -53,9 +55,49 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	}
 	else if(!strcmp(ability_name,"gaben_ban"))
 	{
-		Gaben_Ban();
+		gabenBan=true;
 	}
 	return Plugin_Continue;
+}
+
+/*=========RAGES START=========*/
+Rage_Fempyro(index)
+{
+	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
+	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
+	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; 0.5 ; 77 ; 0 ; 258 ; 1 ; 37 ; 0"));
+		//Weapon:  Rainblower
+		//Level:  101
+		//Quality:  Unique
+		//422:  Only visible in Pyrovision
+		//445:  Forces player to enter Pyrovision
+		//165:  Charged airblast
+		//171:  -50% airblast cost
+		//77:  Clip size is 0
+		//258:  All ammo becomes health
+		//37:  No ammo
+	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
+}
+
+/*=========ABILITIES START=========*/
+//Gaben_Ban was going to go here, but I didn't know how to hook event_player_death, so...
+
+/*==========MISCELLANEOUS========*/
+public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)  //For Gaben Ban
+{
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if(client && GetClientHealth(client) <= 0 && gabenBan==true)
+	{
+		OnPlayerDeath(client,(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
+	}
+}
+
+OnPlayerDeath(client,bool:fake = false)  //Also for Gaben Ban
+{
+	if(fake==false)
+	{
+		PrintToChatAll("Player %s has been banned (Banned by Gabe Newell) Reason:  You are not worthy of fighting me",client);
+	}
 }
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
@@ -109,53 +151,6 @@ stock SetAmmo(client, slot, ammo)
 		new iOffset = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
 		new iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
 		SetEntData(client, iAmmoTable+iOffset, ammo, 4, true);
-	}
-}
-
-/*=========RAGES START=========*/
-Rage_Fempyro(index)
-{
-	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
-	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
-	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; 0.5 ; 77 ; 0 ; 258 ; 1 ; 37 ; 0"));
-		//Weapon:  Rainblower
-		//Level:  101
-		//Quality:  Unique
-		//422:  Only visible in Pyrovision
-		//445:  Forces player to enter Pyrovision
-		//165:  Charged airblast
-		//171:  -50% airblast cost
-		//77:  Clip size is 0
-		//258:  All ammo becomes health
-		//37:  No ammo
-	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
-}
-
-/*=========ABILITIES START=========*/
-Gaben_Ban()
-{
-/*	public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)
-	{
-		new client = GetClientOfUserId(GetEventInt(event, "userid"));
-		if(client && GetClientHealth(client) <= 0)
-		{
-			OnPlayerDeath(client,GetClientOfUserId(GetEventInt(event, "attacker")),(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
-		}
-		return Plugin_Continue;
-	}*/
-	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if(client && GetClientHealth(client) <= 0)
-	{
-		OnPlayerDeath(client,(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
-	}
-}
-
-/*==========MISCELLANEOUS========*/
-OnPlayerDeath(client,bool:fake = false)  //For Gaben Ban
-{
-	if(fake==true)
-	{
-		PrintToChatAll("Player %s has been banned (Banned by Gabe Newell) Reason:  You are not worthy of fighting me",client);
 	}
 }
 
