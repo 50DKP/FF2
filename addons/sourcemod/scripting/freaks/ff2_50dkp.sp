@@ -1,12 +1,13 @@
 /*CHANGELOG:
 ----------
-v1.4 (6/28/2013 A.D.):  Fixed Fempyro's airblast cost and ammo pickup again(Wliu).
-v1.3 (6/25/2013 A.D.):  Fixed Fempyro picking up ammo (Wliu).
-v1.2 (6/18/2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
-v1.1 (6/3/2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
-v1.0 (5/30/2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
+v1.5 (July 21, 2013 A.D.):  Added Gaben_Ban for Gaben when he kills somebody (Wliu).
+v1.4 (June 28, 2013 A.D.):  Fixed Fempyro's airblast cost and ammo pickup again (Wliu).
+v1.3 (June 25, 2013 A.D.):  Fixed Fempyro picking up ammo (Wliu).
+v1.2 (June 18, 2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
+v1.1 (June 3, 2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
+v1.0 (May 30, 2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
 
-Current bosses that use this:  Fempyro
+Current bosses that use this:  Fempyro, Gaben
 */
 
 #pragma semicolon 1
@@ -20,7 +21,7 @@ Current bosses that use this:  Fempyro
 #include <tf2_stocks>
 #include <tf2items>
 
-#define PLUGIN_VERSION	"1.4"
+#define PLUGIN_VERSION	"1.5"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
 
@@ -35,6 +36,7 @@ public Plugin:myinfo =
 public OnPluginStart2()
 {
 	HookEvent("teamplay_round_start", event_round_start);
+	HookEvent("player_death", event_player_death, EventHookMode_Pre);
 }
 
 public OnMapStart()
@@ -45,16 +47,20 @@ public OnMapStart()
 
 public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:ability_name[],action)
 {
-	if (!strcmp(ability_name,"rage_fempyro"))
+	if(!strcmp(ability_name,"rage_fempyro"))
 	{
 		Rage_Fempyro(index);
+	}
+	else if(!strcmp(ability_name,"gaben_ban"))
+	{
+		Gaben_Ban();
 	}
 	return Plugin_Continue;
 }
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	for (new i=0;i<MaxClients;i++)
+	for(new i=0;i<MaxClients;i++)
 	{
 		bEnableSuperDuperJump[i]=false;
 	}
@@ -70,11 +76,11 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 	TF2Items_SetQuality(hWeapon, qual);
 	new String:atts[32][32];
 	new count = ExplodeString(att, " ; ", atts, 32, 32);
-	if (count > 0)
+	if(count > 0)
 	{
 		TF2Items_SetNumAttributes(hWeapon, count/2);
 		new i2 = 0;
-		for (new i = 0; i < count; i+=2)
+		for(new i = 0; i < count; i+=2)
 		{
 			TF2Items_SetAttribute(hWeapon, i2, StringToInt(atts[i]), StringToFloat(atts[i+1]));
 			i2++;
@@ -85,7 +91,7 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 		TF2Items_SetNumAttributes(hWeapon, 0);
 	}
 
-	if (hWeapon==INVALID_HANDLE)
+	if(hWeapon==INVALID_HANDLE)
 	{
 		return -1;
 	}
@@ -98,7 +104,7 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 stock SetAmmo(client, slot, ammo)
 {
 	new weapon = GetPlayerWeaponSlot(client, slot);
-	if (IsValidEntity(weapon))
+	if(IsValidEntity(weapon))
 	{
 		new iOffset = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
 		new iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
@@ -107,7 +113,6 @@ stock SetAmmo(client, slot, ammo)
 }
 
 /*=========RAGES START=========*/
-
 Rage_Fempyro(index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
@@ -126,10 +131,38 @@ Rage_Fempyro(index)
 	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
 }
 
+/*=========ABILITIES START=========*/
+Gaben_Ban()
+{
+/*	public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)
+	{
+		new client = GetClientOfUserId(GetEventInt(event, "userid"));
+		if(client && GetClientHealth(client) <= 0)
+		{
+			OnPlayerDeath(client,GetClientOfUserId(GetEventInt(event, "attacker")),(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
+		}
+		return Plugin_Continue;
+	}*/
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if(client && GetClientHealth(client) <= 0)
+	{
+		OnPlayerDeath(client,(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
+	}
+}
+
+/*==========MISCELLANEOUS========*/
+OnPlayerDeath(client,bool:fake = false)  //For Gaben Ban
+{
+	if(fake==true)
+	{
+		PrintToChatAll("Player %s has been banned (Banned by Gabe Newell) Reason:  You are not worthy of fighting me",client);
+	}
+}
+
 public Action:FF2_OnTriggerHurt(index,triggerhurt,&Float:damage)
 {
 	bEnableSuperDuperJump[index]=true;
-	if (FF2_GetBossCharge(index,1) < 0)
+	if(FF2_GetBossCharge(index,1) < 0)
 	{
 		FF2_SetBossCharge(index, 1, 0.0);
 	}

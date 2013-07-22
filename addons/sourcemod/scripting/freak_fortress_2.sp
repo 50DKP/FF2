@@ -24,10 +24,10 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
+#define PLUGIN_VERSION "2.3.0-rc-1"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-#define PLUGIN_VERSION "2.3.0-dev-16"
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
@@ -211,9 +211,9 @@ static const String:ff2versiondates[][] =
 	"June 4, 2013",
 	"June 4, 2013",
 	"June 10, 2013",
-	"July 13, 2013",
-	"July 13, 2013",
-	"July 13, 2013"
+	"July 21, 2013",
+	"July 21, 2013",
+	"July 21, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -4839,9 +4839,9 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							TF2_RemoveCondition(attacker, TFCond_OnFire);
 						}
 					}
-/*					case 307:  //Enable after 2.3.0
+/*					case 307:  //Ullapool Caber  //Enable after 2.3.0
 					{
-						new detonations=0;
+						static detonations=0;
 						if(detonations <= 5)
 						{
 							ResetCaber(GetPlayerWeaponSlot(client, TFWeaponSlot_Melee));
