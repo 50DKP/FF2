@@ -409,6 +409,8 @@ Charge_Salmon(const String:ability_name[],index,slot,action)
 							SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
 							SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", -1);
 						}
+						/*new weapon=GetPlayerWeaponSlot(client, TFWeaponSlot_Melee);
+						new newweapon=SpawnWeapon(client,*/
 					}
 				}
 			}			
