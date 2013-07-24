@@ -78,7 +78,7 @@ new Handle:g_SpriteShowCookie = INVALID_HANDLE;
 new g_iTagColor[MAXPLAYERS + 1][4];
 new g_iShowSprite[MAXPLAYERS + 1];
 
-public Plugin:myinfo = 
+public Plugin:myinfo =
 {
 	name = "Donator Recognition",
 	author = "Nut",
@@ -96,11 +96,11 @@ public OnPluginStart()
 	HookEventEx("teamplay_round_win", hook_Win, EventHookMode_PostNoCopy);
 	HookEventEx("arena_win_panel", hook_Win, EventHookMode_PostNoCopy);
 	HookEventEx("player_death", event_player_death, EventHookMode_Post);
-	
+
 	g_HudSync = CreateHudSynchronizer();
 	g_TagColorCookie = RegClientCookie("donator_tagcolor", "Chat color for donators.", CookieAccess_Private);
 	g_SpriteShowCookie = RegClientCookie("donator_spriteshow", "Which donator sprite to show.", CookieAccess_Private);
-	
+
 	AddCommandListener(SayCallback, "donator_tag");
 	AddCommandListener(SayCallback, "donator_tagcolor");
 
@@ -109,7 +109,10 @@ public OnPluginStart()
 
 public OnAllPluginsLoaded()
 {
-	if(!LibraryExists("donator.core")) SetFailState("Unabled to find plugin: Basic Donator Interface");
+	if (!LibraryExists("donator.core"))
+	{
+		SetFailState("Unabled to find plugin: Basic Donator Interface");
+	}
 	Donator_RegisterMenuItem("Change Donator Tag", ChangeTagCallback);
 	Donator_RegisterMenuItem("Change Tag Color", ChangeTagColorCallback);
 	Donator_RegisterMenuItem("Change Sprite", SpriteControlCallback);
@@ -131,8 +134,11 @@ public OnMapStart()
 
 public OnPostDonatorCheck(iClient)
 {
-	if (!IsPlayerDonator(iClient)) return;
-	
+	if (!IsPlayerDonator(iClient))
+	{
+		return;
+	}
+
 	g_bIsDonator[iClient] = true;
 	g_iShowSprite[iClient] = 1;
 	g_iTagColor[iClient] = {255, 255, 255, 255};
@@ -152,27 +158,34 @@ public OnPostDonatorCheck(iClient)
 		
 		GetClientCookie(iClient, g_SpriteShowCookie, szBuffer, sizeof(szBuffer));
 		if (strlen(szBuffer) > 0)
+		{
 			g_iShowSprite[iClient] = StringToInt(szBuffer);
+		}
 	}
-	
 	GetDonatorMessage(iClient, szBuffer, sizeof(szBuffer));
 	ShowDonatorMessage(iClient, szBuffer);
 }
 
 public OnClientDisconnect(iClient)
+{
 	g_bIsDonator[iClient] = false;
+}
 
 public Action:SayCallback(iClient, const String:command[], argc)
 {
-	if(!iClient) return Plugin_Continue;
-	if (!g_bIsDonator[iClient]) return Plugin_Continue;
+	if (!iClient)
+	{
+		return Plugin_Continue;
+	}
 
+	if (!g_bIsDonator[iClient])
+	{
+		return Plugin_Continue;
+	}
 	decl String:szArg[255];
 	GetCmdArgString(szArg, sizeof(szArg));
-
 	StripQuotes(szArg);
 	TrimString(szArg);
-
 	if (StrEqual(command, "donator_tag", true))
 	{
 		decl String:szTmp[256];
@@ -208,17 +221,28 @@ public Action:SayCallback(iClient, const String:command[], argc)
 public ShowDonatorMessage(iClient, String:message[])
 {
 	SetHudTextParamsEx(-1.0, 0.22, 4.0, g_iTagColor[iClient], {0, 0, 0, 255}, 1, 5.0, 0.15, 0.15);
-	for(new i = 1; i <= MaxClients; i++)
-		if(IsClientInGame(i) && !IsFakeClient(i))
+	for (new i = 1; i <= MaxClients; i++)
+	{
+		if (IsClientInGame(i) && !IsFakeClient(i))
+		{
 			ShowSyncHudText(i, g_HudSync, message);
+		}
+	}
 }
 
 public hook_Start(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	for(new i = 1; i <= MaxClients; i++)
+	for (new i = 1; i <= MaxClients; i++)
 	{
-		if (!IsClientInGame(i)) continue;
-		if (!g_bIsDonator[i]) continue;
+		if (!IsClientInGame(i))
+		{
+			continue;
+		}
+
+		if (!g_bIsDonator[i])
+		{
+			continue;
+		}
 		KillSprite(i);
 	}
 	g_bRoundEnded = false;
@@ -229,12 +253,22 @@ public hook_Win(Handle:event, const String:name[], bool:dontBroadcast)
 	decl String:szBuffer[128];
 	for(new i = 1; i <= MaxClients; i++)
 	{
-		if (!IsClientInGame(i) || !IsPlayerAlive(i) || IsClientObserver(i)) continue;
-		if (!g_bIsDonator[i]) continue;
-		
+		if (!IsClientInGame(i) || !IsPlayerAlive(i) || IsClientObserver(i))
+		{
+			continue;
+		}
+
+		if (!g_bIsDonator[i])
+		{
+			continue;
+		}
+
 		if (g_iShowSprite[i] > 0)
 		{
-			if (g_iShowSprite[i] > TOTAL_SPRITE_FILES) g_iShowSprite[i] = TOTAL_SPRITE_FILES - 1;
+			if (g_iShowSprite[i] > TOTAL_SPRITE_FILES)
+			{
+				g_iShowSprite[i] = TOTAL_SPRITE_FILES - 1;
+			}
 			FormatEx(szBuffer, sizeof(szBuffer), "%s.vmt", szSpriteFiles[g_iShowSprite[i]-1]);
 			CreateSprite(i, szBuffer, 25.0);
 		}
@@ -244,20 +278,34 @@ public hook_Win(Handle:event, const String:name[], bool:dontBroadcast)
 
 public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	if(!g_bRoundEnded) return Plugin_Continue;
+	if(!g_bRoundEnded)
+	{
+		return Plugin_Continue;
+	}
 	KillSprite(GetClientOfUserId(GetEventInt(event, "userid")));
 	return Plugin_Continue;
 }
 
-public DonatorMenu:ChangeTagCallback(iClient) Panel_ChangeTag(iClient);
-public DonatorMenu:ChangeTagColorCallback(iClient) Panel_ChangeTagColor(iClient);
-public DonatorMenu:SpriteControlCallback(iClient) Panel_SpriteControl(iClient);
+public DonatorMenu:ChangeTagCallback(iClient)
+{
+	Panel_ChangeTag(iClient);
+}
+
+public DonatorMenu:ChangeTagColorCallback(iClient)
+{
+	Panel_ChangeTagColor(iClient);
+}
+
+public DonatorMenu:SpriteControlCallback(iClient)
+{
+	Panel_SpriteControl(iClient);
+}
 
 public Action:Panel_ChangeTag(iClient)
 {
 	new Handle:panel = CreatePanel();
 	SetPanelTitle(panel, "Donator: Change Tag:");
-	
+
 	new String:szBuffer[256];
 	GetDonatorMessage(iClient, szBuffer, sizeof(szBuffer));
 	DrawPanelItem(panel, "Your current donator tag is:", ITEMDRAW_DEFAULT);
@@ -265,7 +313,7 @@ public Action:Panel_ChangeTag(iClient)
 	DrawPanelItem(panel, "space", ITEMDRAW_SPACER);
 	DrawPanelItem(panel, "Type the following in the console to change your tag:", ITEMDRAW_CONTROL);
 	DrawPanelItem(panel, "donator_tag \"YOUR TAG GOES HERE\"", ITEMDRAW_RAWLINE);
-	
+
 	SendPanelToClient(panel, iClient, PanelHandlerBlank, 20);
 	CloseHandle(panel);
 }
@@ -274,7 +322,7 @@ public Action:Panel_ChangeTagColor(iClient)
 {
 	new Handle:menu = CreateMenu(TagColorMenuSelected);
 	SetMenuTitle(menu,"Donator: Change Tag Color:");
-	
+
 	decl String:szBuffer[256];
 	FormatEx(szBuffer, sizeof(szBuffer), "%i %i %i", g_iTagColor[iClient][0], g_iTagColor[iClient][1], g_iTagColor[iClient][2]);
 
@@ -283,9 +331,13 @@ public Action:Panel_ChangeTagColor(iClient)
 	{
 		FormatEx(szItem, sizeof(szItem), "%i", i);
 		if (StrEqual(szBuffer, szColorValues[i]))
+		{
 			AddMenuItem(menu, szItem, szColorNames[i], ITEMDRAW_DISABLED);
+		}
 		else
+		{
 			AddMenuItem(menu, szItem, szColorNames[i], ITEMDRAW_DEFAULT);
+		}
 	}
 	DisplayMenu(menu, iClient, 20);
 }
@@ -296,18 +348,26 @@ public Action:Panel_SpriteControl(iClient)
 	SetMenuTitle(menu,"Donator: Sprite Control:");
 	
 	if (g_iShowSprite[iClient] > 0)
+	{
 		AddMenuItem(menu, "0", "Disable Sprite", ITEMDRAW_DEFAULT);
+	}
 	else
+	{
 		AddMenuItem(menu, "0", "Disable Sprite", ITEMDRAW_DISABLED);
+	}
 	
 	decl String:szItem[4];
 	for (new i = 0; i < TOTAL_SPRITE_FILES; i++)
 	{
 		FormatEx(szItem, sizeof(szItem), "%i", i+1);	//need to offset the menu items by one since we added the enable / disable outside of the loop
 		if (g_iShowSprite[iClient]-1 != i)
+		{
 			AddMenuItem(menu, szItem, szSpriteNames[i], ITEMDRAW_DEFAULT);
+		}
 		else
+		{
 			AddMenuItem(menu, szItem, szSpriteNames[i],ITEMDRAW_DISABLED);
+		}
 	}
 	DisplayMenu(menu, iClient, 20);
 }
@@ -323,20 +383,22 @@ public TagColorMenuSelected(Handle:menu, MenuAction:action, param1, param2)
 		case MenuAction_Select:
 		{
 			decl String:szTmp[3][16], iColor[4];
-			
 			ExplodeString(szColorValues[iSelected], " ", szTmp, 3, sizeof(szTmp[]));
 			iColor[0] = StringToInt(szTmp[0]); 
 			iColor[1] = StringToInt(szTmp[1]);
 			iColor[2] = StringToInt(szTmp[2]);
 			iColor[3] = 255;
-			
+
 			g_iTagColor[param1] = iColor;
-			
+
 			SetHudTextParamsEx(-1.0, 0.22, 4.0, iColor, {0, 0, 0, 255}, 1, 5.0, 0.15, 0.15);
 			ShowSyncHudText(param1, g_HudSync, "This is your new tag color.");
 			SetClientCookie(param1, g_TagColorCookie, szColorValues[iSelected]);
 		}
-		case MenuAction_End: CloseHandle(menu);
+		case MenuAction_End:
+		{
+			CloseHandle(menu);
+		}
 	}
 }
 
@@ -355,13 +417,16 @@ public SpriteControlSelected(Handle:menu, MenuAction:action, param1, param2)
 			Format(szSelected, sizeof(szSelected), "%i", iSelected);
 			SetClientCookie(param1, g_SpriteShowCookie, szSelected);
 		}
-		case MenuAction_End: CloseHandle(menu);
+		case MenuAction_End:
+		{
+			CloseHandle(menu);
+		}
 	}
 }
 
-public PanelHandlerBlank(Handle:menu, MenuAction:action, iClient, param2) {}
-
-//--------------------------------------------------------------------------------------------------
+public PanelHandlerBlank(Handle:menu, MenuAction:action, iClient, param2)
+{
+}
 
 stock CreateSprite(iClient, String:sprite[], Float:offset)
 {
@@ -384,7 +449,7 @@ stock CreateSprite(iClient, String:sprite[], Float:offset)
 		DispatchKeyValue(ent, "targetname", "donator_spr");
 		DispatchKeyValue(ent, "parentname", szTemp);
 		DispatchSpawn(ent);
-		
+
 		TeleportEntity(ent, vOrigin, NULL_VECTOR, NULL_VECTOR);
 
 		g_EntList[iClient] = ent;
@@ -401,17 +466,26 @@ stock KillSprite(iClient)
 }
 public OnGameFrame()
 {
-	if (!g_bRoundEnded) return;
+	if (!g_bRoundEnded)
+	{
+		return;
+	}
 	new ent, Float:vOrigin[3], Float:vVelocity[3];
-	
 	for(new i = 1; i <= MaxClients; i++)
 	{
-		if (!IsClientInGame(i)) continue;
+		if (!IsClientInGame(i))
+		{
+			continue;
+		}
+
 		if ((ent = g_EntList[i]) > 0)
 		{
 			if (!IsValidEntity(ent))
+			{
 				g_EntList[i] = 0;
+			}
 			else
+			{
 				if ((ent = EntRefToEntIndex(ent)) > 0)
 				{
 					GetClientEyePosition(i, vOrigin);
@@ -419,6 +493,7 @@ public OnGameFrame()
 					GetEntDataVector(i, gVelocityOffset, vVelocity);
 					TeleportEntity(ent, vOrigin, NULL_VECTOR, vVelocity);
 				}
+			}
 		}
 	}
 }

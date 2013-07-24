@@ -1,9 +1,15 @@
-//CHANGELOG:
-//----------
-//v1.1 (6/3/2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
-//v1.0 (5/30/2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
+/*
+CHANGELOG:
+----------
+v1.5 (July 22, 2013 A.D.):  Added Gaben_Ban (workaround) for Gaben when he kills somebody (Wliu).
+v1.4 (June 28, 2013 A.D.):  Fixed Fempyro's airblast cost and ammo pickup again (Wliu).
+v1.3 (June 25, 2013 A.D.):  Fixed Fempyro picking up ammo (Wliu).
+v1.2 (June 18, 2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Fempyro's airblast cost (Wliu).
+v1.1 (June 3, 2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
+v1.0 (May 30, 2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
 
-//Current bosses that use this:  Fempyro
+Current bosses that use this:  Fempyro, Gaben
+*/
 
 #pragma semicolon 1
 
@@ -16,16 +22,13 @@
 #include <tf2_stocks>
 #include <tf2items>
 
-#define SOUND_FREEZE	"physics/glass/glass_impact_bullet4.wav"
-#define PLUGIN_VERSION	"1.1"
+#define PLUGIN_VERSION	"1.5"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
-new BossTeam=_:TFTeam_Blue;
-new Handle:g_FreezeTimers[MAXPLAYERS+1];
-new g_FreezeTracker[MAXPLAYERS+1];
-new g_GlowSprite;
+new bool:gabenBan=false;
 
-public Plugin:myinfo = {
+public Plugin:myinfo =
+{
 	name = "50DKP-FF2 Plugin",
 	author = "Wliu",
 	description = "A FF2 plugin for the 50DKP community",
@@ -35,6 +38,7 @@ public Plugin:myinfo = {
 public OnPluginStart2()
 {
 	HookEvent("teamplay_round_start", event_round_start);
+	HookEvent("player_death", event_player_death, EventHookMode_Pre);
 }
 
 public OnMapStart()
@@ -45,20 +49,60 @@ public OnMapStart()
 
 public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:ability_name[],action)
 {
-	if (!strcmp(ability_name,"rage_fempyro"))
+	if(!strcmp(ability_name,"rage_fempyro"))
 	{
 		Rage_Fempyro(index);
 	}
-	else if (!strcmp(ability_name,"rage_freeze"))
+	else if(!strcmp(ability_name,"gaben_ban"))
 	{
-		Rage_Freeze(ability_name,index);
+		gabenBan=true;
 	}
 	return Plugin_Continue;
 }
 
+/*=========RAGES START=========*/
+Rage_Fempyro(index)
+{
+	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
+	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
+	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "422 ; 1 ; 445 ; 1 ; 165 ; 1 ; 171 ; 0.5 ; 77 ; 0 ; 258 ; 1 ; 37 ; 0"));
+		//Weapon:  Rainblower
+		//Level:  101
+		//Quality:  Unique
+		//422:  Only visible in Pyrovision
+		//445:  Forces player to enter Pyrovision
+		//165:  Charged airblast
+		//171:  -50% airblast cost
+		//77:  Clip size is 0
+		//258:  All ammo becomes health
+		//37:  No ammo
+	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
+}
+
+/*=========ABILITIES START=========*/
+//Gaben_Ban was going to go here, but I didn't know how to hook event_player_death, so...
+
+/*==========MISCELLANEOUS========*/
+public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)  //For Gaben Ban
+{
+	new client = GetClientOfUserId(GetEventInt(event, "userid"));
+	if(client && GetClientHealth(client) <= 0 && gabenBan==true)
+	{
+		OnPlayerDeath(client,(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
+	}
+}
+
+OnPlayerDeath(client,bool:fake = false)  //Also for Gaben Ban
+{
+	if(fake==false)
+	{
+		PrintToChatAll("Player %s has been banned (Banned by Gabe Newell) Reason:  You are not worthy of fighting me",client);
+	}
+}
+
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	for (new i=0;i<MaxClients;i++)
+	for(new i=0;i<MaxClients;i++)
 	{
 		bEnableSuperDuperJump[i]=false;
 	}
@@ -74,11 +118,11 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 	TF2Items_SetQuality(hWeapon, qual);
 	new String:atts[32][32];
 	new count = ExplodeString(att, " ; ", atts, 32, 32);
-	if (count > 0)
+	if(count > 0)
 	{
 		TF2Items_SetNumAttributes(hWeapon, count/2);
 		new i2 = 0;
-		for (new i = 0; i < count; i+=2)
+		for(new i = 0; i < count; i+=2)
 		{
 			TF2Items_SetAttribute(hWeapon, i2, StringToInt(atts[i]), StringToFloat(atts[i+1]));
 			i2++;
@@ -89,7 +133,7 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 		TF2Items_SetNumAttributes(hWeapon, 0);
 	}
 
-	if (hWeapon==INVALID_HANDLE)
+	if(hWeapon==INVALID_HANDLE)
 	{
 		return -1;
 	}
@@ -102,7 +146,7 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 stock SetAmmo(client, slot, ammo)
 {
 	new weapon = GetPlayerWeaponSlot(client, slot);
-	if (IsValidEntity(weapon))
+	if(IsValidEntity(weapon))
 	{
 		new iOffset = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
 		new iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
@@ -110,129 +154,12 @@ stock SetAmmo(client, slot, ammo)
 	}
 }
 
-Rage_Fempyro(index)
-{
-	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
-	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
-	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_flamethrower", 741, 101, 5, "445 ; 1 ; 165 ; 1 ; 171 ; -50"));
-		//Weapon:  Rainblower
-		//Level:  101
-		//Quality:  Unique
-		//445:  Forces player to enter Pyrovision
-		//165:  Charged airblast
-		//171:  -50% airblast cost
-	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
-}
-
-Rage_Freeze(const String:ability_name[],index)
-{
-	decl i;
-	decl Float:pos[3];
-	decl Float:pos2[3];
-	decl String:s[64];
-	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
-	GetEntPropVector(Boss, Prop_Send, "m_vecOrigin", pos);
-	new Float:duration=FF2_GetAbilityArgument(index,this_plugin_name,ability_name,1,5.0);
-	FloatToString(duration,s,64);
-	new Float:ragedist=FF2_GetRageDist(index,this_plugin_name,ability_name);
-	for(i=1;i<=MaxClients;i++)
-	{
-		if(IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
-		{
-			GetEntPropVector(i, Prop_Send, "m_vecOrigin", pos2);
-			if (!TF2_IsPlayerInCondition(i,TFCond_Ubercharged) && (GetVectorDistance(pos,pos2)<ragedist))
-			{
-				FreezeClient(i,duration);
-			}
-		}
-	}
-}
-
-FreezeClient(client, time)
-{
-	if (g_FreezeTimers[client] != INVALID_HANDLE)
-	{
-		UnfreezeClient(client);
-	}
-	SetEntityMoveType(client, MOVETYPE_NONE);
-	SetEntityRenderColor(client, 0, 128, 255, 192);
-	
-	new Float:vec[3];
-	GetClientEyePosition(client, vec);
-	EmitAmbientSound(SOUND_FREEZE, vec, client, SNDLEVEL_RAIDSIREN);
-
-	g_FreezeTimers[client] = CreateTimer(1.0, Timer_Freeze, client, TIMER_REPEAT);
-	g_FreezeTracker[client] = time;
-}
-
-UnfreezeClient(client)
-{
-	KillFreezeTimer(client);
-
-	new Float:vec[3];
-	GetClientAbsOrigin(client, vec);
-	vec[2] += 10;	
-	
-	GetClientEyePosition(client, vec);
-	EmitAmbientSound(SOUND_FREEZE, vec, client, SNDLEVEL_RAIDSIREN);
-
-	SetEntityMoveType(client, MOVETYPE_WALK);
-	SetEntityRenderColor(client, 255, 255, 255, 255);	
-}
-
-KillFreezeTimer(client)
-{
-	KillTimer(g_FreezeTimers[client]);
-	g_FreezeTimers[client] = INVALID_HANDLE;
-}
-
-public Action:Timer_Freeze(Handle:timer, any:client)
-{
-	if (!IsClientInGame(client))
-	{
-		KillFreezeTimer(client);
-		return Plugin_Continue;
-	}
-	
-	if (!IsPlayerAlive(client))
-	{
-		UnfreezeClient(client);
-		return Plugin_Continue;
-	}		
-	
-	g_FreezeTracker[client]--;
-	
-	SetEntityMoveType(client, MOVETYPE_NONE);
-	SetEntityRenderColor(client, 0, 128, 255, 135);
-	
-	new Float:vec[3];
-	GetClientAbsOrigin(client, vec);
-	vec[2] += 10;
-	
-	TE_SetupGlowSprite(vec, g_GlowSprite, 0.95, 1.5, 50);
-	TE_SendToAll();	
-
-	if (g_FreezeTracker[client] == 0)
-	{
-		UnfreezeClient(client);
-	}
-
-	return Plugin_Continue;
-}
-
-public Action:Timer_ResetCharge(Handle:timer, any:index)
-{
-	new slot=index%10000;
-	index/=1000;
-	FF2_SetBossCharge(index,slot,0.0);
-}
-
 public Action:FF2_OnTriggerHurt(index,triggerhurt,&Float:damage)
 {
 	bEnableSuperDuperJump[index]=true;
-	if (FF2_GetBossCharge(index,1)<0)
+	if(FF2_GetBossCharge(index,1) < 0)
 	{
-		FF2_SetBossCharge(index,1,0.0);
+		FF2_SetBossCharge(index, 1, 0.0);
 	}
 	return Plugin_Continue;
 }

@@ -38,11 +38,16 @@
 #SOURCEMOD PLUGINS
 /addons/sourcemod/plugins/disabled/
 <<<<<<< HEAD
+<<<<<<< HEAD
 /addons/sourcemod/plugins/freaks/ff2_d*.*
 /addons/sourcemod/plugins/freaks/ff2_p*.*
 =======
 >>>>>>> origin/development
 /addons/sourcemod/plugins/a*.smx
+=======
+/addons/sourcemod/plugins/ad*.smx
+/addons/sourcemod/plugins/an*.smx
+>>>>>>> origin/development
 /addons/sourcemod/plugins/b*.smx
 /addons/sourcemod/plugins/c*.smx
 /addons/sourcemod/plugins/d*.smx
@@ -66,15 +71,37 @@
 /addons/sourcemod/scripting/b*/
 /addons/sourcemod/scripting/c*/
 <<<<<<< HEAD
+<<<<<<< HEAD
 /addons/sourcemod/scripting/f*/
 =======
 /addons/sourcemod/scripting/freaks/ff2_d*.sp
 /addons/sourcemod/scripting/freaks/ff2_p*.sp
+=======
+>>>>>>> origin/development
 /addons/sourcemod/scripting/freaks/compiled/
 /addons/sourcemod/scripting/fun*/
 >>>>>>> origin/development
 /addons/sourcemod/scripting/k*/
-/addons/sourcemod/scripting/i*/
+/addons/sourcemod/scripting/include/a*
+/addons/sourcemod/scripting/include/b*
+/addons/sourcemod/scripting/include/c*
+/addons/sourcemod/scripting/include/d*
+/addons/sourcemod/scripting/include/e*
+/addons/sourcemod/scripting/include/fi*
+/addons/sourcemod/scripting/include/fl*
+/addons/sourcemod/scripting/include/fu*
+/addons/sourcemod/scripting/include/g*
+/addons/sourcemod/scripting/include/h*
+/addons/sourcemod/scripting/include/k*
+/addons/sourcemod/scripting/include/l*
+/addons/sourcemod/scripting/include/m*
+/addons/sourcemod/scripting/include/n*
+/addons/sourcemod/scripting/include/p*
+/addons/sourcemod/scripting/include/r*
+/addons/sourcemod/scripting/include/s*
+/addons/sourcemod/scripting/include/t*
+/addons/sourcemod/scripting/include/u*
+/addons/sourcemod/scripting/include/v*
 /addons/sourcemod/scripting/p*/
 /addons/sourcemod/scripting/t*/
 /addons/sourcemod/scripting/a*.sp
@@ -105,6 +132,7 @@
 /addons/sourcemod/translations/a*.txt
 /addons/sourcemod/translations/b*.txt
 /addons/sourcemod/translations/c*.txt
+/addons/sourcemod/translations/ff2_o*.txt
 /addons/sourcemod/translations/fun*.txt
 /addons/sourcemod/translations/m*.txt
 /addons/sourcemod/translations/n*.txt
@@ -127,6 +155,7 @@ update_tf2.txt
 /cfg/sourcemod/f*.cfg
 /cfg/sourcemod/k*.cfg
 /cfg/sourcemod/m*.cfg
+/cfg/sourcemod/n*.cfg
 /cfg/sourcemod/p*.cfg
 /cfg/sourcemod/r*.cfg
 /cfg/sourcemod/s*.cfg
@@ -146,7 +175,9 @@ update_tf2.txt
 /downloadlists/
 #MAPS
 /maps/
-#MEDIA?
+#MATERIALS
+/materials/models/player/items/templates/standard.vmt
+#MEDIA
 /media/
 #RANDOM STUFF
 /replay/

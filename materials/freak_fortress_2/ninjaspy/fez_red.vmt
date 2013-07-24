@@ -1,7 +1,7 @@
 "VertexlitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\ninjaspy/fez_red"
-	"$bumpmap" "models\player\items\spy/fez_normal"
+	"$baseTexture" "freak_fortress_2\ninjaspy\fez_red"
+	"$bumpmap" "models\player\items\spy\fez_normal"
 
 	"$phong" "1"
 	"$phongexponent" "150"

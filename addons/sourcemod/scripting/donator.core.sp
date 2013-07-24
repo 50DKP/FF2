@@ -30,8 +30,7 @@ MANUALLY ADDING DONATORS:
 
 #pragma semicolon 1
 
-//uncomment to use SQL
-//#define USESQL
+#define USESQL
 
 #define DONATOR_VERSION "0.4"
 
@@ -121,15 +120,18 @@ public OnPluginStart()
 
 #if defined USESQL
 public OnPluginEnd()
+{
 	CloseHandle(g_hDataBase);
+}
 #endif
 
 public OnClientAuthorized(iClient, const String:szAuthId[])
 {
-	if(IsFakeClient(iClient)) return;
-	
+	if (IsFakeClient(iClient))
+	{
+		return;
+	}
 	g_bIsDonator[iClient] = false;
-
 	decl iLevel;
 	if (GetTrieValue(g_hDonatorTrie, szAuthId, iLevel))
 	{
@@ -140,8 +142,11 @@ public OnClientAuthorized(iClient, const String:szAuthId[])
 
 public OnClientPostAdminCheck(iClient)
 {
-	if(IsFakeClient(iClient)) return;
-	
+	if (IsFakeClient(iClient))
+	{
+		return;
+	}
+
 	#if !defined USESQL
 	if (AreClientCookiesCached(iClient))
 	{
@@ -161,15 +166,21 @@ public OnClientPostAdminCheck(iClient)
 
 public Action:SayCallback(iClient, const String:command[], argc)
 {
-	if(!iClient) return Plugin_Continue;
-	if (!g_bIsDonator[iClient]) return Plugin_Continue;
-	
+	if (!iClient)
+	{
+		return Plugin_Continue;
+	}
+
+	if (!g_bIsDonator[iClient])
+	{
+		return Plugin_Continue;
+	}
+
 	decl String:szArg[255];
 	GetCmdArgString(szArg, sizeof(szArg));
 
 	StripQuotes(szArg);
 	TrimString(szArg);
-	
 	if (StrEqual(szArg, CHAT_TRIGGER, false))
 	{
 		ShowDonatorMenu(iClient);
@@ -184,7 +195,7 @@ public Action:ShowDonatorMenu(client)
 	SetMenuTitle(menu,"Donator Menu");
 
 	decl Handle:hItem, String:szBuffer[64], String:szItem[4];
-	for(new i = 0; i < GetArraySize(g_hMenuItems); i++)
+	for (new i = 0; i < GetArraySize(g_hMenuItems); i++)
 	{
 		FormatEx(szItem, sizeof(szItem), "%i", i);
 		hItem = GetArrayCell(g_hMenuItems, i);
@@ -211,7 +222,10 @@ public DonatorMenuSelected(Handle:menu, MenuAction:action, param1, param2)
 			Call_PushCell(param1);
 			Call_Finish(result);
 		}
-		case MenuAction_End: CloseHandle(menu);
+		case MenuAction_End:
+		{
+			CloseHandle(menu);
+		}
 	}
 }
 
@@ -220,25 +234,29 @@ public Action:cmd_ReloadDonators(client, args)
 	LoadDonators();
 
 	//Update the donator array and fire a donator changed forward
-	
 	for(new i = 1; i <= MaxClients; i++)
 	{
-		if(!IsClientInGame(i)) continue;
-		if (IsFakeClient(i)) continue;
-		
+		if (!IsClientInGame(i))
+		{
+			continue;
+		}
+
+		if (IsFakeClient(i))
+		{
+			continue;
+		}
 		g_bIsDonator[i] = false;
-	
 		decl iLevel, String:szAuthId[64];
 		GetClientAuthString(i, szAuthId, sizeof(szAuthId));
-		
 		if (GetTrieValue(g_hDonatorTrie, szAuthId, iLevel))
+		{
 			g_bIsDonator[i] = true;
+		}
 	}
-
 	ReplyToCommand(client, "[SM] Donator database reloaded.");
-	
+
 	Forward_OnDonatorsChanged();
-	
+
 	return Plugin_Handled;
 }
 
@@ -271,18 +289,24 @@ public LoadDonators()
 		CloseHandle(file);
 	}
 	else
+	{
 		SetFailState("Unable to load donator file (%s)", DONATOR_FILE);
+	}
 	#endif
 }
 
-//--------------------------------------SQL---------------------------------------------
+/*--------------------------------------SQL START--------------------------------------*/
 #if defined USESQL
 public SQL_OpenConnection()
 {
 	if (SQL_CheckConfig(SQL_CONFIG))
+	{
 		SQL_TConnect(T_InitDatabase, SQL_CONFIG);
+	}
 	else
+	{
 		SetFailState("Unabled to load cfg file (%s)", SQL_CONFIG);
+	}
 }
 
 public T_InitDatabase(Handle:owner, Handle:hndl, const String:error[], any:data)
@@ -292,8 +316,10 @@ public T_InitDatabase(Handle:owner, Handle:hndl, const String:error[], any:data)
 		g_hDataBase = hndl;
 		LoadDonators();
 	}
-	else  
+	else
+	{
 		LogError("DATABASE FAILURE: %s", error);
+	}
 }
 
 public T_LoadDonators(Handle:owner, Handle:hndl, const String:error[], any:data)
@@ -308,7 +334,10 @@ public T_LoadDonators(Handle:owner, Handle:hndl, const String:error[], any:data)
 			while (SQL_FetchRow(hndl))
 			{
 				SQL_FetchString(hndl, 0, szSteamId, sizeof(szSteamId));
-				if (strlen(szSteamId) < 1) continue;
+				if (strlen(szSteamId) < 1)
+				{
+					continue;
+				}
 				iLevel = SQL_FetchInt(hndl, 1);
 				SQL_FetchString(hndl, 2, szTag, sizeof(szTag));
 				SetTrieValue(g_hDonatorTrie, szSteamId, iLevel);
@@ -317,58 +346,40 @@ public T_LoadDonators(Handle:owner, Handle:hndl, const String:error[], any:data)
 		}
 	}
 	else
+	{
 		LogError("Query failed! %s", error);
+	}
 }
 
 public SQLErrorCheckCallback(Handle:owner, Handle:hndl, const String:error[], any:data)
 {
 	if (strlen(error) > 1)
+	{
 		LogMessage("SQL Error: %s", error);
+	}
 }
 #endif
-//-----------------------------------------------------------------------------------------
+/*--------------------------------------SQL END--------------------------------------*/
 
-/*
-* Natives
-*/
+//Natives
 public Native_GetDonatorLevel(Handle:plugin, params)
 {
 	decl String:szSteamId[64], iLevel;
 	GetClientAuthString(GetNativeCell(1), szSteamId, sizeof(szSteamId));
 	
 	if (GetTrieValue(g_hDonatorTrie, szSteamId, iLevel))
+	{
 		return iLevel;
+	}
 	else
+	{
 		return -1;
+	}
 }
 
 public Native_SetDonatorLevel(Handle:plugin, params)
 {
-	/*
-	decl String:szSteamId[64], iLevel;
-	GetClientAuthString(GetNativeCell(1), szSteamId, sizeof(szSteamId));
-
-	if (GetTrieValue(g_hDonatorTrie, szSteamId, iLevel))
-	{
-		iLevel = GetNativeCell(2);
-		SetTrieValue(g_hDonatorTrie, szSteamId, iLevel);
-
-		#if defined USESQL
-		SQL_EscapeString(g_hDataBase, szSteamId, szSteamId, sizeof(szSteamId));
-		decl String:szQuery[512];
-		FormatEx(szQuery, sizeof(szQuery), "UPDATE `%s` SET %s = %i WHERE `steamid` LIKE '%s'", SQL_DBNAME, db_cols[level], iLevel, szSteamId);
-		SQL_TQuery(g_hDataBase, SQLErrorCheckCallback, szQuery);
-		#else
-		decl String:szLevel[5];
-		Format(szLevel, sizeof(szLevel), "%i", iLevel);
-		SetClientCookie(GetNativeCell(1), g_CookieLevel, szLevel);
-		#endif
-		return true;
-	}
-	else
-		return -1;*/
-		
-	ThrowNativeError(SP_ERROR_NATIVE, "Not implimented.");
+	ThrowNativeError(SP_ERROR_NATIVE, "Not implemented.");
 }
 
 public Native_IsClientDonator(Handle:plugin, params)
@@ -376,7 +387,9 @@ public Native_IsClientDonator(Handle:plugin, params)
 	decl String:szSteamId[64], iLevel;
 	GetClientAuthString(GetNativeCell(1), szSteamId, sizeof(szSteamId));
 	if (GetTrieValue(g_hDonatorTrie, szSteamId, iLevel))
+	{
 		return true;
+	}
 	return false;
 }
 
@@ -385,7 +398,9 @@ public Native_FindDonatorBySteamId(Handle:plugin, params)
 	decl String:szSteamId[64], iLevel;
 	GetNativeString(1, szSteamId, sizeof(szSteamId));
 	if (GetTrieValue(g_hDonatorTrie, szSteamId, iLevel))
+	{
 		return true;
+	}
 	return false;
 }
 
@@ -411,7 +426,7 @@ public Native_SetDonatorMessage(Handle:plugin, params)
 	{
 		GetNativeString(2, szNewTag, sizeof(szNewTag));
 		SetTrieString(g_hDonatorTagTrie, szSteamId, szNewTag);
-		
+
 		#if defined USESQL
 		decl String:szQuery[512];
 		SQL_EscapeString(g_hDataBase, szNewTag, szNewTag, sizeof(szNewTag));
@@ -430,13 +445,12 @@ public Native_RegisterMenuItem(Handle:hPlugin, iNumParams)
 {
 	decl String:szCallerName[PLATFORM_MAX_PATH], String:szBuffer[256], String:szMenuTitle[256];
 	GetPluginFilename(hPlugin, szCallerName, sizeof(szCallerName));
-	
 	new Handle:hFwd = CreateForward(ET_Single, Param_Cell, Param_CellByRef);	
 	if (!AddToForward(hFwd, hPlugin, GetNativeCell(2)))
+	{
 		ThrowError("Failed to add forward from %s", szCallerName);
-
+	}
 	GetNativeString(1, szMenuTitle, 255);
-	
 	new Handle:hTempItem;
 	for (new i = 0; i < g_iMenuCount; i++)	//make sure we aren't double registering
 	{
@@ -448,7 +462,6 @@ public Native_RegisterMenuItem(Handle:hPlugin, iNumParams)
 			g_iMenuCount--;
 		}
 	}
-	
 	new Handle:hItem = CreateArray(15);
 	new id = g_iMenuId++;
 	g_iMenuCount++;
@@ -489,10 +502,9 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	return APLRes_Success;
 }
 
-//-------------------FORWARDS--------------------------
-/*
-* Forwards for donators connecting
-*/
+/*-------------------FORWARDS--------------------------*/
+
+//Forwards for donators connecting
 public Forward_OnDonatorConnect(iClient)
 {
 	new bool:result;
@@ -502,10 +514,7 @@ public Forward_OnDonatorConnect(iClient)
 	return result;
 }
 
-/*
-*  Forwards for everyone - use to check for admin status/ cookies should be cached now
-*/
-
+//Forwards for everyone - use to check for admin status/ cookies should be cached now
 public Forward_OnPostDonatorCheck(iClient)
 {
 	new bool:result;
@@ -515,10 +524,8 @@ public Forward_OnPostDonatorCheck(iClient)
 	return result;
 }
 
-/*
-*  Forwards when the donators have been reloaded
-*/
 
+//Forwards when the donators have been reloaded
 public Forward_OnDonatorsChanged()
 {
 	new bool:result;

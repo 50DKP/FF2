@@ -1,6 +1,6 @@
 "VertexlitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\merasmus/bombonomicon_item"
+	"$baseTexture" "freak_fortress_2\merasmus\bombonomicon_item"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"
 	"$detailblendfactor" .01

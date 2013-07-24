@@ -1,0 +1,18 @@
+VertexLitGeneric
+{
+$basetexture "Models/props_junk/phys_objects02b"
+$bumpmap "Models/props_junk/phys_objects02a_normal"
+$halflambert 1
+$phong 1
+$phongfresnelranges "[5 5 30]"
+$phongboost ".3"
+$phongexponent 45
+$basemapalphaphongmask 1
+
+
+
+
+
+
+
+}
