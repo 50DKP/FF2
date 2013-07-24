@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"freak_fortress_2\gangplank_2\medic_gang"
+	"$basetexture"	"freak_fortress_2\gangplank\medic_gang"
 	"$bumpmap" "models\player\medic\medic_normal" 
 
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	

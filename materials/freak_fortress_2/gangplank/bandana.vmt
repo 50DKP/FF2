@@ -1,7 +1,7 @@
 "VertexlitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\gangplank_2\bandana"
-	"$bumpmap" "freak_fortress_2\gangplank_2\bandana_normal" 
+	"$baseTexture" "freak_fortress_2\gangplank\bandana"
+	"$bumpmap" "freak_fortress_2\gangplank\bandana_normal" 
 	"$yellow" "0"
 	"$alphatest" "1"
 	"$nocull" "1"

@@ -1,6 +1,6 @@
 "vertexlitgeneric"
 {
-	"$basetexture"		"freak_fortress_2\gangplank_2\demo_dreads"
+	"$basetexture"		"freak_fortress_2\gangplank\demo_dreads"
 
 
 	"$phong" "1"

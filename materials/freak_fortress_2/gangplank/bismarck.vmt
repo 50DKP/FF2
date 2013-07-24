@@ -1,6 +1,6 @@
 "VertexlitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\gangplank_2\bismarck.vtf"
+	"$baseTexture" "freak_fortress_2\gangplank\bismarck.vtf"
 	
 	"$bumpmap" "models/effects/flat_normal" 
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	

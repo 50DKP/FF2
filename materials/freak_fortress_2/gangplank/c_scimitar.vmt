@@ -1,6 +1,6 @@
 "VertexLitGeneric"
 {
-	"$basetexture"	"freak_fortress_2\gangplank_2\c_scimitar"
+	"$basetexture"	"freak_fortress_2\gangplank\c_scimitar"
 	"$basemapalphaphongmask" "1"
 	"$phong" "1"
 	"$phongexponent" "10"

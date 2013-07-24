@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.0-rc-1"
+#define PLUGIN_VERSION "2.3.0"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -211,9 +211,9 @@ static const String:ff2versiondates[][] =
 	"June 4, 2013",
 	"June 4, 2013",
 	"June 10, 2013",
-	"July 21, 2013",
-	"July 21, 2013",
-	"July 21, 2013"
+	"July 24, 2013",
+	"July 24, 2013",
+	"July 24, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -222,7 +222,7 @@ stock FindVersionData(Handle:panel, versionindex)
 	{
 		case 28: //2.3.0
 		{
-			DrawPanelText(panel, "Now featuring the Weapon Balance Update!");
+			DrawPanelText(panel, "After much delay, we now welcome the Weapon Balance Update!");
 			DrawPanelText(panel, "1) Beggar's Bazooka reloads 20% faster (Wliu)");
 			DrawPanelText(panel, "2) Holiday Punch gives you instant weapon switch (Wliu)");
 			DrawPanelText(panel, "3) Buffed the Fists of Steel a bit more (Wliu)");
@@ -234,7 +234,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) Powerjack now only gives you +1 health if you're buffed by the Battalion's Backup (Wliu)");
 			DrawPanelText(panel, "6) Re-organized a bunch of files (Wliu/Lawd)");
 			DrawPanelText(panel, "7) Merged in some 1.07 changes (Wliu/Powerlord)");
-			DrawPanelText(panel, "8) Added the Administrator (Lawd/Wliu)");
+			DrawPanelText(panel, "8) Added the Administrator and Spyper (Lawd/Wliu)");
 			DrawPanelText(panel, "9) Mantreads now do ~1000 damage (Wliu)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
@@ -244,7 +244,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "11) Fixed Fempyro picking up ammo and infinite airblast (Wliu)");
 			DrawPanelText(panel, "12) Natascha can no longer get minicrits or crits (Wliu/Arceaus)");
 			DrawPanelText(panel, "13) Server list now correctly displays \"Freak Fortress 2 version\" instead of \"Team Fortress\" (Wliu)");
-			DrawPanelText(panel, "Expect the following in 2.4.0:  Gangplank rage, Spyper, Robo-Robotic Soldier, Cave Johnson, and more!");
+			DrawPanelText(panel, "Expect the following soon(TM):  Gangplank rage, Robo-Robotic Soldier, Cave Johnson, and more!");
 		}
 		case 25: //2.2.1
 		{
@@ -523,7 +523,7 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 
 public OnPluginStart()
 {
-	LogMessage("=== Freak Fortress 2 v.%s Initializing === ", PLUGIN_VERSION);
+	LogMessage("=== Freak Fortress 2 v%s Initializing === ", PLUGIN_VERSION);
 
 	cvarVersion = CreateConVar("ff2_version", PLUGIN_VERSION, "Freak Fortress 2 Version", FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_DONTRECORD);
 	cvarPointType = CreateConVar("ff2_point_type", "0", "Select condition to enable point (0 - alive players, 1 - time)", FCVAR_PLUGIN, true, 0.0, true, 1.0);
@@ -713,7 +713,7 @@ public OnConfigsExecuted()
 		if(steamtools)
 		{
 			decl String:gameDesc[64];
-			Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 %s", PLUGIN_VERSION);
+			Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 (%s)", PLUGIN_VERSION);
 			Steam_SetGameDescription(gameDesc);
 		}
 		Enabled = true;
@@ -1088,7 +1088,7 @@ public Action:Timer_Announce(Handle:hTimer)
 			}
 			case 3:
 			{
-				CPrintToChatAll("{default} === Freak Fortress 2 v.%s (based on VS Saxton Hale Mode by {olive}RainBolt Dash{default} and {olive}FlaminSarge{default} edit by {olive}RavensBro{default}) === ",PLUGIN_VERSION);
+				CPrintToChatAll("{default} === Freak Fortress 2 v%s (based on VS Saxton Hale Mode by {olive}RainBolt Dash{default} and {olive}FlaminSarge{default} edit by {olive}RavensBro{default}) === ",PLUGIN_VERSION);
 			}
 			case 4:
 			{

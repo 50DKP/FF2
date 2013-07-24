@@ -1,6 +1,6 @@
 "UnlitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\gangplank_2\pirate0"
+	"$baseTexture" "freak_fortress_2\gangplank\pirate0"
 	"$translucent" 1
 	"$ignorez"     "1"
 	"$no_fullbright" "1"	

@@ -1,6 +1,6 @@
 "VertexlitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\gangplank_2\mighty_pirate"
+	"$baseTexture" "freak_fortress_2\gangplank\mighty_pirate"
 	"$bumpmap" "models/effects/flat_normal" 
 
 	"$yellow" "0"

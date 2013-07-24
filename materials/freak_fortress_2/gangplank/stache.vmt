@@ -1,8 +1,8 @@
 "VertexLitGeneric"
 {
-	"$baseTexture" "freak_fortress_2\gangplank_2\stache.vtf"
+	"$baseTexture" "freak_fortress_2\gangplank\stache"
 	"$bumpmap" "models\effects\flat_normal" 
-	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+	"$detail" "effects/tiledfire/fireLayeredSlowTiled512"	
 	"$detailscale" "5"
 	"$detailblendfactor" .01
 	"$detailblendmode" 6
