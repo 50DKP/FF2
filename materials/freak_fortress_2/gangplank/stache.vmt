@@ -2,7 +2,7 @@
 {
 	"$baseTexture" "freak_fortress_2\gangplank\stache"
 	"$bumpmap" "models\effects\flat_normal" 
-	"$detail" "effects/tiledfire/fireLayeredSlowTiled512"	
+	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"
 	"$detailblendfactor" .01
 	"$detailblendmode" 6

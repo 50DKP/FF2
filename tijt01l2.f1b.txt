@@ -1,0 +1,743 @@
+﻿2.3.0
+
+Conflicts (MUST FIX):
+	.gitignore
+	addons/sourcemod/configs/freak_fortress_2/characters.cfg
+	addons/sourcemod/configs/freak_fortress_2/fempyro.cfg
+	addons/sourcemod/configs/freak_fortress_2/gaben.cfg
+	addons/sourcemod/configs/freak_fortress_2/oldnick.cfg
+	addons/sourcemod/configs/freak_fortress_2/travis.cfg
+	addons/sourcemod/plugins/freak_fortress_2.smx
+	addons/sourcemod/plugins/freaks/ff2_50dkp.ff2
+	addons/sourcemod/scripting/freak_fortress_2.sp
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please remove the file
+#	.git/MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# All conflicts fixed but you are still merging.
+#   (use "git commit" to conclude merge)
+#
+# Changes to be committed:
+#
+#	modified:   .gitignore
+#	modified:   README.md
+#	new file:   addons/sourcemod/configs/freak_fortress_2/administrator.cfg
+#	deleted:    addons/sourcemod/configs/freak_fortress_2/brutal_sniper_hale.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/cavejohnson.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/cbs.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/characters.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/demopan.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/fempyro.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/gaben.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/gangplank.cfg
+#	deleted:    addons/sourcemod/configs/freak_fortress_2/gangplank_2.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/gentlespy.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/hhh.cfg
+#	deleted:    addons/sourcemod/configs/freak_fortress_2/hhh_hale.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/merasmus.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/ninjaspy.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/oldnick.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/painis_cupcake.cfg
+#	deleted:    addons/sourcemod/configs/freak_fortress_2/painiscupcake.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/radigan.cfg
+#	deleted:    addons/sourcemod/configs/freak_fortress_2/robocyphosis.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/robosoldier.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/rocket.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/saxton_hale.cfg
+#	deleted:    addons/sourcemod/configs/freak_fortress_2/saxtonhale.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/seeldier.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/seeman.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/spyper.cfg
+#	modified:   addons/sourcemod/configs/freak_fortress_2/travis.cfg
+#	new file:   addons/sourcemod/configs/freak_fortress_2/vagineer.cfg
+#	deleted:    addons/sourcemod/configs/freak_fortress_2/vagineer_hale.cfg
+#	new file:   addons/sourcemod/plugins/afkff2bossslayer.smx
+#	new file:   addons/sourcemod/plugins/ff2_bosstweaks.smx
+#	new file:   addons/sourcemod/plugins/ff2_ragemodel.smx
+#	new file:   addons/sourcemod/plugins/ff2_replaceprojectile.smx
+#	new file:   addons/sourcemod/plugins/freaks/ff2_otokiru.ff2
+#	new file:   addons/sourcemod/plugins/freaks/ff2_otokiru_pp.ff2
+#	new file:   addons/sourcemod/plugins/freaks/ff2_servercommandrage.ff2
+#	modified:   addons/sourcemod/scripting/donator.colorchat.sp
+#	modified:   addons/sourcemod/scripting/donator.core.sp
+#	modified:   addons/sourcemod/scripting/donator.recognition.tf2.sp
+#	modified:   addons/sourcemod/scripting/freak_fortress_2.sp
+#	modified:   addons/sourcemod/scripting/freaks/ff2_1st_set_abilities.sp
+#	modified:   addons/sourcemod/scripting/freaks/ff2_50dkp.sp
+#	new file:   addons/sourcemod/scripting/freaks/ff2_bosstweaks.sp
+#	new file:   addons/sourcemod/scripting/freaks/ff2_darthmule.sp
+#	new file:   addons/sourcemod/scripting/freaks/ff2_otokiru.sp
+#	new file:   addons/sourcemod/scripting/freaks/ff2_otokiru_pp.sp
+#	new file:   addons/sourcemod/scripting/include/freak_fortress_2.inc
+#	new file:   addons/sourcemod/scripting/include/freak_fortress_2_subplugin.inc
+#	new file:   addons/sourcemod/scripting/include/freak_fortress_2_vsh_feedback.inc
+#	modified:   addons/sourcemod/translations/freak_fortress_2.phrases.txt
+#	modified:   cfg/sourcemod/FreakFortress2.cfg
+#	deleted:    materials/custom/therocket/soldier_blue.vmt
+#	deleted:    materials/custom/therocket/soldier_blue_gib.vmt
+#	deleted:    materials/custom/therocket/soldier_blue_invun.vmt
+#	deleted:    materials/custom/therocket/soldier_hands.vmt
+#	deleted:    materials/custom/therocket/soldier_head_blue.vmt
+#	deleted:    materials/custom/therocket/soldier_head_blue_invun.vmt
+#	deleted:    materials/custom/therocket/soldier_head_red.vmt
+#	deleted:    materials/custom/therocket/soldier_head_red_invun.vmt
+#	deleted:    materials/custom/therocket/soldier_red.vmt
+#	deleted:    materials/custom/therocket/soldier_red_gib.vmt
+#	deleted:    materials/custom/therocket/soldier_red_invun.vmt
+#	deleted:    materials/custom/therocket/soldier_sleeves_blue.vmt
+#	deleted:    materials/custom/therocket/soldier_sleeves_red.vmt
+#	new file:   materials/freak_fortress_2/administrator/administrator_head_red.vmt
+#	new file:   materials/freak_fortress_2/administrator/administrator_head_red.vtf
+#	new file:   materials/freak_fortress_2/administrator/administrator_purple.vmt
+#	new file:   materials/freak_fortress_2/administrator/administrator_purple.vtf
+#	new file:   materials/freak_fortress_2/administrator/administrator_red.vmt
+#	new file:   materials/freak_fortress_2/administrator/administrator_red.vtf
+#	new file:   materials/freak_fortress_2/administrator/eye-iris-green.vmt
+#	new file:   materials/freak_fortress_2/administrator/eye-iris-green.vtf
+#	new file:   materials/freak_fortress_2/cavejohnson/cave.vtf
+#	new file:   materials/freak_fortress_2/cavejohnson/cave_blue.vmt
+#	new file:   materials/freak_fortress_2/cavejohnson/cave_head.vtf
+#	new file:   materials/freak_fortress_2/cavejohnson/cave_head_blue.vmt
+#	new file:   materials/freak_fortress_2/cavejohnson/cave_head_red.vmt
+#	renamed:    materials/custom/therocket/soldier_normal.vtf -> materials/freak_fortress_2/cavejohnson/cave_normal.vtf
+#	new file:   materials/freak_fortress_2/cavejohnson/cave_red.vmt
+#	new file:   materials/freak_fortress_2/cavejohnson/phys_objects02a.vmt
+#	new file:   materials/freak_fortress_2/cavejohnson/phys_objects02a.vtf
+#	new file:   materials/freak_fortress_2/cavejohnson/phys_objects02a_normal.vtf
+#	new file:   materials/freak_fortress_2/cavejohnson/phys_objects02b.vmt
+#	new file:   materials/freak_fortress_2/cavejohnson/phys_objects02b.vtf
+#	renamed:    materials/models/player/saxton_hale/sniper_head.vtf -> materials/freak_fortress_2/cbs/cbs_head.vtf
+#	new file:   materials/freak_fortress_2/cbs/cbs_head_red.vmt
+#	new file:   materials/freak_fortress_2/cbs/cbs_lens.vmt
+#	renamed:    materials/models/player/saxton_hale/sniper_lens.vtf -> materials/freak_fortress_2/cbs/cbs_lens.vtf
+#	new file:   materials/freak_fortress_2/cbs/cbs_red.vmt
+#	renamed:    materials/models/player/saxton_hale/sniper_red.vtf -> materials/freak_fortress_2/cbs/cbs_red.vtf
+#	new file:   materials/freak_fortress_2/cbs/eye.vmt
+#	renamed:    materials/models/player/saxton_hale/eye.vtf -> materials/freak_fortress_2/cbs/eye.vtf
+#	new file:   materials/freak_fortress_2/cbs/eyeball_l.vmt
+#	new file:   materials/freak_fortress_2/cbs/eyeball_r.vmt
+#	new file:   materials/freak_fortress_2/cbscout/scout_blue.vmt
+#	new file:   materials/freak_fortress_2/cbscout/scout_head.vtf
+#	new file:   materials/freak_fortress_2/cbscout/scout_head_blue.vmt
+#	new file:   materials/freak_fortress_2/cbscout/scout_head_red.vmt
+#	new file:   materials/freak_fortress_2/cbscout/scout_normal.vtf
+#	new file:   materials/freak_fortress_2/cbscout/scout_red.vmt
+#	new file:   materials/freak_fortress_2/cbscout/scout_red.vtf
+#	new file:   materials/freak_fortress_2/cbscout2/scout_blue.vmt
+#	new file:   materials/freak_fortress_2/cbscout2/scout_head.vtf
+#	new file:   materials/freak_fortress_2/cbscout2/scout_head_blue.vmt
+#	new file:   materials/freak_fortress_2/cbscout2/scout_head_red.vmt
+#	new file:   materials/freak_fortress_2/cbscout2/scout_normal.vtf
+#	new file:   materials/freak_fortress_2/cbscout2/scout_red.vmt
+#	new file:   materials/freak_fortress_2/cbscout2/scout_red.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/eye-iris-blue.vtf
+#	renamed:    materials/custom/therocket/eyeball_invun.vmt -> materials/freak_fortress_2/fairyheavy/eyeball_invun.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/eyeball_l.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/eyeball_r.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_stars.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_stars_blue.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_tiara.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_tiara.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_tiara_blue.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_tutu.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_tutu.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_tutu_blue.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_wings.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_wings.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_fairy_wings_blue.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_head.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_head_blue.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_head_blue_invun.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_head_red.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/heavy_head_red_invun.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_blue.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_blue.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_blue_invun.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_hands.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_hands.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_normal.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_red.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_red.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/hvyweapon_red_invun.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/wand.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/wand.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/wand_blue.vmt
+#	new file:   materials/freak_fortress_2/fairyheavy/wand_blue.vtf
+#	new file:   materials/freak_fortress_2/fairyheavy/wand_normal.vtf
+#	new file:   materials/freak_fortress_2/gaben/gaben_heavy_head.vmt
+#	renamed:    materials/models/player/hvyweapon/heavy_head_gabe.vtf -> materials/freak_fortress_2/gaben/gaben_heavy_head.vtf
+#	new file:   materials/freak_fortress_2/gaben/gaben_heavyweapon.vmt
+#	renamed:    materials/models/player/hvyweapon/hvyweapon_gabe.vtf -> materials/freak_fortress_2/gaben/gaben_heavyweapon.vtf
+#	new file:   materials/freak_fortress_2/gangplank/anchor.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/anchor.vtf -> materials/freak_fortress_2/gangplank/anchor.vtf
+#	new file:   materials/freak_fortress_2/gangplank/bandana.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/bandana.vtf -> materials/freak_fortress_2/gangplank/bandana.vtf
+#	renamed:    materials/freak_fortress_2/gangplank_2/bandana_normal.vtf -> materials/freak_fortress_2/gangplank/bandana_normal.vtf
+#	new file:   materials/freak_fortress_2/gangplank/bismarck.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/bismarck.vtf -> materials/freak_fortress_2/gangplank/bismarck.vtf
+#	new file:   materials/freak_fortress_2/gangplank/c_scimitar.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/c_scimitar.vtf -> materials/freak_fortress_2/gangplank/c_scimitar.vtf
+#	new file:   materials/freak_fortress_2/gangplank/demo_dreads.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/demo_dreads.vtf -> materials/freak_fortress_2/gangplank/demo_dreads.vtf
+#	renamed:    materials/freak_fortress_2/gangplank_2/eyeball_l.vmt -> materials/freak_fortress_2/gangplank/eyeball_l.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/eyeball_r.vmt -> materials/freak_fortress_2/gangplank/eyeball_r.vmt
+#	new file:   materials/freak_fortress_2/gangplank/eyepatch.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/eyepatch.vtf -> materials/freak_fortress_2/gangplank/eyepatch.vtf
+#	renamed:    materials/freak_fortress_2/gangplank_2/eyepatch_normal.vtf -> materials/freak_fortress_2/gangplank/eyepatch_normal.vtf
+#	new file:   materials/freak_fortress_2/gangplank/medic_gang.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/medic_gang.vtf -> materials/freak_fortress_2/gangplank/medic_gang.vtf
+#	renamed:    materials/freak_fortress_2/gangplank_2/medic_head.vtf -> materials/freak_fortress_2/gangplank/medic_head.vtf
+#	new file:   materials/freak_fortress_2/gangplank/medic_head_red.vmt
+#	new file:   materials/freak_fortress_2/gangplank/mighty_pirate.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/mighty_pirate.vtf -> materials/freak_fortress_2/gangplank/mighty_pirate.vtf
+#	new file:   materials/freak_fortress_2/gangplank/pegleg.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/pegleg.vtf -> materials/freak_fortress_2/gangplank/pegleg.vtf
+#	new file:   materials/freak_fortress_2/gangplank/pirate0.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/pirate0.vtf -> materials/freak_fortress_2/gangplank/pirate0.vtf
+#	new file:   materials/freak_fortress_2/gangplank/pirate1.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/pirate1.vtf -> materials/freak_fortress_2/gangplank/pirate1.vtf
+#	new file:   materials/freak_fortress_2/gangplank/rapier.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/rapier.vtf -> materials/freak_fortress_2/gangplank/rapier.vtf
+#	new file:   materials/freak_fortress_2/gangplank/stache.vmt
+#	renamed:    materials/freak_fortress_2/gangplank_2/stache.vtf -> materials/freak_fortress_2/gangplank/stache.vtf
+#	deleted:    materials/freak_fortress_2/gangplank_2/anchor.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/bandana.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/bismarck.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/c_scimitar.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/demo_dreads.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/eyepatch.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/medic_gang.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/medic_head_red.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/mighty_pirate.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/pegleg.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/pirate0.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/pirate1.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/rapier.vmt
+#	deleted:    materials/freak_fortress_2/gangplank_2/stache.vmt
+#	new file:   materials/freak_fortress_2/gentlespy/gentlespy_blue.vmt
+#	renamed:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue.vtf -> materials/freak_fortress_2/gentlespy/gentlespy_blue.vtf
+#	new file:   materials/freak_fortress_2/gentlespy/gentlespy_blue_invun.vmt
+#	renamed:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue_invun.vtf -> materials/freak_fortress_2/gentlespy/gentlespy_blue_invun.vtf
+#	renamed:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_normal.vtf -> materials/freak_fortress_2/gentlespy/gentlespy_normal.vtf
+#	new file:   materials/freak_fortress_2/gentlespy/gentlespy_red.vmt
+#	renamed:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_red.vtf -> materials/freak_fortress_2/gentlespy/gentlespy_red.vtf
+#	new file:   materials/freak_fortress_2/gentlespy/gentlespy_red_invun.vmt
+#	renamed:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_red_invun.vtf -> materials/freak_fortress_2/gentlespy/gentlespy_red_invun.vtf
+#	deleted:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue.vmt
+#	deleted:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_blue_invun.vmt
+#	deleted:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_red.vmt
+#	deleted:    materials/freak_fortress_2/gentlespy_tex/stylish_spy_red_invun.vmt
+#	modified:   materials/freak_fortress_2/merasmus/bombonomicon_item.vmt
+#	modified:   materials/freak_fortress_2/merasmus/eyeball_spectral.vmt
+#	modified:   materials/freak_fortress_2/merasmus/merasmus.vmt
+#	modified:   materials/freak_fortress_2/merasmus/merasmus_head.vmt
+#	modified:   materials/freak_fortress_2/merasmus/merasmus_head_spectral.vmt
+#	modified:   materials/freak_fortress_2/merasmus/merasmus_skull.vmt
+#	modified:   materials/freak_fortress_2/merasmus/merasmus_skull_spectral.vmt
+#	modified:   materials/freak_fortress_2/merasmus/merasmus_spectral.vmt
+#	modified:   materials/freak_fortress_2/ninjaspy/fez_red.vmt
+#	modified:   materials/freak_fortress_2/ninjaspy/spy_head_red.vmt
+#	modified:   materials/freak_fortress_2/oldnick/body.vmt
+#	modified:   materials/freak_fortress_2/oldnick/eyeball_l.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/chef_hat.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/chef_hat_blue_invun.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/chef_hat_diffuse.vtf
+#	deleted:    materials/freak_fortress_2/painis_cupcake/chef_hat_red_invun.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/eye-iris-brown.vtf
+#	deleted:    materials/freak_fortress_2/painis_cupcake/eyeball_l.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/eyeball_r.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/hwn_soldier_lightwarp.vtf
+#	deleted:    materials/freak_fortress_2/painis_cupcake/sh_soldier_blue.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/sh_soldier_blue.vtf
+#	deleted:    materials/freak_fortress_2/painis_cupcake/sh_soldier_blue_invun.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/sh_soldier_normal.vtf
+#	deleted:    materials/freak_fortress_2/painis_cupcake/sh_soldier_red.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/sh_soldier_red.vtf
+#	deleted:    materials/freak_fortress_2/painis_cupcake/sh_soldier_red_invun.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/soldier_head_blue.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/soldier_head_blue_invun.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/soldier_head_red.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/soldier_head_red_invun.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/v_shovel.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/v_shovel.vtf
+#	deleted:    materials/freak_fortress_2/painis_cupcake/v_shovel_blue_invun.vmt
+#	deleted:    materials/freak_fortress_2/painis_cupcake/v_shovel_red_invun.vmt
+#	renamed:    materials/freak_fortress_2/painis_cupcake/eyeball_invun.vmt -> materials/freak_fortress_2/radigan/eyeball_invun.vmt
+#	renamed:    materials/custom/therocket/eyeball_l.vmt -> materials/freak_fortress_2/radigan/eyeball_l.vmt
+#	renamed:    materials/custom/therocket/eyeball_r.vmt -> materials/freak_fortress_2/radigan/eyeball_r.vmt
+#	new file:   materials/freak_fortress_2/radigan/radigan_blue.vmt
+#	renamed:    materials/models/player/engineer/radigan_blue.vtf -> materials/freak_fortress_2/radigan/radigan_blue.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_blue_gib.vmt
+#	renamed:    materials/models/player/engineer/radigan_blue_gib.vtf -> materials/freak_fortress_2/radigan/radigan_blue_gib.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_blue_invun.vmt
+#	renamed:    materials/models/player/engineer/radigan_blue_invun.vtf -> materials/freak_fortress_2/radigan/radigan_blue_invun.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_glove.vmt
+#	renamed:    materials/models/player/engineer/radigan_glove.vtf -> materials/freak_fortress_2/radigan/radigan_glove.vtf
+#	renamed:    materials/models/player/engineer/radigan_head.vtf -> materials/freak_fortress_2/radigan/radigan_head.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_head_blue.vmt
+#	new file:   materials/freak_fortress_2/radigan/radigan_head_blue_gib.vmt
+#	new file:   materials/freak_fortress_2/radigan/radigan_head_blue_invun.vmt
+#	renamed:    materials/models/player/engineer/radigan_head_blue_invun.vtf -> materials/freak_fortress_2/radigan/radigan_head_blue_invun.vtf
+#	renamed:    materials/models/player/engineer/radigan_head_gib.vtf -> materials/freak_fortress_2/radigan/radigan_head_gib.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_head_red.vmt
+#	new file:   materials/freak_fortress_2/radigan/radigan_head_red_gib.vmt
+#	new file:   materials/freak_fortress_2/radigan/radigan_head_red_invun.vmt
+#	renamed:    materials/models/player/engineer/radigan_head_red_invun.vtf -> materials/freak_fortress_2/radigan/radigan_head_red_invun.vtf
+#	renamed:    materials/models/player/engineer/radigan_normal.vtf -> materials/freak_fortress_2/radigan/radigan_normal.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_red.vmt
+#	renamed:    materials/models/player/engineer/radigan_red.vtf -> materials/freak_fortress_2/radigan/radigan_red.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_red_gib.vmt
+#	renamed:    materials/models/player/engineer/radigan_red_gib.vtf -> materials/freak_fortress_2/radigan/radigan_red_gib.vtf
+#	new file:   materials/freak_fortress_2/radigan/radigan_red_invun.vmt
+#	renamed:    materials/models/player/engineer/radigan_red_invun.vtf -> materials/freak_fortress_2/radigan/radigan_red_invun.vtf
+#	renamed:    materials/models/player/engineer/eyeball_invun.vmt -> materials/freak_fortress_2/rocket/eyeball_invun.vmt
+#	renamed:    materials/models/player/engineer/eyeball_l.vmt -> materials/freak_fortress_2/rocket/eyeball_l.vmt
+#	renamed:    materials/models/player/engineer/eyeball_r.vmt -> materials/freak_fortress_2/rocket/eyeball_r.vmt
+#	new file:   materials/freak_fortress_2/rocket/rocket_blue.vmt
+#	renamed:    materials/custom/therocket/soldier_blue.vtf -> materials/freak_fortress_2/rocket/rocket_blue.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_blue_gib.vmt
+#	renamed:    materials/custom/therocket/soldier_blue_gib.vtf -> materials/freak_fortress_2/rocket/rocket_blue_gib.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_blue_invun.vmt
+#	renamed:    materials/custom/therocket/soldier_blue_invun.vtf -> materials/freak_fortress_2/rocket/rocket_blue_invun.vtf
+#	renamed:    materials/custom/therocket/soldier_exponent.vtf -> materials/freak_fortress_2/rocket/rocket_exponent.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_hands.vmt
+#	renamed:    materials/custom/therocket/soldier_hands.vtf -> materials/freak_fortress_2/rocket/rocket_hands.vtf
+#	renamed:    materials/custom/therocket/soldier_head.vtf -> materials/freak_fortress_2/rocket/rocket_head.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_head_blue.vmt
+#	new file:   materials/freak_fortress_2/rocket/rocket_head_blue_invun.vmt
+#	renamed:    materials/custom/therocket/soldier_head_blue_invun.vtf -> materials/freak_fortress_2/rocket/rocket_head_blue_invun.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_head_red.vmt
+#	new file:   materials/freak_fortress_2/rocket/rocket_head_red_invun.vmt
+#	renamed:    materials/custom/therocket/soldier_head_red_invun.vtf -> materials/freak_fortress_2/rocket/rocket_head_red_invun.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_normal.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_red.vmt
+#	renamed:    materials/custom/therocket/soldier_red.vtf -> materials/freak_fortress_2/rocket/rocket_red.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_red_gib.vmt
+#	renamed:    materials/custom/therocket/soldier_red_gib.vtf -> materials/freak_fortress_2/rocket/rocket_red_gib.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_red_invun.vmt
+#	renamed:    materials/custom/therocket/soldier_red_invun.vtf -> materials/freak_fortress_2/rocket/rocket_red_invun.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_sleeves_blue.vmt
+#	renamed:    materials/custom/therocket/soldier_sleeves_blue.vtf -> materials/freak_fortress_2/rocket/rocket_sleeves_blue.vtf
+#	renamed:    materials/custom/therocket/soldier_sleeves_normal.vtf -> materials/freak_fortress_2/rocket/rocket_sleeves_normal.vtf
+#	new file:   materials/freak_fortress_2/rocket/rocket_sleeves_red.vmt
+#	renamed:    materials/custom/therocket/soldier_sleeves_red.vtf -> materials/freak_fortress_2/rocket/rocket_sleeves_red.vtf
+#	new file:   materials/freak_fortress_2/saxton_hale/eye.vmt
+#	new file:   materials/freak_fortress_2/saxton_hale/eye.vtf
+#	new file:   materials/freak_fortress_2/saxton_hale/eyeball_l.vmt
+#	new file:   materials/freak_fortress_2/saxton_hale/eyeball_r.vmt
+#	new file:   materials/freak_fortress_2/saxton_hale/hale_body.vmt
+#	renamed:    materials/models/player/saxton_hale/hale_body.vtf -> materials/freak_fortress_2/saxton_hale/hale_body.vtf
+#	renamed:    materials/models/player/saxton_hale/hale_body_normal.vtf -> materials/freak_fortress_2/saxton_hale/hale_body_normal.vtf
+#	new file:   materials/freak_fortress_2/saxton_hale/hale_egg.vmt
+#	renamed:    materials/models/player/saxton_hale/hale_egg.vtf -> materials/freak_fortress_2/saxton_hale/hale_egg.vtf
+#	new file:   materials/freak_fortress_2/saxton_hale/hale_head.vmt
+#	renamed:    materials/models/player/saxton_hale/hale_head.vtf -> materials/freak_fortress_2/saxton_hale/hale_head.vtf
+#	new file:   materials/freak_fortress_2/saxton_hale/hale_misc.vmt
+#	renamed:    materials/models/player/saxton_hale/hale_misc.vtf -> materials/freak_fortress_2/saxton_hale/hale_misc.vtf
+#	renamed:    materials/models/player/saxton_hale/hale_misc_normal.vtf -> materials/freak_fortress_2/saxton_hale/hale_misc_normal.vtf
+#	deleted:    materials/models/player/engineer/radigan_blue.vmt
+#	deleted:    materials/models/player/engineer/radigan_blue_gib.vmt
+#	deleted:    materials/models/player/engineer/radigan_blue_invun.vmt
+#	deleted:    materials/models/player/engineer/radigan_glove.vmt
+#	deleted:    materials/models/player/engineer/radigan_head_blue.vmt
+#	deleted:    materials/models/player/engineer/radigan_head_blue_gib.vmt
+#	deleted:    materials/models/player/engineer/radigan_head_blue_invun.vmt
+#	deleted:    materials/models/player/engineer/radigan_head_red.vmt
+#	deleted:    materials/models/player/engineer/radigan_head_red_gib.vmt
+#	deleted:    materials/models/player/engineer/radigan_head_red_invun.vmt
+#	deleted:    materials/models/player/engineer/radigan_red.vmt
+#	deleted:    materials/models/player/engineer/radigan_red_gib.vmt
+#	deleted:    materials/models/player/engineer/radigan_red_invun.vmt
+#	deleted:    materials/models/player/hvyweapon/heavy_head_gabe.vmt
+#	deleted:    materials/models/player/hvyweapon/hvyweapon_gabe.vmt
+#	deleted:    materials/models/player/items/templates/standard.vmt
+#	deleted:    materials/models/player/saxton_hale/eye.vmt
+#	deleted:    materials/models/player/saxton_hale/eyeball_l.vmt
+#	deleted:    materials/models/player/saxton_hale/eyeball_r.vmt
+#	deleted:    materials/models/player/saxton_hale/hale_body.vmt
+#	deleted:    materials/models/player/saxton_hale/hale_egg.vmt
+#	deleted:    materials/models/player/saxton_hale/hale_head.vmt
+#	deleted:    materials/models/player/saxton_hale/hale_misc.vmt
+#	deleted:    materials/models/player/saxton_hale/sniper_head_red.vmt
+#	deleted:    materials/models/player/saxton_hale/sniper_lens.vmt
+#	deleted:    materials/models/player/saxton_hale/sniper_red.vmt
+#	deleted:    models/custom/therocket/soldier.mdl
+#	deleted:    models/custom/therocket/soldier_animations.mdl
+#	deleted:    models/custom/therocket/soldier_animations.mdl.bz2
+#	new file:   models/freak_fortress_2/administrator/administrator.dx80.vtx
+#	new file:   models/freak_fortress_2/administrator/administrator.dx90.vtx
+#	new file:   models/freak_fortress_2/administrator/administrator.mdl
+#	new file:   models/freak_fortress_2/administrator/administrator.phy
+#	new file:   models/freak_fortress_2/administrator/administrator.vtx
+#	new file:   models/freak_fortress_2/administrator/administrator.vvd
+#	renamed:    models/custom/therocket/soldier.dx80.vtx -> models/freak_fortress_2/cavejohnson/cavejohnson.dx80.vtx
+#	renamed:    models/custom/therocket/soldier.dx90.vtx -> models/freak_fortress_2/cavejohnson/cavejohnson.dx90.vtx
+#	new file:   models/freak_fortress_2/cavejohnson/cavejohnson.mdl
+#	renamed:    models/custom/therocket/soldier.sw.vtx -> models/freak_fortress_2/cavejohnson/cavejohnson.sw.vtx
+#	renamed:    models/custom/therocket/soldier.vvd -> models/freak_fortress_2/cavejohnson/cavejohnson.vvd
+#	new file:   models/freak_fortress_2/cavejohnson/combustable_lemon.dx90.vtx
+#	new file:   models/freak_fortress_2/cavejohnson/combustable_lemon.mdl
+#	new file:   models/freak_fortress_2/cavejohnson/combustable_lemon.phy
+#	new file:   models/freak_fortress_2/cavejohnson/combustable_lemon.vvd
+#	renamed:    models/player/saxton_hale/cbs_v4.dx80.vtx -> models/freak_fortress_2/cbs/cbs.dx80.vtx
+#	renamed:    models/player/saxton_hale/cbs_v4.dx90.vtx -> models/freak_fortress_2/cbs/cbs.dx90.vtx
+#	new file:   models/freak_fortress_2/cbs/cbs.mdl
+#	renamed:    models/player/saxton_hale/cbs_v4.phy -> models/freak_fortress_2/cbs/cbs.phy
+#	renamed:    models/player/saxton_hale/cbs_v4.sw.vtx -> models/freak_fortress_2/cbs/cbs.vtx
+#	renamed:    models/player/saxton_hale/cbs_v4.vvd -> models/freak_fortress_2/cbs/cbs.vvd
+#	new file:   models/freak_fortress_2/cbscout/cbscout.dx80.vtx
+#	new file:   models/freak_fortress_2/cbscout/cbscout.dx90.vtx
+#	new file:   models/freak_fortress_2/cbscout/cbscout.mdl
+#	new file:   models/freak_fortress_2/cbscout/cbscout.phy
+#	new file:   models/freak_fortress_2/cbscout/cbscout.sw.vtx
+#	new file:   models/freak_fortress_2/cbscout/cbscout.vvd
+#	new file:   models/freak_fortress_2/cbscout2/cbscout2.dx80.vtx
+#	new file:   models/freak_fortress_2/cbscout2/cbscout2.dx90.vtx
+#	new file:   models/freak_fortress_2/cbscout2/cbscout2.mdl
+#	new file:   models/freak_fortress_2/cbscout2/cbscout2.phy
+#	new file:   models/freak_fortress_2/cbscout2/cbscout2.sw.vtx
+#	new file:   models/freak_fortress_2/cbscout2/cbscout2.vvd
+#	renamed:    models/freak_fortress_2/demopan/demopan_v1.dx80.vtx -> models/freak_fortress_2/demopan/demopan.dx80.vtx
+#	renamed:    models/freak_fortress_2/demopan/demopan_v1.dx90.vtx -> models/freak_fortress_2/demopan/demopan.dx90.vtx
+#	renamed:    models/freak_fortress_2/demopan/demopan_v1.mdl -> models/freak_fortress_2/demopan/demopan.mdl
+#	renamed:    models/freak_fortress_2/demopan/demopan_v1.sw.vtx -> models/freak_fortress_2/demopan/demopan.sw.vtx
+#	renamed:    models/freak_fortress_2/demopan/demopan_v1.vvd -> models/freak_fortress_2/demopan/demopan.vvd
+#	new file:   models/freak_fortress_2/fairyheavy/fairyheavy.dx80.vtx
+#	new file:   models/freak_fortress_2/fairyheavy/fairyheavy.dx90.vtx
+#	new file:   models/freak_fortress_2/fairyheavy/fairyheavy.mdl
+#	new file:   models/freak_fortress_2/fairyheavy/fairyheavy.phy
+#	new file:   models/freak_fortress_2/fairyheavy/fairyheavy.sw.vtx
+#	new file:   models/freak_fortress_2/fairyheavy/fairyheavy.vvd
+#	renamed:    models/player/gaben.dx80.vtx -> models/freak_fortress_2/gaben/gaben.dx80.vtx
+#	renamed:    models/player/gaben.dx90.vtx -> models/freak_fortress_2/gaben/gaben.dx90.vtx
+#	new file:   models/freak_fortress_2/gaben/gaben.mdl
+#	renamed:    models/player/gaben.phy -> models/freak_fortress_2/gaben/gaben.phy
+#	renamed:    models/player/gaben.sw.vtx -> models/freak_fortress_2/gaben/gaben.sw.vtx
+#	renamed:    models/player/gaben.vvd -> models/freak_fortress_2/gaben/gaben.vvd
+#	renamed:    models/freak_fortress_2/gangplank_2/gangplank_2.dx80.vtx -> models/freak_fortress_2/gangplank/gangplank.dx80.vtx
+#	renamed:    models/freak_fortress_2/gangplank_2/gangplank_2.dx90.vtx -> models/freak_fortress_2/gangplank/gangplank.dx90.vtx
+#	new file:   models/freak_fortress_2/gangplank/gangplank.mdl
+#	renamed:    models/freak_fortress_2/gangplank_2/gangplank_2.sw.vtx -> models/freak_fortress_2/gangplank/gangplank.sw.vtx
+#	renamed:    models/freak_fortress_2/gangplank_2/gangplank_2.vvd -> models/freak_fortress_2/gangplank/gangplank.vvd
+#	deleted:    models/freak_fortress_2/gangplank_2/gangplank_2.mdl
+#	renamed:    models/freak_fortress_2/gentlespy/the_gentlespy_v1.dx80.vtx -> models/freak_fortress_2/gentlespy/gentlespy.dx80.vtx
+#	renamed:    models/freak_fortress_2/gentlespy/the_gentlespy_v1.dx90.vtx -> models/freak_fortress_2/gentlespy/gentlespy.dx90.vtx
+#	new file:   models/freak_fortress_2/gentlespy/gentlespy.mdl
+#	renamed:    models/freak_fortress_2/gentlespy/the_gentlespy_v1.sw.vtx -> models/freak_fortress_2/gentlespy/gentlespy.sw.vtx
+#	renamed:    models/freak_fortress_2/gentlespy/the_gentlespy_v1.vvd -> models/freak_fortress_2/gentlespy/gentlespy.vvd
+#	deleted:    models/freak_fortress_2/gentlespy/the_gentlespy_v1.mdl
+#	renamed:    models/player/saxton_hale/hhh_jr_mk2.1.dx80.vtx -> models/freak_fortress_2/hhh/hhh.dx80.vtx
+#	renamed:    models/player/saxton_hale/hhh_jr_mk2.1.dx90.vtx -> models/freak_fortress_2/hhh/hhh.dx90.vtx
+#	renamed:    models/player/saxton_hale/hhh_jr_mk3.mdl -> models/freak_fortress_2/hhh/hhh.mdl
+#	renamed:    models/player/saxton_hale/hhh_jr_mk2.1.sw.vtx -> models/freak_fortress_2/hhh/hhh.sw.vtx
+#	renamed:    models/player/saxton_hale/hhh_jr_mk2.1.vvd -> models/freak_fortress_2/hhh/hhh.vvd
+#	renamed:    models/freak_fortress_2/ninjaspy/ninjaspy_v2_2.dx80.vtx -> models/freak_fortress_2/ninjaspy/ninjaspy.dx80.vtx
+#	renamed:    models/freak_fortress_2/ninjaspy/ninjaspy_v2_2.dx90.vtx -> models/freak_fortress_2/ninjaspy/ninjaspy.dx90.vtx
+#	renamed:    models/freak_fortress_2/ninjaspy/ninjaspy_v2_2.mdl -> models/freak_fortress_2/ninjaspy/ninjaspy.mdl
+#	renamed:    models/freak_fortress_2/ninjaspy/ninjaspy_v2_2.sw.vtx -> models/freak_fortress_2/ninjaspy/ninjaspy.sw.vtx
+#	renamed:    models/freak_fortress_2/ninjaspy/ninjaspy_v2_2.vvd -> models/freak_fortress_2/ninjaspy/ninjaspy.vvd
+#	renamed:    models/freak_fortress_2/oldnick/aus_xmas_boss2.dx80.vtx -> models/freak_fortress_2/oldnick/oldnick.dx80.vtx
+#	renamed:    models/freak_fortress_2/oldnick/aus_xmas_boss2.dx90.vtx -> models/freak_fortress_2/oldnick/oldnick.dx90.vtx
+#	renamed:    models/freak_fortress_2/oldnick/aus_xmas_boss2.mdl -> models/freak_fortress_2/oldnick/oldnick.mdl
+#	renamed:    models/freak_fortress_2/oldnick/aus_xmas_boss2.sw.vtx -> models/freak_fortress_2/oldnick/oldnick.sw.vtx
+#	renamed:    models/freak_fortress_2/oldnick/aus_xmas_boss2.vvd -> models/freak_fortress_2/oldnick/oldnick.vvd
+#	deleted:    models/freak_fortress_2/painis_cupcake/cupcake.dx80.vtx
+#	deleted:    models/freak_fortress_2/painis_cupcake/cupcake.dx90.vtx
+#	deleted:    models/freak_fortress_2/painis_cupcake/cupcake.mdl
+#	deleted:    models/freak_fortress_2/painis_cupcake/cupcake.phy
+#	deleted:    models/freak_fortress_2/painis_cupcake/cupcake.sw.vtx
+#	deleted:    models/freak_fortress_2/painis_cupcake/cupcake.vvd
+#	renamed:    models/custom/player/radigancon/engineer.dx80.vtx -> models/freak_fortress_2/radigan/radigan.dx80.vtx
+#	renamed:    models/custom/player/radigancon/engineer.dx90.vtx -> models/freak_fortress_2/radigan/radigan.dx90.vtx
+#	renamed:    models/custom/player/radigancon/engineer.mdl -> models/freak_fortress_2/radigan/radigan.mdl
+#	renamed:    models/custom/player/radigancon/engineer.phy -> models/freak_fortress_2/radigan/radigan.phy
+#	renamed:    models/custom/player/radigancon/engineer.sw.vtx -> models/freak_fortress_2/radigan/radigan.sw.vtx
+#	renamed:    models/custom/player/radigancon/engineer.vvd -> models/freak_fortress_2/radigan/radigan.vvd
+#	new file:   models/freak_fortress_2/robosoldier/bot_soldier.dx80.vtx
+#	new file:   models/freak_fortress_2/robosoldier/bot_soldier.dx90.vtx
+#	new file:   models/freak_fortress_2/robosoldier/bot_soldier.mdl
+#	new file:   models/freak_fortress_2/robosoldier/bot_soldier.phy
+#	new file:   models/freak_fortress_2/robosoldier/bot_soldier.sw.vtx
+#	new file:   models/freak_fortress_2/robosoldier/bot_soldier.vvd
+#	new file:   models/freak_fortress_2/rocket/rocket.dx80.vtx
+#	new file:   models/freak_fortress_2/rocket/rocket.dx90.vtx
+#	new file:   models/freak_fortress_2/rocket/rocket.mdl
+#	renamed:    models/custom/therocket/soldier.phy -> models/freak_fortress_2/rocket/rocket.phy
+#	new file:   models/freak_fortress_2/rocket/rocket.sw.vtx
+#	new file:   models/freak_fortress_2/rocket/rocket.vvd
+#	new file:   models/freak_fortress_2/rocket/rocket_animations.mdl
+#	renamed:    models/player/saxton_hale/saxton_hale.dx80.vtx -> models/freak_fortress_2/saxton_hale/saxton_hale.dx80.vtx
+#	renamed:    models/player/saxton_hale/saxton_hale.dx90.vtx -> models/freak_fortress_2/saxton_hale/saxton_hale.dx90.vtx
+#	new file:   models/freak_fortress_2/saxton_hale/saxton_hale.mdl
+#	renamed:    models/player/saxton_hale/saxton_hale.sw.vtx -> models/freak_fortress_2/saxton_hale/saxton_hale.sw.vtx
+#	renamed:    models/player/saxton_hale/saxton_hale.vvd -> models/freak_fortress_2/saxton_hale/saxton_hale.vvd
+#	renamed:    models/freak_fortress_2/seeman/seeldier_v0.dx80.vtx -> models/freak_fortress_2/seeldier/seeldier.dx80.vtx
+#	renamed:    models/freak_fortress_2/seeman/seeldier_v0.dx90.vtx -> models/freak_fortress_2/seeldier/seeldier.dx90.vtx
+#	renamed:    models/freak_fortress_2/seeman/seeldier_v0.mdl -> models/freak_fortress_2/seeldier/seeldier.mdl
+#	renamed:    models/freak_fortress_2/seeman/seeldier_v0.sw.vtx -> models/freak_fortress_2/seeldier/seeldier.sw.vtx
+#	renamed:    models/freak_fortress_2/seeman/seeldier_v0.vvd -> models/freak_fortress_2/seeldier/seeldier.vvd
+#	renamed:    models/freak_fortress_2/seeman/seeman_v0.dx80.vtx -> models/freak_fortress_2/seeman/seeman.dx80.vtx
+#	renamed:    models/freak_fortress_2/seeman/seeman_v0.dx90.vtx -> models/freak_fortress_2/seeman/seeman.dx90.vtx
+#	renamed:    models/freak_fortress_2/seeman/seeman_v0.mdl -> models/freak_fortress_2/seeman/seeman.mdl
+#	renamed:    models/freak_fortress_2/seeman/seeman_v0.sw.vtx -> models/freak_fortress_2/seeman/seeman.sw.vtx
+#	renamed:    models/freak_fortress_2/seeman/seeman_v0.vvd -> models/freak_fortress_2/seeman/seeman.vvd
+#	new file:   models/freak_fortress_2/spyper/spyper.dx80.vtx
+#	new file:   models/freak_fortress_2/spyper/spyper.dx90.vtx
+#	new file:   models/freak_fortress_2/spyper/spyper.mdl
+#	new file:   models/freak_fortress_2/spyper/spyper.phy
+#	new file:   models/freak_fortress_2/spyper/spyper.sw.vtx
+#	new file:   models/freak_fortress_2/spyper/spyper.vvd
+#	renamed:    models/freak_fortress_2/travis/travis2.dx80.vtx -> models/freak_fortress_2/travis/travis.dx80.vtx
+#	renamed:    models/freak_fortress_2/travis/travis2.dx90.vtx -> models/freak_fortress_2/travis/travis.dx90.vtx
+#	renamed:    models/freak_fortress_2/travis/travis2.mdl -> models/freak_fortress_2/travis/travis.mdl
+#	renamed:    models/freak_fortress_2/travis/travis2.sw.vtx -> models/freak_fortress_2/travis/travis.sw.vtx
+#	renamed:    models/freak_fortress_2/travis/travis2.vvd -> models/freak_fortress_2/travis/travis.vvd
+#	renamed:    models/player/saxton_hale/vagineer_v134.dx80.vtx -> models/freak_fortress_2/vagineer/vagineer.dx80.vtx
+#	renamed:    models/player/saxton_hale/vagineer_v134.dx90.vtx -> models/freak_fortress_2/vagineer/vagineer.dx90.vtx
+#	renamed:    models/player/saxton_hale/vagineer_v134.mdl -> models/freak_fortress_2/vagineer/vagineer.mdl
+#	renamed:    models/player/saxton_hale/vagineer_v134.sw.vtx -> models/freak_fortress_2/vagineer/vagineer.sw.vtx
+#	renamed:    models/player/saxton_hale/vagineer_v134.vvd -> models/freak_fortress_2/vagineer/vagineer.vvd
+#	deleted:    models/player/gaben.mdl
+#	deleted:    models/player/saxton_hale/cbs_v2.mdl
+#	deleted:    models/player/saxton_hale/cbs_v3.mdl
+#	deleted:    models/player/saxton_hale/cbs_v4.mdl
+#	deleted:    models/player/saxton_hale/hhh_jr_mk2.1.mdl
+#	deleted:    models/player/saxton_hale/hhh_jr_mk3.dx80.vtx
+#	deleted:    models/player/saxton_hale/hhh_jr_mk3.dx90.vtx
+#	deleted:    models/player/saxton_hale/hhh_jr_mk3.sw.vtx
+#	deleted:    models/player/saxton_hale/hhh_jr_mk3.vvd
+#	deleted:    models/player/saxton_hale/saxton_hale.mdl
+#	new file:   sound/freak_fortress_2/administrator/administrator_defeat.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_kspree.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_kspree2.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_kspree3.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_kspree4.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_kspree5.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_kspree6.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_kspree7.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_lastman.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_music.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_rage.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_skill.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_skill2.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_skill3.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_skill4.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_start.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_start2.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_start3.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_start4.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_start5.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_victory.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_victory2.mp3
+#	new file:   sound/freak_fortress_2/administrator/administrator_victory3.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_death1.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_death2.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_jump.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_newtheme.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_rage1.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_rage2.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_spree1.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_spree2.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_spree3.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_start1.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_start2.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_win1.mp3
+#	new file:   sound/freak_fortress_2/cavejohnson/cavejohnson_win2.mp3
+#	renamed:    sound/freak_fortress_2/saxton_hale/the_millionaires_holiday.mp3 -> sound/freak_fortress_2/cbs/the_millionaires_holiday.mp3
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_activatecharge01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_cheers01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_incoming01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_jeers01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_laughevil04.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_laughhappy01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_needteleporter01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_paincrticialdeath01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_paincrticialdeath02.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_paincrticialdeath03.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_painsevere01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_painsevere02.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_painsevere03.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_painsevere04.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_painsevere05.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_painsevere06.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_positivevocalization01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_specialcompleted01.wav
+#	deleted:    sound/freak_fortress_2/fempyro/pyro_standonthepoint01.wav
+#	renamed:    sound/freak_fortress_2/gaben/gaben_kspree1.mp3 -> sound/freak_fortress_2/gaben/gaben_kspree.mp3
+#	renamed:    sound/freak_fortress_2/gaben/gaben_rage1.mp3 -> sound/freak_fortress_2/gaben/gaben_rage.mp3
+#	renamed:    sound/freak_fortress_2/gaben/gaben_start1.mp3 -> sound/freak_fortress_2/gaben/gaben_start.mp3
+#	renamed:    sound/freak_fortress_2/gaben/gaben_victory1.mp3 -> sound/freak_fortress_2/gaben/gaben_victory.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_attack2.mp3 -> sound/freak_fortress_2/gangplank/gang_attack.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_move4.mp3 -> sound/freak_fortress_2/gangplank/gang_attack10.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_move5.mp3 -> sound/freak_fortress_2/gangplank/gang_attack11.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_move6.mp3 -> sound/freak_fortress_2/gangplank/gang_attack12.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_move7.mp3 -> sound/freak_fortress_2/gangplank/gang_attack13.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_laughm1.mp3 -> sound/freak_fortress_2/gangplank/gang_attack14.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_laughm2.mp3 -> sound/freak_fortress_2/gangplank/gang_attack15.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_laughm3.mp3 -> sound/freak_fortress_2/gangplank/gang_attack16.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_laughm4.mp3 -> sound/freak_fortress_2/gangplank/gang_attack17.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_attack3.mp3 -> sound/freak_fortress_2/gangplank/gang_attack2.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_attack4.mp3 -> sound/freak_fortress_2/gangplank/gang_attack3.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_attack5.mp3 -> sound/freak_fortress_2/gangplank/gang_attack4.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_attack6.mp3 -> sound/freak_fortress_2/gangplank/gang_attack5.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_attack7.mp3 -> sound/freak_fortress_2/gangplank/gang_attack6.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_move1.mp3 -> sound/freak_fortress_2/gangplank/gang_attack7.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_move2.mp3 -> sound/freak_fortress_2/gangplank/gang_attack8.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_move3.mp3 -> sound/freak_fortress_2/gangplank/gang_attack9.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_attack1.mp3 -> sound/freak_fortress_2/gangplank/gang_death.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_intro.mp3 -> sound/freak_fortress_2/gangplank/gang_intro.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_intro2.mp3 -> sound/freak_fortress_2/gangplank/gang_intro2.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_laugh1.mp3 -> sound/freak_fortress_2/gangplank/gang_jump.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_laugh2.mp3 -> sound/freak_fortress_2/gangplank/gang_jump2.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_last.mp3 -> sound/freak_fortress_2/gangplank/gang_last.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_music2.mp3 -> sound/freak_fortress_2/gangplank/gang_music.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_rage.mp3 -> sound/freak_fortress_2/gangplank/gang_rage.mp3
+#	renamed:    sound/freak_fortress_2/gangplank_2/gang_win.mp3 -> sound/freak_fortress_2/gangplank/gang_win.mp3
+#	renamed:    sound/freak_fortress_2/gentlespy/gentle_music.mp3 -> sound/freak_fortress_2/gentlespy/gentlespy_music.mp3
+#	renamed:    sound/freak_fortress_2/oldnick/bgm.mp3 -> sound/freak_fortress_2/oldnick/oldnick_bgm.mp3
+#	new file:   sound/freak_fortress_2/painiscupcake/Iampainiscupcake.wav
+#	modified:   sound/freak_fortress_2/painiscupcake/painis_bgm.mp3
+#	new file:   sound/freak_fortress_2/painiscupcake/painis_eat.mp3
+#	new file:   sound/freak_fortress_2/painiscupcake/painis_fail.mp3
+#	new file:   sound/freak_fortress_2/painiscupcake/painis_fail2.mp3
+#	new file:   sound/freak_fortress_2/painiscupcake/painis_intro.mp3
+#	new file:   sound/freak_fortress_2/painiscupcake/painis_jump.mp3
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_kill1.wav -> sound/freak_fortress_2/painiscupcake/painis_kill.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_kill2.wav -> sound/freak_fortress_2/painiscupcake/painis_kill2.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_kill3.wav -> sound/freak_fortress_2/painiscupcake/painis_kill3.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_lastman1.wav -> sound/freak_fortress_2/painiscupcake/painis_lastman.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_lastman2.wav -> sound/freak_fortress_2/painiscupcake/painis_lastman2.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_lastman3.wav -> sound/freak_fortress_2/painiscupcake/painis_lastman3.wav
+#	new file:   sound/freak_fortress_2/painiscupcake/painis_rage.mp3
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_start.wav -> sound/freak_fortress_2/painiscupcake/painis_start.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_win1.wav -> sound/freak_fortress_2/painiscupcake/painis_win.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_win2.wav -> sound/freak_fortress_2/painiscupcake/painis_win2.wav
+#	renamed:    sound/freak_fortress_2/painiscupcake/painiscupcake_win3.wav -> sound/freak_fortress_2/painiscupcake/painis_win3.wav
+#	new file:   sound/freak_fortress_2/painiscupcake/painis_win4.mp3
+#	deleted:    sound/freak_fortress_2/painiscupcake/painiscupcake_nextlive1.wav
+#	deleted:    sound/freak_fortress_2/painiscupcake/painiscupcake_nextlive2.wav
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_bgm.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_death1.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_death2.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_death3.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_death4.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_intro1.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_intro2.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_intro3.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_rant.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_win1.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_win2.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_win3.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/robosoldier_win4.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/soldier_mvm_dominationscout02.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/soldier_mvm_dominationscout03.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/soldier_mvm_dominationscout05.mp3
+#	new file:   sound/freak_fortress_2/robosoldier/soldier_mvm_dominationspy03.mp3
+#	deleted:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_stub_1.wav
+#	deleted:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_stub_2.wav
+#	deleted:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_stub_3.wav
+#	deleted:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_stub_4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_fail1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_death.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_fail2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_death2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_fail3.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_death3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_start1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_start_5.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro10.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_start2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_start3.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_start4.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_start5.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro5.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_start_1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro6.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_start_2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro7.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_start_3.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro8.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_start_4.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_intro9.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_jump_1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_jump.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_jump_2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_jump2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_jump1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_jump3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_jump2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_jump4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_toy.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_building.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_demo.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_demo.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_engie_1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_engineer.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_engie_2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_engineer2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_kill_eggineer1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_engineer3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_kill_eggineer2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_engineer4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_heavy.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_heavy.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_kill_medic.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_medic.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_w_and_m1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_pyro.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_scout.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_scout.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_kill_sniper1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_sniper.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_kill_sniper2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_sniper2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kill_spie.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_spy.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_kill_spy1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_spy2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_kill_spy2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kill_spy3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_spree1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_spree2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_spree3.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_spree4.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_spree5.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree5.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_3.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree6.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kspree_1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree7.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_kspree_2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_kspree8.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_132_last.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_last.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_lastman1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_last2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_lastman2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_last3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_lastman3.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_last4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_lastman4.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_last5.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_lastman5.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_last6.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_last7.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_rage1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_rage.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_rage2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_rage2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_rage3.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_rage3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_rage4.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_rage4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_win1.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_win.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/saxton_hale_responce_win2.wav -> sound/freak_fortress_2/saxton_hale/saxton_hale_win2.wav
+#	new file:   sound/freak_fortress_2/spyper/Gentlemate.wav
+#	new file:   sound/freak_fortress_2/spyper/apologies.wav
+#	new file:   sound/freak_fortress_2/spyper/backtowork.wav
+#	new file:   sound/freak_fortress_2/spyper/disappointment.wav
+#	new file:   sound/freak_fortress_2/spyper/goodday.wav
+#	new file:   sound/freak_fortress_2/spyper/hahamate.wav
+#	new file:   sound/freak_fortress_2/spyper/nothingpersonal.wav
+#	new file:   sound/freak_fortress_2/spyper/noworries.wav
+#	new file:   sound/freak_fortress_2/spyper/offtodatvan.wav
+#	new file:   sound/freak_fortress_2/spyper/outcome-embarassin'.wav
+#	new file:   sound/freak_fortress_2/spyper/start.wav
+#	new file:   sound/freak_fortress_2/spyper/suggestion.wav
+#	new file:   sound/freak_fortress_2/spyper/yourside.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/lolwut_5.wav -> sound/freak_fortress_2/vagineer/vagineer_attack.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_fail_1.wav -> sound/freak_fortress_2/vagineer/vagineer_death.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_fail_2.wav -> sound/freak_fortress_2/vagineer/vagineer_death2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/lolwut_1.wav -> sound/freak_fortress_2/vagineer/vagineer_intro.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_intro.wav -> sound/freak_fortress_2/vagineer/vagineer_intro2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_jump_1.wav -> sound/freak_fortress_2/vagineer/vagineer_jump.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_jump_2.wav -> sound/freak_fortress_2/vagineer/vagineer_jump2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/lolwut_4.wav -> sound/freak_fortress_2/vagineer/vagineer_kspree.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_taunt_1.wav -> sound/freak_fortress_2/vagineer/vagineer_kspree2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_taunt_2.wav -> sound/freak_fortress_2/vagineer/vagineer_kspree3.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_taunt_3.wav -> sound/freak_fortress_2/vagineer/vagineer_kspree4.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_taunt_4.wav -> sound/freak_fortress_2/vagineer/vagineer_kspree5.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_taunt_5.wav -> sound/freak_fortress_2/vagineer/vagineer_kspree6.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/lolwut_3.wav -> sound/freak_fortress_2/vagineer/vagineer_kspree7.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/lolwut_0.wav -> sound/freak_fortress_2/vagineer/vagineer_last.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/lolwut_2.wav -> sound/freak_fortress_2/vagineer/vagineer_rage.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_rage_1.wav -> sound/freak_fortress_2/vagineer/vagineer_rage2.wav
+#	renamed:    sound/freak_fortress_2/saxton_hale/vagineer_responce_rage_2.wav -> sound/freak_fortress_2/vagineer/vagineer_rage3.wav
+#	new file:   sound/freak_fortress_2/vagineer/vagineer_win.wav
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   addons/sourcemod/scripting/freak_fortress_2.sp
+#
+# Untracked files:
+#   (use "git add <file>..." to include in what will be committed)
+#
+#	nrcg1okq.l3c.txt
+#	wba445rf.2bg.txt
+

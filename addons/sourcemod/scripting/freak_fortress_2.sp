@@ -5,19 +5,11 @@ By Rainbolt Dash: programmer, modeller, mapper, painter.
 Author of Demoman The Pirate: http://www.randomfortress.ru/thepirate/
 And one of two creators of Floral Defence: http://www.polycount.com/forum/showthread.php?t=73688
 And author of VS Saxton Hale Mode
-<<<<<<< HEAD
 
 Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
 
 Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
 
-=======
-
-Plugin thread on AlliedMods: http://forums.alliedmods.net/showthread.php?t=182108
-
-Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into DOTA2
-
->>>>>>> origin/development
 50DKP version is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 */
 
@@ -36,14 +28,6 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
-<<<<<<< HEAD
-<<<<<<< HEAD
-#define PLUGIN_VERSION "2.1.0"
-=======
-#define PLUGIN_VERSION "2.2.0"
->>>>>>> origin/development
-=======
->>>>>>> origin/development
 
 #define SOUNDEXCEPT_MUSIC 0
 #define SOUNDEXCEPT_VOICE 1
