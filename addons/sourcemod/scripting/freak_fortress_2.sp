@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Dev 2"
+#define PLUGIN_VERSION "2.3.1 Dev 3"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -180,7 +180,8 @@ static const String:ff2versiontitles[][]=
 	"2.2.1",
 	"2.3.0",
 	"2.3.0",
-	"2.3.0"
+	"2.3.0",
+	"2.3.1"
 };
 
 static const String:ff2versiondates[][] = 
@@ -213,14 +214,24 @@ static const String:ff2versiondates[][] =
 	"June 10, 2013",
 	"July 24, 2013",
 	"July 24, 2013",
-	"July 24, 2013"
+	"July 24, 2013",
+	"July 26, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
-		case 28: //2.3.0
+		case 29:  //2.3.1
+		{
+			DrawPanelText(panel, "Now featuring the OH MY GOD WHY ARE HIS FISTS CHECKERED Update!");
+			DrawPanelText(panel, "1) Fixed some material issues on CBS, Gaben, Administrator, and Gangplank (Lawd)");
+			DrawPanelText(panel, "2) Added Robo-Robotic Soldier (Lawd)");
+			DrawPanelText(panel, "3) Gave Ullapool Caber 4 extra uses (Wliu)");
+			DrawPanelText(panel, "4) Removed Sticky Jumper and Rocket Jumper from the weapon blacklist (Wliu)");
+			DrawPanelText(panel, "5) Miscellaneous translation updates (Wliu)");
+		}
+		case 28:  //2.3.0
 		{
 			DrawPanelText(panel, "After much delay, we now welcome the Weapon Balance Update!");
 			DrawPanelText(panel, "1) Beggar's Bazooka reloads 20% faster (Wliu)");
@@ -229,7 +240,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Half-Zatoichi now only gives you +5 health if you're buffed by the Battalion's Backup/ubercharged, and has a new health mechanism (Wliu/Chris)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 27: //2.3.0
+		case 27:  //2.3.0
 		{
 			DrawPanelText(panel, "5) Powerjack now only gives you +1 health if you're buffed by the Battalion's Backup (Wliu)");
 			DrawPanelText(panel, "6) Re-organized a bunch of files (Wliu/Lawd)");
@@ -238,7 +249,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "9) Mantreads now do ~1000 damage (Wliu)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 26: //2.3.0
+		case 26:  //2.3.0
 		{
 			DrawPanelText(panel, "10) Old Nick now has a freeze rage (Wliu)");
 			DrawPanelText(panel, "11) Fixed Fempyro picking up ammo and infinite airblast (Wliu)");
@@ -246,7 +257,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "13) Server list now correctly displays \"Freak Fortress 2 version\" instead of \"Team Fortress\" (Wliu)");
 			DrawPanelText(panel, "Expect the following soon(TM):  Gangplank rage, Robo-Robotic Soldier, Cave Johnson, and more!");
 		}
-		case 25: //2.2.1
+		case 25:  //2.2.1
 		{
 			DrawPanelText(panel, "~The Quick-Fix Update~");
 			DrawPanelText(panel, "1) Nerfed Natascha a bit more (Wliu)");
@@ -254,7 +265,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "Sorry for the horrible buff on the Natascha ;_;");
 			DrawPanelText(panel, "Mantreads will most likely be in 2.3.0.");
 		}
-		case 24: //2.2.0
+		case 24:  //2.2.0
 		{
 			DrawPanelText(panel, "Introducing: The Overpowered Update!");
 			DrawPanelText(panel, "1) Powerjack has been nerfed, to +10 health on hit with no limit (Wliu)");
@@ -263,7 +274,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Added Painis Cupcake (Lawd)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 23: //2.2.0
+		case 23:  //2.2.0
 		{
 			DrawPanelText(panel, "5) Allowed modified Natascha (+5 health on hit) (Wliu)");
 			DrawPanelText(panel, "6) Gave Fempyro more ammo on rage (Wliu)");
@@ -272,7 +283,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "9) Reduced Battalion's Backup's health bonus to +35, from +50 (Wliu)");
 			DrawPanelText(panel, "TODO:  Mantreads; Gangplank");
 		}
-		case 22: //2.1.0
+		case 22:  //2.1.0
 		{
 			DrawPanelText(panel, "Introducing: The Back To Work Update!");
 			DrawPanelText(panel, "1) Half-Zatoichi and Powerjack now heals 50 health on hit and has no max health limit (Wliu)");
@@ -281,13 +292,13 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Added Travis (Lawd)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 21: //2.1.0
+		case 21:  //2.1.0
 		{
 			DrawPanelText(panel, "5) Fixed koth_ doors not opening (Wliu)");
 			DrawPanelText(panel, "6) Grammer stuff (Chris/Wliu)");
 			DrawPanelText(panel, "TODO:  Natascha; Mantreads; Revolvers; Gangplank; other things~");
 		}
-		case 20: //2.0.0
+		case 20:  //2.0.0
 		{
 			DrawPanelText(panel, "FF2 2.0.0 IS LIVE! :D");
 			DrawPanelText(panel, "1) Updated for Steampipe (Lawd/Wliu)");
@@ -296,7 +307,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Added more maps (Lawd/Carge)");
 			DrawPanelText(panel, "See next page");
 		}
-		case 19: //2.0.0
+		case 19:  //2.0.0
 		{
 			DrawPanelText(panel, "5) Re-added CM8 Hale classchange detection (ChrisMiuchiz)");
 			DrawPanelText(panel, "6) Removed Robo-Cyphosis (ChrisMiuchiz/Wliu)");
@@ -305,7 +316,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "9) Allowed Fists of Steel to be equipped with changes (Wliu)");
 			DrawPanelText(panel, "See next page");
 		}
-		case 18: //2.0.0
+		case 18:  //2.0.0
 		{
 			DrawPanelText(panel, "10) Added knockback resistance and weighdown to Gentlespy (Wliu)");
 			DrawPanelText(panel, "11) Ambassador highlights Hale on headshot for 5 seconds (Wliu)");
@@ -314,7 +325,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "Gangplank will have a Loose Cannon rage next update hopefully.");
 			DrawPanelText(panel, "Will also be working on more weapon balance changes.");
 		}
-		case 17: //2.0.0a2
+		case 17:  //2.0.0a2
 		{
 			DrawPanelText(panel, "1) [Players] Nerfed Gentlespy's knife (Wliu)");
 			DrawPanelText(panel, "2) [Players] Added back nerfed Rocket's shotgun (Wliu)");
@@ -323,24 +334,24 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) [Players] Updated to FF2 1.06h-some of the CM changes might not have made it in (Wliu)");
 			DrawPanelText(panel, "See next page");
 		}
-		case 16: //2.0.0a2
+		case 16:  //2.0.0a2
 		{
 			DrawPanelText(panel, "6) [Players] Added in some CM changes (ChrisMiuchiz)");
 			DrawPanelText(panel, "7) [Players] Updated CBS model (Lawd)");
 		}
-		case 15: //2.0.0a1
+		case 15:  //2.0.0a1
 		{
 			DrawPanelText(panel, "1) [Players] Added Gangplank and Gentlespy (Lawd)");
 		}
-		case 14: // 1.06h
+		case 14:  //1.06h
 		{
 		    DrawPanelText(panel, "1) [Players] Remove MvM powerup_bottle on Bosses. (RavensBro)");
 		}
-		case 13: // 1.06g
+		case 13:  //1.06g
 		{
 		    DrawPanelText(panel, "1) [Players] Fixed vote for charset. (RavensBro)");
 		}	
-		case 12: // 1.06f
+		case 12:  //1.06f
 		{
 			DrawPanelText(panel, "1) [Players] Changelog now divided into [Players] and [Dev] sections. (Otokiru)");
 			DrawPanelText(panel, "2) [Players] Don't bother reading [Dev] changelogs because you'll have no idea what it's stated. (Otokiru)");
@@ -348,7 +359,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) [Players] Fixed hale HP bar. (Valve) lol?");
 			DrawPanelText(panel, "5) [Dev] Fixed \"GetEntProp\" reported: Entity XXX (XXX) is invalid on checkFirstHale(). (Otokiru)");
 		}
-		case 11: // 1.06e
+		case 11:  //1.06e
 		{
 
 			DrawPanelText(panel, "1) [Players] Remove MvM water-bottle on hales. (Otokiru)");
@@ -356,21 +367,21 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "3) [Dev] Change how FF2 check for player weapons. Now also checks when spawned in the middle of the round. (Otokiru)");
 			DrawPanelText(panel, "4) [Dev] Changed some FF2 warning messages color such as \"First-Hale Checker\" and \"Change class exploit\". (Otokiru)");
 		}
-		case 10: // 1.06d
+		case 10:  //1.06d
 		{
 			DrawPanelText(panel, "1) Fix first boss having missing health or abilities. (Otokiru)");
 			DrawPanelText(panel, "2) Health bar now goes away if the boss wins the round. (Powerlord)");
 			DrawPanelText(panel, "3) Health bar cedes control to Monoculus if he is summoned. (Powerlord)");
 			DrawPanelText(panel, "4) Health bar instantly updates if enabled or disabled via cvar mid-game. (Powerlord)");
 		}
-		case 9: //1.06c
+		case 9:  //1.06c
 		{
 			DrawPanelText(panel, "1) Remove weapons if a player tries to switch classes when they become boss to prevent an exploit. (Otokiru)");
 			DrawPanelText(panel, "2) Reset hale's queue points to prevent the 'retry' exploit. (Otokiru)");
 			DrawPanelText(panel, "3) Better detection of backstabs. (Powerlord)");
 			DrawPanelText(panel, "4) Boss now has optional life meter on screen. (Powerlord)");
 		}
-		case 8: //1.06
+		case 8:  //1.06
 		{
 			DrawPanelText(panel, "1) Fixed attributes key for weaponN block. Now 1 space needed for explode string.");
 			DrawPanelText(panel, "2) Disabled vote for charset when there is only 1 not hidden chatset.");
@@ -378,7 +389,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Fixed ammo for special_noanims.ff2\\rage_new_weapon ability.");
 			DrawPanelText(panel, "Coming soon: weapon balance will be moved into config file.");
 		}
-		case 7: //1.05
+		case 7:  //1.05
 		{
 			DrawPanelText(panel, "1) Added \"hidden\" key for charsets.");
 			DrawPanelText(panel, "2) Added \"sound_stabbed\" key for characters.");
@@ -386,7 +397,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Minicrits will not play loud sound to all players");
 			DrawPanelText(panel, "5-11) See next page...");
 		}
-		case 6: //1.05
+		case 6:  //1.05
 		{
 			DrawPanelText(panel, "6) For mappers: Add info_target with name 'hale_no_music'");
 			DrawPanelText(panel, "    to prevent Boss' music.");
@@ -396,7 +407,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "10) FF2FLAG_HUDDISABLED flag blocks EVERYTHING of FF2's HUD.");
 			DrawPanelText(panel, "11) Changed FF2_PreAbility native to fix bug about broken Boss' abilities.");
 		}
-		case 5: //1.04
+		case 5:  //1.04
 		{
 			DrawPanelText(panel, "1) Seeldier's minions have protection (teleport) from pits for first 4 seconds after spawn.");
 			DrawPanelText(panel, "2) Seeldier's minions correctly dies when owner-Seeldier dies.");
@@ -405,14 +416,14 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "4) Fixed potential exploits associated with feign death.");
 			DrawPanelText(panel, "6) Added ff2_reload_subplugins command to reload FF2's subplugins.");
 		}
-		case 4: //1.03
+		case 4:  //1.03
 		{
 			DrawPanelText(panel, "1) Finally fixed exploit about queue points.");
 			DrawPanelText(panel, "2) Fixed non-regular bug with 'UTIL_SetModel: not precached'.");
 			DrawPanelText(panel, "3) Fixed potential bug about reducing of Boss' health by healing.");
 			DrawPanelText(panel, "4) Fixed Boss' stun when round begins.");
 		}
-		case 3: //1.02
+		case 3:  //1.02
 		{
 			DrawPanelText(panel, "1) Added isNumOfSpecial parameter into FF2_GetSpecialKV and FF2_GetBossSpecial natives");
 			DrawPanelText(panel, "2) Added FF2_PreAbility forward. Plz use it to prevent FF2_OnAbility only.");
@@ -422,7 +433,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "6) FF2FLAG_HUDDISABLED flag disables Boss' HUD too.");
 			DrawPanelText(panel, "7) Added FF2_GetQueuePoints and FF2_SetQueuePoints natives.");
 		}
-		case 2: //1.01
+		case 2:  //1.01
 		{
 			DrawPanelText(panel, "1) Fixed \"classmix\" bug associated with Boss' class restoring.");
 			DrawPanelText(panel, "3) Fixed other little bugs.");
@@ -431,14 +442,14 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "6) Fixed exploit when dead Boss can been respawned after his reconnect.");
 			DrawPanelText(panel, "7-10) See next page...");
 		}
-		case 1: //1.01
+		case 1:  //1.01
 		{
 			DrawPanelText(panel, "7) I've missed 2nd item.");
 			DrawPanelText(panel, "8) Fixed \"Random\" charpack, there is no vote if only one charpack.");
 			DrawPanelText(panel, "9) Fixed bug when boss' music have a chance to DON'T play.");
 			DrawPanelText(panel, "10) Fixed bug associated with ff2_enabled in cfg/sourcemod/FreakFortress2.cfg and disabling of pugin.");
 		}
-		case 0: //1.0
+		case 0:  //1.0
 		{
 			DrawPanelText(panel, "1) Boss' health devided by 3,6 in medieval mode");
 			DrawPanelText(panel, "2) Restoring player's default class, after his round as Boss");
@@ -4828,6 +4839,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					case 307:  //Ullapool Caber
 					{
 						static detonations=5;
+						new bool:warn=true;
 						if(detonations >= 0)
 						{
 							ResetCaber(GetPlayerWeaponSlot(client, TFWeaponSlot_Melee));
@@ -4838,7 +4850,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							}
 							else
 							{
-								new bool:warn=true;
+								warn=true;
 							}
 						}
 						else if(warn)
@@ -5195,6 +5207,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 	}
 	return Plugin_Continue;
 }
+
 public Action:Timer_CheckBuffRage(Handle:timer, any:userid)
 {
 	new client = GetClientOfUserId(userid);
@@ -5202,6 +5215,13 @@ public Action:Timer_CheckBuffRage(Handle:timer, any:userid)
 	{
 		SetEntPropFloat(client, Prop_Send, "m_flRageMeter", 100.0);
 	}
+}
+
+stock ResetCaber(iWeapon)
+{
+	SetEntProp(iWeapon, Prop_Send, "m_bBroken", 0);
+
+	SetEntProp(iWeapon, Prop_Send, "m_iDetonated", 0);
 }
 
 stock SpawnSmallHealthPackAt(client, ownerteam = 0)
