@@ -94,7 +94,7 @@
 	{
 		"en"	"The KGB is replaced with the Gloves of Running.\nThe Gloves of Running are quite quick but cause you to lose 7 health/sec.\nThe Holiday Punch will remove any stun on you if you hit Boss while stunned."
 	}
-	"help_eggineer"
+	"help_engineer"
 	{
 		"en"	"All arena/VSH maps have only small ammo packs.\nThe Frontier Justice gains crits only while your sentry is targeting the Boss."
 	}
@@ -106,7 +106,7 @@
 	{
 		"en"	"All your weapons have critical hits.\nJarate removes 8% rage.\nMost back-equipped weapons are replaced with SMG.\nDefault Sniper Rifle causes Boss to glow. Glow time scales with charge."
 	}
-	"help_spie"
+	"help_spy"
 	{
 		"en"	"Backstabs do about 10 percent of Boss's max health.\nCloak and Dagger is replaced with normal watch.\nAll revolvers minicrit.\nYour Eternal Reward/Wanga Prick backstabs will disguise you instantly.\nKunai backstabs will give you a health bonus."
 	}
@@ -203,12 +203,12 @@
 	"your_points"
 	{
 		"#format" "{1:i}"
-		"en"    "Your queue point(s) is {1}."
+		"en"    "You have {1} queue points."
 	}
 	"add_points"
 	{
 		"#format" "{1:i}"
-		"en"    "You earned {1} queue point(s)."
+		"en"    "You earned {1} queue points."
 	}
 	"to0"
 	{

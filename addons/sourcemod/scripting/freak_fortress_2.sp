@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.0"
+#define PLUGIN_VERSION "2.3.1 Dev-1"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -2996,13 +2996,6 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check we
 					//17:  +5% uber on hit
 					//144:  NOOP
 			}
-			case 237:  //Rocket Jumper
-			{
-				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
-				weapon = SpawnWeapon(client,"tf_weapon_rocketlauncher",18,1,0,"");
-					//NOOP
-				SetAmmo(client, 0, 20);
-			}
 			case 402:  //Bazaar Bargain
 			{
 				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Primary);
@@ -3028,13 +3021,6 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check we
 						//144:  NOOP
 						//58:  +500% self-push force
 				}
-			}
-			case 265:  //Sticky Jumper
-			{
-				TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
-				weapon = SpawnWeapon(client,"tf_weapon_pipebomblauncher",20,1,0,"");
-					//NOOP
-				SetAmmo(client,1,24);
 			}
 		}
 	}
@@ -4839,24 +4825,28 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							TF2_RemoveCondition(attacker, TFCond_OnFire);
 						}
 					}
-/*					case 307:  //Ullapool Caber  //Enable after 2.3.0
+					case 307:  //Ullapool Caber
 					{
-						static detonations=0;
-						if(detonations <= 5)
+						static detonations=5;
+						if(detonations >= 0)
 						{
 							ResetCaber(GetPlayerWeaponSlot(client, TFWeaponSlot_Melee));
-							detonations++;
-							if(detonations=5)
+							detonations--;
+							if(detonations > 0)
+							{
+								CPrintToChat(attacker,"%t cabers left",detonations);
+							}
+							else
 							{
 								new bool:warn=true;
 							}
 						}
 						else if(warn)
 						{
-							PrintCenterText(attacker,"No more cabers left!");
+							CPrintToChat(attacker,"NO MORE CABERS LEFT!");
 							warn=false;
 						}
-					}*/
+					}
 					case 317:  //Candycane
 					{
 						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
@@ -4882,10 +4872,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						{
 							newhealth = health+5;
 						}
-/*						ChrisMiuchiz: Half Zatoichi heals less as player HP increases.
+						/*ChrisMiuchiz: Half Zatoichi heals less as player HP increases.
 						new Float:newhealth = health + ((-health^1.9) / 4000) + 56;
 						Use this if it's possible to make the math work ingame
-						x + (-x^1.9)/4000 + 56  */
+						x + (-x^1.9)/4000 + 56*/
 						else
 						{
 							if(health < 250)
@@ -6058,30 +6048,28 @@ public Action:QueuePanelCmd(client, Args)
 	return Plugin_Handled;
 }
 
-public Action:ResetQueuePointsCmd(client, args)  //START HERE FOR FORMATTING
+public Action:ResetQueuePointsCmd(client, args)
 {
 	if(!Enabled2)
+	{
 		return Plugin_Continue;
-	if(client && !args)			//default players
+	}
+
+	if(client && !args)
 	{
 		TurnToZeroPanel(client,client);
 		return Plugin_Handled;
 	}
-	if(!client)		//No confirmation for console
+
+	if(!client)
 	{
 		TurnToZeroPanelH(INVALID_HANDLE, MenuAction_Select, client, 1);
 		return Plugin_Handled;
 	}
-	new AdminId:admin = GetUserAdmin(client);	//default players again
+	new AdminId:admin = GetUserAdmin(client);
 	if((admin == INVALID_ADMIN_ID) || !GetAdminFlag(admin, Admin_Cheats))
 	{
 		TurnToZeroPanel(client,client);
-		return Plugin_Handled;
-	}
-	//admins
-	if(args != 1)
-	{
-		ReplyToCommand(client, "[FF2] Usage: ff2_resetqueuepoints < target >");
 		return Plugin_Handled;
 	}
 
@@ -6091,15 +6079,7 @@ public Action:ResetQueuePointsCmd(client, args)  //START HERE FOR FORMATTING
 	new target_list[1], target_count;
 	new bool:tn_is_ml;
 
-	if((target_count = ProcessTargetString(
-			targetname,
-			client,
-			target_list,
-			1,
-			0,
-			target_name,
-			MAX_TARGET_LENGTH,
-			tn_is_ml)) <= 0)
+	if((target_count = ProcessTargetString(targetname, client, target_list, 1, 0, target_name, MAX_TARGET_LENGTH, tn_is_ml)) <= 0)
 	{
 		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
@@ -6113,7 +6093,9 @@ public TurnToZeroPanelH(Handle:menu, MenuAction:action, param1, param2)
 	if(action == MenuAction_Select && param2 == 1)
 	{
 		if(shortname[param1] == param1)
+		{
 			CPrintToChat(param1,"{olive}[FF2]{default} %t","to0_done");
+		}
 		else
 		{
 			CPrintToChat(param1,"{olive}[FF2]{default} %t","to0_done_admin",shortname[param1]);
@@ -6126,14 +6108,20 @@ public TurnToZeroPanelH(Handle:menu, MenuAction:action, param1, param2)
 public Action:TurnToZeroPanel(caller,client)
 {
 	if(!Enabled2)
+	{
 		return Plugin_Continue;
+	}
 	new Handle:panel = CreatePanel();
 	decl String:s[512];
 	SetGlobalTransTarget(caller);
 	if(caller == client)
+	{
 		Format(s,512,"%t","to0_title");
+	}
 	else
+	{
 		Format(s,512,"%t","to0_title_admin",client);
+	}
 	PrintToChat(caller,s);
 	SetPanelTitle(panel,s);
 	Format(s,512,"%t","Yes");
@@ -6148,9 +6136,19 @@ public Action:TurnToZeroPanel(caller,client)
 
 bool:GetClientClassinfoCookie(client)
 {
-	if(!IsValidClient(client)) return false;
-	if(IsFakeClient(client)) return false;
-	if(!AreClientCookiesCached(client)) return true;
+	if(!IsValidClient(client))
+	{
+		return false;
+	}
+
+	if(IsFakeClient(client))
+	{
+		return false;
+	}
+	if(!AreClientCookiesCached(client))
+	{
+		return true;
+	}
 	decl String:s[24];
 	decl String:ff2cookies_values[8][5];
 	GetClientCookie(client, FF2Cookies, s,24);
@@ -6160,12 +6158,19 @@ bool:GetClientClassinfoCookie(client)
 
 GetClientQueuePoints(client)
 {
-	if(!IsValidClient(client)) return 0;
+	if(!IsValidClient(client))
+	{
+		return 0;
+	}
+
 	if(IsFakeClient(client))
 	{
 		return botqueuepoints;
 	}
-	if(!AreClientCookiesCached(client)) return 0;
+	if(!AreClientCookiesCached(client))
+	{
+		return 0;
+	}
 	decl String:s[24];
 	decl String:ff2cookies_values[8][5];
 	GetClientCookie(client, FF2Cookies, s,24);
@@ -6192,6 +6197,7 @@ stock IsBoss(client)
 	{
 		return 0;
 	}
+
 	for(new i = 0; i <= MaxClients; i++)
 	{
 		if(Boss[i] == client)
@@ -6254,7 +6260,9 @@ public FF2PanelH(Handle:menu, MenuAction:action, param1, param2)
 public Action:FF2Panel(client, args)
 {
 	if(!Enabled2 || !IsValidClient(client, false))
+	{
 		return Plugin_Continue;
+	}
 	SetEntPropFloat(client, Prop_Send, "m_flCloakMeter", 0.8);
 	new Handle:panel = CreatePanel();
 	decl String:s[256];
@@ -6291,31 +6299,47 @@ public NewPanelH(Handle:menu, MenuAction:action, param1, param2)
 			case 1:
 			{
 				if(curHelp[param1] <= 0)
+				{
 					NewPanel(param1, 0);
+				}
 				else
+				{
 					NewPanel(param1, --curHelp[param1]);
+				}
 			}
 			case 2:
 			{
 				if(curHelp[param1] >= maxversion)
+				{
 					NewPanel(param1, maxversion);
+				}
 				else
+				{
 					NewPanel(param1, ++curHelp[param1]);
+				}
 			}
-			default: return;
+			default:
+			{
+				return;
+			}
 		}
 	}
 }
 public Action:NewPanelCmd(client, args)
 {
-	if(!IsValidClient(client)) return Plugin_Continue;
+	if(!IsValidClient(client))
+	{
+		return Plugin_Continue;
+	}
 	NewPanel(client, maxversion);
 	return Plugin_Handled;
 }
 public Action:NewPanel(client, versionindex)
 {
 	if(!Enabled2)
+	{
 		return Plugin_Continue;
+	}
 	curHelp[client] = versionindex;
 	new Handle:panel = CreatePanel();
 	decl String:s[90];
@@ -6324,14 +6348,22 @@ public Action:NewPanel(client, versionindex)
 	SetPanelTitle(panel, s);
 	FindVersionData(panel, versionindex);
 	if(versionindex > 0)
+	{
 		Format(s,90, "%t", "older");
+	}
 	else
+	{
 		Format(s,90, "%t", "noolder");
+	}
 	DrawPanelItem(panel, s);  
 	if(versionindex < maxversion)
+	{
 		Format(s,90, "%t", "newer");
+	}
 	else
+	{
 		Format(s,90, "%t", "nonewer");
+	}
 	DrawPanelItem(panel, s);  
 	Format(s,512,"%t","menu_6");
 	DrawPanelItem(panel,s);    
@@ -6342,15 +6374,20 @@ public Action:NewPanel(client, versionindex)
 
 public Action:HelpPanel3Cmd(client, args)
 {
-	if(!IsValidClient(client)) return Plugin_Continue;
+	if(!IsValidClient(client))
+	{
+		return Plugin_Continue;
+	}
 	HelpPanel3(client);
 	return Plugin_Handled;
 }
 
 public Action:HelpPanel3(client)
 {
-	if(!Enabled2) 
+	if(!Enabled2)
+	{
 		return Plugin_Continue;
+	}
 	new Handle:panel = CreatePanel();
 	SetPanelTitle(panel, "Turn the Freak Fortress 2 class info...");
 	DrawPanelItem(panel, "On");
@@ -6372,9 +6409,13 @@ public ClassinfoTogglePanelH(Handle:menu, MenuAction:action, param1, param2)
 			GetClientCookie(param1, FF2Cookies, s, 24);
 			ExplodeString(s, " ", ff2cookies_values,8,5);
 			if(param2 == 2)
+			{
 				Format(s,24,"%s %s %s 0 %s %s %s",ff2cookies_values[0],ff2cookies_values[1],ff2cookies_values[2],ff2cookies_values[4],ff2cookies_values[5],ff2cookies_values[6],ff2cookies_values[7]);
+			}
 			else
+			{
 				Format(s,24,"%s %s %s 1 %s %s %s",ff2cookies_values[0],ff2cookies_values[1],ff2cookies_values[2],ff2cookies_values[4],ff2cookies_values[5],ff2cookies_values[6],ff2cookies_values[7]);
+			}
 			SetClientCookie(param1, FF2Cookies,s);
 			CPrintToChat(param1,"{olive}[VSH]{default} %t","ff2_classinfo", param2 == 2 ? "off" : "on");
 		}
@@ -6383,7 +6424,10 @@ public ClassinfoTogglePanelH(Handle:menu, MenuAction:action, param1, param2)
 
 public Action:HelpPanel2Cmd(client, args)
 {
-	if(!IsValidClient(client)) return Plugin_Continue;
+	if(!IsValidClient(client))
+	{
+		return Plugin_Continue;
+	}
 	HelpPanel2(client);
 	return Plugin_Handled;
 }
@@ -6391,7 +6435,9 @@ public Action:HelpPanel2Cmd(client, args)
 public Action:HelpPanel2(client)
 {
 	if(!Enabled)
+	{
 		return Plugin_Continue;
+	}
 	new index=GetBossIndex(client);
 	if(index!=-1)
 	{
@@ -6404,29 +6450,51 @@ public Action:HelpPanel2(client)
 	switch (class)
 	{
 		case TFClass_Scout:
+		{
 			Format(s,512,"%t","help_scout");
+		}
 		case TFClass_Soldier:
+		{
 			Format(s,512,"%t","help_soldier");
+		}
 		case TFClass_Pyro:
+		{
 			Format(s,512,"%t","help_pyro");
+		}
 		case TFClass_DemoMan:
+		{
 			Format(s,512,"%t","help_demo");
+		}
 		case TFClass_Heavy:
+		{
 			Format(s,512,"%t","help_heavy");
+		}
 		case TFClass_Engineer:
-			Format(s,512,"%t","help_eggineer");
+		{
+			Format(s,512,"%t","help_engineer");
+		}
 		case TFClass_Medic:
+		{
 			Format(s,512,"%t","help_medic");
+		}
 		case TFClass_Sniper:
+		{
 			Format(s,512,"%t","help_sniper");
+		}
 		case TFClass_Spy:
-			Format(s,512,"%t","help_spie");
+		{
+			Format(s,512,"%t","help_spy");
+		}
 		default:
+		{
 			Format(s, 512, "");
+		}
 	}
 	new Handle:panel = CreatePanel();
 	if(class!= TFClass_Sniper)
+	{
 		Format(s,512,"%t\n%s","help_melee",s);
+	}
 	SetPanelTitle(panel,s);
 	DrawPanelItem(panel,"Exit");
 	SendPanelToClient(panel, client, HintPanelH, 20);
@@ -6443,7 +6511,9 @@ public Action:HelpPanelBoss(index)
 	KvRewind(BossKV[Special[index]]);
 	KvGetString(BossKV[Special[index]], lang, s, 512);
 	if(!s[0])
+	{
 		return Plugin_Continue;
+	}
 	ReplaceString(s,512,"\\n","\n");
 	new Handle:panel = CreatePanel();
 	SetPanelTitle(panel,s);
@@ -6455,15 +6525,20 @@ public Action:HelpPanelBoss(index)
 
 public Action:MusicTogglePanelCmd(client, args)
 {
-	if(!IsValidClient(client)) return Plugin_Continue;
+	if(!IsValidClient(client))
+	{
+		return Plugin_Continue;
+	}
 	MusicTogglePanel(client);
 	return Plugin_Handled;
 }
 
 public Action:MusicTogglePanel(client)
 {
-	if(!Enabled || !IsValidClient(client)) 
+	if(!Enabled || !IsValidClient(client))
+	{
 		return Plugin_Continue;
+	}
 	new Handle:panel = CreatePanel();
 	SetPanelTitle(panel, "Turn the Freak Fortress 2 music...");
 	DrawPanelItem(panel, "On");
@@ -6493,21 +6568,28 @@ public MusicTogglePanelH(Handle:menu, MenuAction:action, param1, param2)
 				}
 			}
 			else
+			{
 				SetClientSoundOptions(param1, SOUNDEXCEPT_MUSIC, true);
+			}
 			CPrintToChat(param1,"{olive}[FF2]{default} %t","ff2_music", param2 == 2 ? "off" : "on");
 		}
 	}
 }
 public Action:VoiceTogglePanelCmd(client, args)
 {
-	if(!IsValidClient(client)) return Plugin_Continue;
+	if(!IsValidClient(client))
+	{
+		return Plugin_Continue;
+	}
 	VoiceTogglePanel(client);
 	return Plugin_Handled;
 }
 public Action:VoiceTogglePanel(client)
 {
-	if(!Enabled || !IsValidClient(client)) 
+	if(!Enabled || !IsValidClient(client))
+	{
 		return Plugin_Continue;
+	}
 	new Handle:panel = CreatePanel();
 	SetPanelTitle(panel, "Turn the Freak Fortress 2 voices...");
 	DrawPanelItem(panel, "On");   
@@ -6524,9 +6606,13 @@ public VoiceTogglePanelH(Handle:menu, MenuAction:action, param1, param2)
 		if(action == MenuAction_Select)
 		{
 			if(param2 == 2)
+			{
 				SetClientSoundOptions(param1, SOUNDEXCEPT_VOICE, false);
+			}
 			else
+			{
 				SetClientSoundOptions(param1, SOUNDEXCEPT_VOICE, true);
+			}
 			CPrintToChat(param1,"{olive}[FF2]{default} %t","ff2_voice", param2 == 2 ? "off" : "on");
 			if(param2 == 2) CPrintToChat(param1, "%t","ff2_voice2");
 		}
@@ -6573,7 +6659,10 @@ stock SetAmmo(client, slot, ammo)
 
 stock GetAmmo(client, slot)
 {
-	if(!IsValidClient(client)) return 0;
+	if(!IsValidClient(client))
+	{
+		return 0;
+	}
 	new weapon = GetPlayerWeaponSlot(client, slot);
 	if(IsValidEntity(weapon))
 	{   
@@ -6590,16 +6679,23 @@ stock GetHealingTarget(client,bool:checkgun = false)
 	if(!checkgun)
 	{
 		if(GetEntProp(medigun, Prop_Send, "m_bHealing"))
+		{
 			return GetEntPropEnt(medigun, Prop_Send, "m_hHealingTarget");
+		}
 		return -1;
 	}
+
 	if(!IsValidEdict(medigun))
+	{
 		return -1;
+	}
 	GetEdictClassname(medigun, s, sizeof(s));
 	if(strcmp(s, "tf_weapon_medigun", false) == 0)
 	{
 		if(GetEntProp(medigun, Prop_Send, "m_bHealing"))
+		{
 			return GetEntPropEnt(medigun, Prop_Send, "m_hHealingTarget");
+		}
 	}
 	return -1;
 }
@@ -6610,14 +6706,17 @@ stock IsValidClient(client, bool:replaycheck = true)
 	{
 		return false;
 	}
+
 	if(!IsClientInGame(client))
 	{
 		return false;
 	}
+
 	if(GetEntProp(client, Prop_Send, "m_bIsCoaching"))
 	{
 		return false;
 	}
+
 	if(replaycheck)
 	{
 		if(IsClientSourceTV(client) || IsClientReplay(client))
@@ -6648,9 +6747,13 @@ public NextmapPanelH2(Handle:menu,num_votes,num_clients,const client_info[][2],n
 	decl String:mode[42], String:nextmap[42];
 	GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], mode,42);
 	if(mode[0] == '0')
+	{
 		FF2CharSet = GetRandomInt(0,FF2CharSet);
+	}
 	else
+	{
 		FF2CharSet=mode[0]-'0'-1;
+	}
 	GetConVarString(cvarNextmap,nextmap,42);
 	strcopy(FF2CharSetStr,42,mode[StrContains(mode," ")+1]);
 	CPrintToChatAll("%t","nextmap_charset",nextmap,FF2CharSetStr);
@@ -6664,7 +6767,9 @@ public CvarChangeNextmap(Handle:convar, const String:oldValue[], const String:ne
 public Action:Timer_CvarChangeNextmap(Handle:hTimer)
 {	
 	if(IsVoteInProgress())
+	{
 		return Plugin_Continue;
+	}
 	new Handle:dVoteMenu = CreateMenu(NextmapPanelH, MenuAction:MENU_ACTIONS_ALL);
 	SetMenuTitle(dVoteMenu, "%t","select_charset");
 	SetVoteResultCallback(dVoteMenu, NextmapPanelH2);
@@ -6687,23 +6792,29 @@ public Action:Timer_CvarChangeNextmap(Handle:hTimer)
 	}
 	while(KvGotoNextKey(Kv));
 	CloseHandle(Kv);
+
 	if(j > 1)
 	{
 		FF2CharSet = i;
 		new Handle:see = FindConVar("sm_mapvote_voteduration");
 		if(see)
+		{
 			VoteMenuToAll(dVoteMenu, GetConVarInt(see));
+		}
 		else
+		{
 			VoteMenuToAll(dVoteMenu, 20); 
+		}
 	}
-
 	return Plugin_Continue;
 }
 
 public Action:NextMapCmd(client, args)
 {
 	if(!FF2CharSetStr[0])
+	{
 		return Plugin_Continue;
+	}
 	decl String:nextmap[42];
 	GetConVarString(cvarNextmap,nextmap,42);
 	CPrintToChat(client,"%t","nextmap_charset",nextmap,FF2CharSetStr);
@@ -6714,7 +6825,9 @@ public Action:SayCmd(client, args)
 {
 	decl String:CurrentChat[128];
 	if(GetCmdArgString(CurrentChat, sizeof(CurrentChat)) < 1 || (client == 0))
+	{
 		return Plugin_Continue;
+	}
 	if(!strcmp(CurrentChat, "\"nextmap\"") && FF2CharSetStr[0])
 	{
 		NextMapCmd(client,0);
@@ -6725,8 +6838,10 @@ public Action:SayCmd(client, args)
 
 stock FindEntityByClassname2(startEnt, const String:classname[])
 {
-	/* If startEnt isn't valid shifting it back to the nearest valid one */
-	while(startEnt > -1 && !IsValidEntity(startEnt)) startEnt--;
+	while(startEnt > -1 && !IsValidEntity(startEnt))
+	{
+		startEnt--;
+	}
 	return FindEntityByClassname(startEnt, classname);
 }
 stock SetBossHealthFix(client, oldhealth)
@@ -6738,8 +6853,10 @@ stock SetBossHealthFix(client, oldhealth)
 		return;
 	}
 	oldhealth = oldhealth % 4096;
-	if(oldhealth < 5) originalhealth += 10;
-
+	if(oldhealth < 5)
+	{
+		originalhealth += 10;
+	}
 	SetEntProp(client, Prop_Send, "m_iHealth", originalhealth);
 }
 
@@ -6755,8 +6872,10 @@ UseAbility(const String:ability_name[],const String:plugin_name[], index, slot, 
 	Call_Finish();
 
 	if(!enabled)
+	{
 		return;
-	
+	}
+
 	new Action:act = Plugin_Continue;
 	Call_StartForward(OnAbility);
 	Call_PushCell(index);
@@ -6781,9 +6900,14 @@ UseAbility(const String:ability_name[],const String:plugin_name[], index, slot, 
 		decl button;
 		switch (buttonmode)
 		{
-			//case 0: it's a taunt!
-			case 2: button = IN_RELOAD;
-			default: button = IN_DUCK | IN_ATTACK2;
+			case 2:
+			{
+				button = IN_RELOAD;
+			}
+			default:
+			{
+				button = IN_DUCK | IN_ATTACK2;
+			}
 		}
 		if(RainbowDash & button)
 		{
@@ -6792,9 +6916,14 @@ UseAbility(const String:ability_name[],const String:plugin_name[], index, slot, 
 				FF2flags[Boss[index]] |= FF2FLAG_USINGABILITY;
 				switch (buttonmode)
 				{
-					//case 0: it's a taunt!
-					case 2: SetInfoCookies(Boss[index],0,CheckInfoCookies(Boss[index],0)-1);
-					default: SetInfoCookies(Boss[index],1,CheckInfoCookies(Boss[index],1)-1);
+					case 2:
+					{
+						SetInfoCookies(Boss[index],0,CheckInfoCookies(Boss[index],0)-1);
+					}
+					default:
+					{
+						SetInfoCookies(Boss[index],1,CheckInfoCookies(Boss[index],1)-1);
+					}
 				}
 			}
 			if(BossCharge[index][slot] >= 0)
@@ -6803,9 +6932,13 @@ UseAbility(const String:ability_name[],const String:plugin_name[], index, slot, 
 				Call_Finish(act);
 				new Float:see = 100.0*0.2/GetAbilityArgumentFloat(index,plugin_name,ability_name,1,1.5);
 				if(BossCharge[index][slot]+see < 100)
+				{
 					BossCharge[index][slot]+= see;
+				}
 				else
+				{
 					BossCharge[index][slot] = 100.0;
+				}
 			}
 			else
 			{
@@ -6886,21 +7019,35 @@ public Native_GetSpecial(Handle:plugin,numParams)
 	new index = GetNativeCell(1);
 	new dstrlen = GetNativeCell(3);
 	decl String:s[dstrlen];
-	//if(isNumOfSpecial)
 	new see=GetNativeCell(4);
 	if(see)
 	{
-		if(index<0) return false;
-		if(!BossKV[index]) return false;
+		if(index<0)
+		{
+			return false;
+		}
+		if(!BossKV[index])
+		{
+			return false;
+		}
 		KvRewind(BossKV[index]);
 		KvGetString(BossKV[index], "name", s, dstrlen);
 		SetNativeString(2, s,dstrlen);
 	}
 	else
 	{
-		if(index<0) return false;
-		if(Special[index]<0) return false;
-		if(!BossKV[Special[index]]) return false;
+		if(index<0)
+		{
+			return false;
+		}
+		if(Special[index]<0)
+		{
+			return false;
+		}
+		if(!BossKV[Special[index]])
+		{
+			return false;
+		}
 		KvRewind(BossKV[Special[index]]);
 		KvGetString(BossKV[Special[index]], "name", s, dstrlen);
 		SetNativeString(2, s,dstrlen);
@@ -6935,7 +7082,9 @@ public Native_SetBossCharge(Handle:plugin,numParams)
 public Native_GetRoundState(Handle:plugin,numParams)
 {
 	if(FF2RoundState <= 0)
+	{
 		return 0;
+	}
 	return FF2RoundState;
 }
 
@@ -6947,7 +7096,10 @@ public Native_GetRageDist(Handle:plugin,numParams)
 	decl String:ability_name[64]; 	
 	GetNativeString(3,ability_name,64);
 
-	if(!BossKV[Special[index]]) return _:0.0;
+	if(!BossKV[Special[index]])
+	{
+		return _:0.0;
+	}
 	KvRewind(BossKV[Special[index]]);
 	decl Float:see;
 	if(!ability_name[0])
@@ -6967,6 +7119,7 @@ public Native_GetRageDist(Handle:plugin,numParams)
 				KvGoBack(BossKV[Special[index]]);
 				continue;
 			}
+
 			if((see = KvGetFloat(BossKV[Special[index]],"dist",-1.0)) < 0)
 			{
 				KvRewind(BossKV[Special[index]]);
@@ -6984,18 +7137,15 @@ public Native_HasAbility(Handle:plugin,numParams)
 	decl String:ability_name[64]; 	
 	GetNativeString(2,plugin_name,64);
 	GetNativeString(3,ability_name,64);
-	//return HasAbility(index,plugin_name,ability_name);
 	return HasAbility(GetNativeCell(1),plugin_name,ability_name);
 }
 
-//native FF2_DoAbility(index, const String:plugin_name[], const String:ability_name[], slot, buttonmode = 0)
 public Native_DoAbility(Handle:plugin,numParams)
 {
 	decl String:plugin_name[64]; 	
 	decl String:ability_name[64]; 	
 	GetNativeString(2,plugin_name,64);
 	GetNativeString(3,ability_name,64);
-	//UseAbility(const String:ability_name[],const String:plugin_name[], index, slot, buttonmode = 0)
 	UseAbility(ability_name,plugin_name, GetNativeCell(1), GetNativeCell(4), GetNativeCell(5));
 }
 
@@ -7005,7 +7155,6 @@ public Native_GetAbilityArgument(Handle:plugin,numParams)
 	decl String:ability_name[64]; 	
 	GetNativeString(2,plugin_name,64);
 	GetNativeString(3,ability_name,64);
-	//return GetAbilityArgument(index,plugin_name,ability_name,s,defvalue);
 	return GetAbilityArgument(GetNativeCell(1),plugin_name,ability_name,GetNativeCell(4),GetNativeCell(5));
 }
 
@@ -7015,7 +7164,6 @@ public Native_GetAbilityArgumentFloat(Handle:plugin,numParams)
 	decl String:ability_name[64]; 	
 	GetNativeString(2,plugin_name,64);
 	GetNativeString(3,ability_name,64);
-	//return _:GetAbilityArgumentFloat(index,plugin_name,ability_name,argument,defvalue);
 	return _:GetAbilityArgumentFloat(GetNativeCell(1),plugin_name,ability_name,GetNativeCell(4),GetNativeCell(5));
 }
 
@@ -7027,7 +7175,6 @@ public Native_GetAbilityArgumentString(Handle:plugin,numParams)
 	GetNativeString(3,ability_name,64);
 	new dstrlen = GetNativeCell(6);
 	new String:s[dstrlen+1];
-	//GetAbilityArgumentString(index,plugin_name,ability_name,argument,s,dstrlen);
 	GetAbilityArgumentString(GetNativeCell(1),plugin_name,ability_name,GetNativeCell(4),s,dstrlen);
 	SetNativeString(5,s,dstrlen); 	
 }
@@ -7036,7 +7183,9 @@ public Native_GetDamage(Handle:plugin,numParams)
 {
 	new client = GetNativeCell(1);
 	if(!IsValidClient(client))
+	{
 		return 0;
+	}
 	return Damage[client];
 }
 
@@ -7069,7 +7218,9 @@ public Native_GetSpecialKV(Handle:plugin,numParams)
 		if(index!= -1 && index < Specials)
 		{
 			if(BossKV[index] != INVALID_HANDLE)
+			{
 				KvRewind(BossKV[index]);
+			}
 			return _:BossKV[index];
 		}
 	}
@@ -7094,7 +7245,10 @@ public Native_StartMusic(Handle:plugin,numParams)
 
 public Native_StopMusic(Handle:plugin,numParams)
 {
-	if(!BossKV[Special[0]]) return;
+	if(!BossKV[Special[0]])
+	{
+		return;
+	}
 	KvRewind(BossKV[Special[0]]);
 	if(KvJumpToKey(BossKV[Special[0]],"sound_bgm"))
 	{
@@ -7103,16 +7257,25 @@ public Native_StopMusic(Handle:plugin,numParams)
 		KvGetString(BossKV[Special[0]], s,s, PLATFORM_MAX_PATH);
 		decl client;
 		if(plugin == INVALID_HANDLE)
+		{
 			client = 0;
+		}
 		else
+		{
 			client = GetNativeCell(1);
+		}
 		if(!client)
+		{
 			for(new i = 1 ;  i <= MaxClients;  i++)
 			{
-				if(!IsValidClient(i)) continue;
+				if(!IsValidClient(i))
+				{
+					continue;
+				}
 				StopSound(i, SNDCHAN_AUTO, s);
 				StopSound(i, SNDCHAN_AUTO, s);
 			}
+		}
 		else
 		{
 			StopSound(client, SNDCHAN_AUTO, s);
@@ -7127,18 +7290,22 @@ public Native_RandomSound(Handle:plugin,numParams)
 	new index = GetNativeCell(4);
 	new slot = GetNativeCell(5);
 	new String:str[length];
-	
+
 	decl alength;
 	GetNativeStringLength(1, alength);
 	alength++;
 	decl String:keyvalue[alength];
-	
+
 	GetNativeString(1,keyvalue,alength);
 	decl bool:see;
 	if(!strcmp(keyvalue,"sound_ability"))
+	{
 		see = RandomSoundAbility(keyvalue, str,length,index,slot);
+	}
 	else
+	{
 		see = RandomSound(keyvalue, str,length,index);
+	}
 	SetNativeString(2,str,length);
 	return see;
 }
@@ -7230,16 +7397,14 @@ public Action:VSH_OnGetRoundState(&result)
 
 UpdateHealthBar()
 {
-	// Adjust health bar
 	if(!GetConVarBool(cvarHealthBar) || g_Monoculus != -1)
 	{
 		return;
 	}
+
 	new healthAmount = 0;
 	new maxHealthAmount = 0;
-	
 	new count = 0;
-	
 	for(new i = 0; i < MaxClients; i++)
 	{
 		if(IsValidClient(Boss[i]) && IsPlayerAlive(Boss[i]))
@@ -7249,9 +7414,8 @@ UpdateHealthBar()
 			maxHealthAmount += BossHealthMax[i];
 		}
 	}
-	
-	new healthPercent = 0;
 
+	new healthPercent = 0;
 	if(count > 0)
 	{
 		healthPercent = RoundToCeil(float(healthAmount) / float(maxHealthAmount) * float(HEALTHBAR_MAX));
@@ -7265,9 +7429,6 @@ UpdateHealthBar()
 			healthPercent = 1;
 		}
 	}
-	
-	//PrintToChatAll("Updating healthbar to %d", healthPercent);
-	
 	SetEntProp(g_healthBar, Prop_Send, HEALTHBAR_PROPERTY, healthPercent);
 }
 
@@ -7278,19 +7439,24 @@ public OnTakeDamagePost(client, attacker, inflictor, Float:damage, damagetype)
 		new index = GetBossIndex(client);
 		
 		if(index == -1)
+		{
 			return;
-		
+		}
+
 		if(TF2_IsPlayerInCondition(Boss[index],TFCond_Jarated))
+		{
 			TF2_RemoveCondition(Boss[index],TFCond_Jarated);
-		
+		}
+
 		if(TF2_IsPlayerInCondition(Boss[index], TFCond_MarkedForDeath))
+		{
 			TF2_RemoveCondition(Boss[index], TFCond_MarkedForDeath);
+		}
 
 		UpdateHealthBar();
 	}
 }
 
-// These are solely for tracking Monoculus and auto-disabling/enabling the healthbar
 public OnEntityCreated(entity, const String:classname[])
 {
 	if(!GetConVarBool(cvarHealthBar))
@@ -7302,6 +7468,7 @@ public OnEntityCreated(entity, const String:classname[])
 	{
 		g_healthBar = entity;
 	}
+
 	if(g_Monoculus == -1 && StrEqual(classname, MONOCULUS))
 	{
 		g_Monoculus = entity;
@@ -7314,7 +7481,7 @@ public OnEntityDestroyed(entity)
 	{
 		return;
 	}
-	
+
 	if(entity == g_Monoculus)
 	{
 		g_Monoculus = FindEntityByClassname(-1, MONOCULUS);
@@ -7328,8 +7495,6 @@ public OnEntityDestroyed(entity)
 FindHealthBar()
 {
 	g_healthBar = FindEntityByClassname(-1, HEALTHBAR_CLASS);
-	
-	// This shouldn't happen, but just in case...
 	if(g_healthBar == -1)
 	{
 		g_healthBar = CreateEntityByName(HEALTHBAR_CLASS);
@@ -7338,7 +7503,6 @@ FindHealthBar()
 
 public HealthbarEnableChanged(Handle:convar, const String:oldValue[], const String:newValue[])
 {
-	// Easier than checking newvalue and oldvalue
 	if(GetConVarBool(cvarHealthBar))
 	{
 		UpdateHealthBar();
@@ -7349,4 +7513,4 @@ public HealthbarEnableChanged(Handle:convar, const String:oldValue[], const Stri
 	}
 }
 
-#include < freak_fortress_2_vsh_feedback > 
+#include <freak_fortress_2_vsh_feedback>
