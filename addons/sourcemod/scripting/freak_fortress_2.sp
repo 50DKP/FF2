@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Dev-1"
+#define PLUGIN_VERSION "2.3.1 Dev 2"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -4834,7 +4834,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							detonations--;
 							if(detonations > 0)
 							{
-								CPrintToChat(attacker,"%t cabers left",detonations);
+								CPrintToChat(attacker,"{olive}[FF2]{default} You have {red}%t{default} cabers left",detonations);
 							}
 							else
 							{
@@ -4843,7 +4843,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						}
 						else if(warn)
 						{
-							CPrintToChat(attacker,"NO MORE CABERS LEFT!");
+							CPrintToChat(attacker,"{olive}[FF2]{default} {red}NO MORE CABERS LEFT!{default}");
 							warn=false;
 						}
 					}
@@ -4859,7 +4859,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							BossCharge[index][0] = 0.0;
 						}
 					}
-					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.  As of 2.3.0, also nerfed the health gain to +5 if the soldier is being buffed by the Battalion's Backup or ubercharged.
+					case 357:  //Half-Zatoichi.  Wliu:  Increased health gain to +50 and also removed the health cap.  As of 2.3.0, also nerfed the health gain to +5 if the soldier is being buffed by the Battalion's Backup or ubercharged and started using Chris's formula.
 					{
 						SetEntProp(weapon, Prop_Send, "m_bIsBloody", 1);
 						if(GetEntProp(attacker, Prop_Send, "m_iKillCountSinceLastDeploy") < 1)
