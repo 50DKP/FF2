@@ -5217,11 +5217,10 @@ public Action:Timer_CheckBuffRage(Handle:timer, any:userid)
 	}
 }
 
-stock ResetCaber(iWeapon)
+stock ResetCaber(caber)
 {
-	SetEntProp(iWeapon, Prop_Send, "m_bBroken", 0);
-
-	SetEntProp(iWeapon, Prop_Send, "m_iDetonated", 0);
+	SetEntProp(caber, Prop_Send, "m_bBroken", 0);
+	SetEntProp(caber, Prop_Send, "m_iDetonated", 0);
 }
 
 stock SpawnSmallHealthPackAt(client, ownerteam = 0)
