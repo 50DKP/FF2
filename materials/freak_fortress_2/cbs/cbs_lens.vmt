@@ -1,7 +1,7 @@
 "VertexLitGeneric"
 //"Modulate"
 {
-	"$basetexture" "freak_fortress_2\cbs\cbs_lens"
+	"$basetexture" "freak_fortress_2/cbs/cbs_lens"
 	"$envmap" "env_cubemap"
 	"$envmapcontrast" ".5"
 	"$envmaptint" " [1 .8 .4]"
