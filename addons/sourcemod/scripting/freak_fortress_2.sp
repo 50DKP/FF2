@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Dev 3"
+#define PLUGIN_VERSION "2.3.1 Dev 4"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -215,7 +215,7 @@ static const String:ff2versiondates[][] =
 	"July 24, 2013",
 	"July 24, 2013",
 	"July 24, 2013",
-	"July 26, 2013"
+	"July 28, 2013"
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -230,6 +230,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "3) Gave Ullapool Caber 4 extra uses (Wliu)");
 			DrawPanelText(panel, "4) Removed Sticky Jumper and Rocket Jumper from the weapon blacklist (Wliu)");
 			DrawPanelText(panel, "5) Miscellaneous translation updates (Wliu)");
+			DrawPanelText(panel, "6) Fixed some sound issues (Wliu)");
 		}
 		case 28:  //2.3.0
 		{
@@ -831,8 +832,8 @@ public AddToDownload()
 	}
 	KvGetString(Kv, "chances", ChancesString, 64);
 	CloseHandle(Kv);
-	AddFileToDownloadsTable("sound/saxton_hale/9000.wav");
-	PrecacheSound("saxton_hale/9000.wav",true);
+	AddFileToDownloadsTable("sound/freak_fortress_2/saxton_hale/9000.wav");
+	PrecacheSound("freak_fortress_2/saxton_hale/9000.wav",true);
 	PrecacheSound("vo/announcer_am_capincite01.wav", true);
 	PrecacheSound("vo/announcer_am_capincite03.wav", true);
 	PrecacheSound("weapons/barret_arm_zap.wav", true);
@@ -1820,9 +1821,9 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 
 public Action:Timer_NineThousand(Handle:timer)
 {
-	EmitSoundToAll("saxton_hale/9000.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 1.0, 100, _, _, NULL_VECTOR, false, 0.0);
-	EmitSoundToAllExcept(SOUNDEXCEPT_VOICE, "saxton_hale/9000.wav", _, SNDCHAN_VOICE, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 1.0, 100, _, _, NULL_VECTOR, false, 0.0);
-	EmitSoundToAllExcept(SOUNDEXCEPT_VOICE, "saxton_hale/9000.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 1.0, 100, _, _, NULL_VECTOR, false, 0.0);
+	EmitSoundToAll("freak_fortress_2/saxton_hale/9000.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 1.0, 100, _, _, NULL_VECTOR, false, 0.0);
+	EmitSoundToAllExcept(SOUNDEXCEPT_VOICE, "freak_fortress_2/saxton_hale/9000.wav", _, SNDCHAN_VOICE, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 1.0, 100, _, _, NULL_VECTOR, false, 0.0);
+	EmitSoundToAllExcept(SOUNDEXCEPT_VOICE, "freak_fortress_2/saxton_hale/9000.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 1.0, 100, _, _, NULL_VECTOR, false, 0.0);
 	return Plugin_Continue;
 }
 
