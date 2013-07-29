@@ -1,6 +1,6 @@
 "VertexlitGeneric"
 {
-	"$basetexture" "freak_fortress_2\gangplank\beard.vtf"
+	"$basetexture" "freak_fortress_2\gangplank\beard"
 	"$bumpmap" "models\player\items\all_class\xms_allclass_beard_normal"
 	"$detailscale" "5"
 	"$detailblendfactor" .01
