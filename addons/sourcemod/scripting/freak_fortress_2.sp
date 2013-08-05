@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Alpha 5"
+#define PLUGIN_VERSION "2.3.1 RC 1"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -238,6 +238,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) Miscellaneous translation updates (Wliu)");
 			DrawPanelText(panel, "6) Fixed some sound issues (Wliu)");
 			DrawPanelText(panel, "7) Nerfed Old Nick's rage (Wliu)");
+			DrawPanelText(panel, "8) Added Psycho (Lawd/Wliu)");
 		}
 		case 28:  //2.3.0
 		{
