@@ -2823,6 +2823,17 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
+//		case 211, 663, 796, 805, 885, 894, 903, 912, 961, 970: //Renamed/Strange, Festive, Silver Botkiller, Gold Botkiller, Rusty Botkiller, Bloody Botkiller, Carbonado Botkiller, Diamond Botkiller Mk.II, Silver Botkiller Mk.II, and Gold Botkiller Mk.II Mediguns
+//		{
+//			new Handle:hItemOverride=PrepareItemHandle(hItem, _, _, "10 ;  1.25 ;  178 ;  0.75");
+//				//10:  +25% faster charge rate
+//				//178:  +25% faster weapon switch
+//			if(hItemOverride != INVALID_HANDLE)
+//			{
+//				hItem=hItemOverride;
+//				return Plugin_Changed;
+//			}	
+//		}
 	}
 
 	if(TF2_GetPlayerClass(client) == TFClass_Soldier && (strncmp(classname, "tf_weapon_rocketlauncher", 24, false) == 0 || strncmp(classname, "tf_weapon_shotgun", 17, false) == 0))
@@ -3085,12 +3096,16 @@ public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check we
 				index=GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex");
 				switch (index)
 				{
-					case 29, 211, 663, 796, 805, 885, 894, 903, 912, 961, 970: //Medigun, Renamed/Strange, Festive, Silver Botkiller, Gold Botkiller, Rusty Botkiller, Bloody Botkiller, Carbonado Botkiller, Diamond Botkiller Mk.II, Silver Botkiller Mk.II, and Gold Botkiller Mk.II Mediguns
+					case 29: //Medigun
 					{
 						TF2_RemoveWeaponSlot(client, TFWeaponSlot_Secondary);
 						weapon=SpawnWeapon(client, "tf_weapon_medigun", index, 5, 10, "10 ;  1.25 ;  178 ;  0.75");
 							//10:  +25% faster charge rate
 							//178:  +25% faster weapon switch
+						SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.41);
+					}
+					case 211, 663, 796, 805, 885, 894, 903, 912, 961, 970: //Renamed/Strange, Festive, Silver Botkiller, Gold Botkiller, Rusty Botkiller, Bloody Botkiller, Carbonado Botkiller, Diamond Botkiller Mk.II, Silver Botkiller Mk.II, and Gold Botkiller Mk.II Mediguns
+					{
 						SetEntPropFloat(weapon, Prop_Send, "m_flChargeLevel", 0.41);
 					}
 					default: //Kritzkrieg, Quick-Fix, Vaccinator, and any other unrecognized mediguns
