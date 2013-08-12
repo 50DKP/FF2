@@ -4,7 +4,7 @@
 #include <sdktools>
 #include <sdkhooks>
 #include <tf2_stocks>
-#include <colors>
+#include <morecolors>
 #include <tf2items>
 #include <freak_fortress_2>
 #include <freak_fortress_2_subplugin>
@@ -481,6 +481,7 @@ public Action:Rage_Timer_NinjaAttacks(Handle:hTimer,Handle:data)
 		GetEntPropVector(target, Prop_Send, "m_vecOrigin", pos2); 
 		if (GetVectorDistance(pos,pos2)<1500)
 		{
+			SetEntProp(client, Prop_Send, "m_bDucked", 1);
 			SDKHooks_TakeDamage(target,client,client,900.0);
 			TeleportEntity(client, pos2, NULL_VECTOR, NULL_VECTOR);
 		}
