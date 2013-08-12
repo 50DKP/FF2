@@ -6990,7 +6990,7 @@ UseAbility(const String:ability_name[],const String:plugin_name[], index, slot, 
 				BossCharge[index][slot]+= 0.2;
 			}
 		}
-		else if(BossCharge[index][slot] > 0)
+		else if(BossCharge[index][slot] > 0.3)
 		{
 			new Float:ang[3];
 			GetClientEyeAngles(Boss[index], ang);
