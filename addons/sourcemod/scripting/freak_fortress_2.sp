@@ -3702,7 +3702,7 @@ public Action:ClientTimer(Handle:hTimer)
 						if(IsValidEdict(medigun))
 						{
 							SetHudTextParams(-1.0, 0.83, 0.15, 255, 255, 255, 255,0,0.2,0.0,0.1);
-							new charge=RoundFloat(GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel")*100);
+							new charge=RoundToFloor(GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel")*100);
 							ShowHudText(client, -1,"%T: %i","uber-charge", client,charge);
 							if(charge == 100 && !(FF2flags[client]&FF2FLAG_UBERREADY))
 							{
