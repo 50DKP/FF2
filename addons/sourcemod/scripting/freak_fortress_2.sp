@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 RC 1"
+#define PLUGIN_VERSION "2.3.1 Beta 3"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -182,6 +182,7 @@ static const String:ff2versiontitles[][]=
 	"2.3.0",
 	"2.3.0",
 	"2.3.1",
+	"2.3.1",
 	"2.3.1"
 };
 
@@ -216,29 +217,37 @@ static const String:ff2versiondates[][]=
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
-	"July 30, 2013",  //2.3.1
-	"July 30, 2013"  //2.3.1
+	"August 13, 2013",  //2.3.1
+	"August 13, 2013",  //2.3.1
+	"August 13, 2013"  //2.3.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
-		case 30:  //2.3.1
+		case 31:  //2.3.1
 		{
 			DrawPanelText(panel, "Now featuring the Checkers Update!");
 			DrawPanelText(panel, "1) Fixed some material issues on CBS, Gaben, Administrator, and Gangplank (Lawd)");
 			DrawPanelText(panel, "2) Added Robo-Robotic Soldier (Lawd)");
 			DrawPanelText(panel, "3) Gave Ullapool Caber 4 extra uses (Wliu)");
-			DrawPanelText(panel, "4) Removed Sticky Jumper and Rocket Jumper from the weapon blacklist (Wliu)");
+			DrawPanelText(panel, "4) Removed Sticky Jumper and Rocket Jumper from the weapon blacklist, but they have 75% less primary ammo (Wliu)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 29:  //2.3.1
+		case 30:  //2.3.1
 		{
 			DrawPanelText(panel, "5) Miscellaneous translation updates (Wliu)");
 			DrawPanelText(panel, "6) Fixed some sound issues (Wliu)");
 			DrawPanelText(panel, "7) Nerfed Old Nick's rage (Wliu)");
 			DrawPanelText(panel, "8) Added Psycho (Lawd/Wliu)");
+			DrawPanelText(panel, "9) Fixed Ninja Spy/Gaben getting stuck in walls while in slow-motion (Chris)");
+			DrawPanelText(panel, "See next page (press 2)");
+		}
+		case 29:  //2.3.1
+		{
+			DrawPanelText(panel, "10) Fixed HUD issues with medic uber percentage, and fixed medic calling out \"I AM FULLY CHARGED!\" when they weren't (Chris)");
+			DrawPanelText(panel, "11) Fixed Hale auto-jumping while you were looking up (Chris)");
 		}
 		case 28:  //2.3.0
 		{
@@ -2738,6 +2747,16 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				return Plugin_Changed;
 			}
 		}
+		case 237, 265:  //Rocket Jumper, Stickybomb Jumper.  Wliu:  Removed RJ and SJ from the weapon blacklist and give them 75% less primary ammo.
+		{
+			new Handle:hItemOverride=PrepareItemHandle(hItem, _, _, "3 ; 0.25");
+				//3:  75% less primary ammo (1 for RJ, 2 for SJ)
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem=hItemOverride;
+				return Plugin_Changed;
+			}
+		}
 		case 305:  //Crusader's Crossbow
 		{
 			new Handle:hItemOverride=PrepareItemHandle(hItem, _, _, "17 ; 0.1 ; 2 ; 2.5");
@@ -4866,7 +4885,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						new bool:warn=true;
 						if(detonations >= 0)
 						{
-							ResetCaber(GetPlayerWeaponSlot(client, TFWeaponSlot_Melee));
+							ResetCaber(GetPlayerWeaponSlot(attacker, TFWeaponSlot_Melee));
 							detonations--;
 							if(detonations > 0)
 							{

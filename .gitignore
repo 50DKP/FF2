@@ -27,7 +27,13 @@
 /addons/sourcemod/configs/sql-init-scripts/
 /addons/sourcemod/configs/freak_fortress_2/readme/
 /addons/sourcemod/configs/sourcebans/
-/addons/sourcemod/configs/dkp_*.cfg
+/addons/sourcemod/configs/a*.cfg
+/addons/sourcemod/configs/c*.cfg
+/addons/sourcemod/configs/da*.cfg
+/addons/sourcemod/configs/l*.cfg
+/addons/sourcemod/configs/m*.cfg
+/addons/sourcemod/configs/p*.cfg
+/addons/sourcemod/configs/s*.cfg
 /addons/sourcemod/configs/*.txt
 /addons/sourcemod/configs/*.ini
 #SOURCEMOD RANDOM STUFF
