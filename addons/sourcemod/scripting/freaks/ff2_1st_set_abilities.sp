@@ -420,6 +420,8 @@ Rage_UseSlomo(index,const String:ability_name[])
 	EmitSoundToAll("replay\\enterperformancemode.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, _, _, NULL_VECTOR, false, 0.0);
 }
 
+new oldtarget;
+
 public Action:Timer_StopSlomo(Handle:hTimer,any:index)
 {
 	SloMoTimer=INVALID_HANDLE;
@@ -429,6 +431,7 @@ public Action:Timer_StopSlomo(Handle:hTimer,any:index)
 		ff2flags[index]&=~FLAG_ONSLOMO;
 	EmitSoundToAll("replay\\exitperformancemode.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, _, _, NULL_VECTOR, false, 0.0);
 	EmitSoundToAll("replay\\exitperformancemode.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, _, _, NULL_VECTOR, false, 0.0);
+	oldtarget = 0;
 	return Plugin_Continue;
 }
 
@@ -479,11 +482,12 @@ public Action:Rage_Timer_NinjaAttacks(Handle:hTimer,Handle:data)
 		decl Float:pos[3], Float:pos2[3];
 		GetEntPropVector(client, Prop_Send, "m_vecOrigin", pos); 
 		GetEntPropVector(target, Prop_Send, "m_vecOrigin", pos2); 
-		if (GetVectorDistance(pos,pos2)<1500)
+		if (GetVectorDistance(pos,pos2)<1500 && target != oldtarget)
 		{
 			SetEntProp(client, Prop_Send, "m_bDucked", 1);
 			SDKHooks_TakeDamage(target,client,client,900.0);
 			TeleportEntity(client, pos2, NULL_VECTOR, NULL_VECTOR);
+			oldtarget = target;
 		}
 	}
 }
