@@ -20,8 +20,7 @@ new soundNumber = 0;
 public OnPluginStart()
 {
 
-	CreateConVar("sm_dispenser_music_version", PLUGIN_VERSION,
-		"The version of the Dispenser Music plugin.", FCVAR_SPONLY | FCVAR_PLUGIN | FCVAR_NOTIFY | FCVAR_REPLICATED);
+	CreateConVar("sm_dispenser_music_version", PLUGIN_VERSION, "The version of the Dispenser Music plugin.", FCVAR_SPONLY | FCVAR_PLUGIN | FCVAR_NOTIFY | FCVAR_REPLICATED);
 
 	RegAdminCmd("sm_dispenser_music_reload", Command_ReloadDispenserMusic, ADMFLAG_ROOT);
 
@@ -39,7 +38,6 @@ public OnConfigsExecuted()
 public Action:Command_ReloadDispenserMusic(client, args)
 {
 	SetupSounds();
-
 	return Plugin_Handled;
 }
 
@@ -55,20 +53,22 @@ SetupSounds()
 	IntToString(soundNumber, keyName, 7);
 	BuildPath(Path_SM, filePath, PLATFORM_MAX_PATH, "configs/dispenser_music.cfg");
 
-	if(!FileToKeyValues(soundKeyValue, filePath)) {
+	if(!FileToKeyValues(soundKeyValue, filePath))
+	{
 		SetFailState("Could not load file %s.", filePath);
 		return;
 	}
 
 	KvJumpToKey(soundKeyValue, "Music");
 
-	if(!KvGotoFirstSubKey(soundKeyValue)) {
+	if(!KvGotoFirstSubKey(soundKeyValue))
+	{
 		SetFailState("No songs in file %s.", filePath);
 		return;
 	}
 
-	do {
-
+	do
+	{
 		KvGetString(soundKeyValue, "file", value, PLATFORM_MAX_PATH);
 		soundArray[soundNumber] = value;
 		PrintToServer("Adding sound %s", value);
@@ -80,38 +80,36 @@ SetupSounds()
 
 		soundNumber++;
 		IntToString(soundNumber, keyName, 7);
-	} while(KvGotoNextKey(soundKeyValue))
+	}
+	while(KvGotoNextKey(soundKeyValue))
 
 	CloseHandle(soundKeyValue);
-
 }
+
 public Action:Event_player_builtobject(Handle:event, const String:name[], bool:dontBroadcast)
 {
 
 	if(GetEventInt(event, "object") != 0)
+	{
 		return Plugin_Continue;
+	}
 
 	new index = GetEventInt(event, "index");
 	new Float:position[3];
 	new sound = GetRandomInt(0, soundNumber - 1);
 	GetEntPropVector(index, Prop_Send, "m_vecOrigin", position);
 
-	EmitSoundToAll(soundArray[sound], index, SNDCHAN_USER_BASE, SNDLEVEL_NORMAL, SND_NOFLAGS,
-		SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, position);
-
+	EmitSoundToAll(soundArray[sound], index, SNDCHAN_USER_BASE, SNDLEVEL_NORMAL, SND_NOFLAGS, SNDVOL_NORMAL, SNDPITCH_NORMAL, -1, position);
 	return Plugin_Continue;
 }
 
 public Action:Event_object_destroyed(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new i = 0;
-
-	new String:buf[PLATFORM_MAX_PATH];
-
+	//new String:buf[PLATFORM_MAX_PATH];
 	for(i = 0; i < soundNumber; i++)
 	{
 		StopSound(GetEventInt(event, "index"), SNDCHAN_USER_BASE, soundArray[i]);
 	}
-
 	return Plugin_Continue;
 }

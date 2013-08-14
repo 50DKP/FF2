@@ -1,6 +1,7 @@
 /*
 CHANGELOG:
 ----------
+v1.6.1 (August 13, 2013 A.D.):  Changed versioning format to x.y.z, and added URL (Wliu).
 v1.6 (August 5, 2013 A.D.):  Added rage_cleaver for Psycho (Wliu).
 v1.5 (July 22, 2013 A.D.):  Added Gaben_Ban (workaround) for Gaben when he kills somebody (Wliu).
 v1.4 (June 28, 2013 A.D.):  Fixed Fempyro's airblast cost and ammo pickup again (Wliu).
@@ -23,17 +24,18 @@ Current bosses that use this:  Fempyro, Gaben (soon), Psycho
 #include <tf2_stocks>
 #include <tf2items>
 
-#define PLUGIN_VERSION	"1.6"
+#define PLUGIN_VERSION "1.6.1"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
 new bool:gabenBan=false;
 
-public Plugin:myinfo =
+public Plugin:myinfo=
 {
 	name = "50DKP-FF2 Plugin",
 	author = "Wliu",
 	description = "A FF2 plugin for the 50DKP community",
 	version = PLUGIN_VERSION,
+	url = "http://www.50dkp.com"
 };
 
 public OnPluginStart2()
