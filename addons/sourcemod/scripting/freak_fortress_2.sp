@@ -241,13 +241,14 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "6) Fixed some sound issues (Wliu)");
 			DrawPanelText(panel, "7) Nerfed Old Nick's rage (Wliu)");
 			DrawPanelText(panel, "8) Added Psycho (Lawd/Wliu)");
-			DrawPanelText(panel, "9) Fixed Ninja Spy/Gaben getting stuck in walls while in slow-motion (Chris)");
+			DrawPanelText(panel, "9) Made Ninja Spy/Gaben not get stuck in walls as often while in slow-motion (Chris)"); //I only helped it, Wliu. I don't want any false claims here. Still lacking a 100% fix.
 			DrawPanelText(panel, "See next page (press 2)");
 		}
 		case 29:  //2.3.1
 		{
 			DrawPanelText(panel, "10) Fixed HUD issues with medic uber percentage, and fixed medic calling out \"I AM FULLY CHARGED!\" when they weren't (Chris)");
 			DrawPanelText(panel, "11) Fixed Hale auto-jumping while you were looking up (Chris)");
+			DrawPanelText(panel, "12) Fixed strange mediguns not being strange (Chris)");
 		}
 		case 28:  //2.3.0
 		{
