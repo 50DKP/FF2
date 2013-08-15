@@ -181,7 +181,8 @@ Rage_CloneAttack(const String:ability_name[],index)
 
 	GetEntPropVector(Boss, Prop_Data, "m_vecOrigin", pos);
 	FF2_GetBossSpecial(index,bossname,32);
-	for(new maxkv=0; maxkv<8; maxkv++)
+	decl maxkv;
+	for(maxkv=0; maxkv<8; maxkv++)
 	{
 		if(!(BossKV[maxkv]=FF2_GetSpecialKV(maxkv)))
 		{
@@ -189,6 +190,7 @@ Rage_CloneAttack(const String:ability_name[],index)
 		}
 	}
 	for(new client=1; client<=MaxClients; client++)
+	{
 		if(IsValidEdict(client) && IsClientConnected(client) && !IsPlayerAlive(client) && GetClientTeam(client)>_:TFTeam_Spectator)
 		{
 			if(LastClass[client] == TFClass_Unknown)
@@ -234,6 +236,7 @@ Rage_CloneAttack(const String:ability_name[],index)
 			SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage_SaveMinion);
 			CreateTimer(2.0,Timer_Enable_Damage,GetClientUserId(client));
 		}
+	}
 	new ent=MaxClients+1;
 	decl owner;
 	while ((ent=FindEntityByClassname(ent, "tf_wearable")) != -1)
@@ -243,6 +246,7 @@ Rage_CloneAttack(const String:ability_name[],index)
 			AcceptEntityInput(ent, "kill");
 		}
 	}
+
 	while ((ent=FindEntityByClassname(ent, "tf_wearable_demoshield")) != -1)
 	{
 		if((owner=GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity"))<=MaxClients && owner>0 && GetClientTeam(owner)==BossTeam)
@@ -264,7 +268,7 @@ public Action:Timer_Enable_Damage(Handle:hTimer,any:userid)
 	return Plugin_Continue;
 }
 
-//ifSeeldier's minion was spawned in a pit.
+//If Seeldier's minion was spawned in a pit.
 public Action:OnTakeDamage_SaveMinion(client, &attacker, &inflictor, &Float:damage, &damagetype, &weapon, Float:damageForce[3], Float:damagePosition[3])
 {
 	if(attacker>MaxClients)
@@ -272,6 +276,7 @@ public Action:OnTakeDamage_SaveMinion(client, &attacker, &inflictor, &Float:dama
 		decl String:s[64];
 		if(GetEdictClassname(attacker, s, 64) && !strcmp(s, "trigger_hurt", false))
 		{
+			new pingas;
 			decl target,Float:pos[3];
 			new bool:RedAlivePlayers;
 			for(new i=1; i<=MaxClients; i++)
@@ -285,7 +290,7 @@ public Action:OnTakeDamage_SaveMinion(client, &attacker, &inflictor, &Float:dama
 
 			do
 			{
-				new pingas++;
+				pingas++;
 				target=GetRandomInt(1,MaxClients);
 				if(pingas==100)
 				{
@@ -329,7 +334,7 @@ public Action:Rage_Timer_Demopan_Trade_Spam(Handle:hTimer,any:count)
 		Format(s,128,"r_screenoverlay \"freak_fortress_2/demopan/trade_%i\"",count);
 		EmitSoundToAll("ui\\notification_alert.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, _, _, NULL_VECTOR, false, 0.0);
 		SetCommandFlags("r_screenoverlay", GetCommandFlags("r_screenoverlay") & (~FCVAR_CHEAT));
-		for(i=1; i<=MaxClients; i++)
+		for(new i=1; i<=MaxClients; i++)
 		{
 			if(IsClientInGame(i) && IsPlayerAlive(i) && GetClientTeam(i)!=BossTeam)
 			{

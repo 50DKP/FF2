@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Beta 3"
+#define PLUGIN_VERSION "2.3.1 Beta 4"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -217,9 +217,9 @@ static const String:ff2versiondates[][]=
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
-	"August 13, 2013",  //2.3.1
-	"August 13, 2013",  //2.3.1
-	"August 13, 2013"  //2.3.1
+	"August 14, 2013",  //2.3.1
+	"August 14, 2013",  //2.3.1
+	"August 14, 2013"  //2.3.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -241,7 +241,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "6) Fixed some sound issues (Wliu)");
 			DrawPanelText(panel, "7) Nerfed Old Nick's rage (Wliu)");
 			DrawPanelText(panel, "8) Added Psycho (Lawd/Wliu)");
-			DrawPanelText(panel, "9) Fixed Ninja Spy/Gaben getting stuck in the ceiling while in slow-motion (Chris)"); //This SHOULD be correct now.
+			DrawPanelText(panel, "9) Fixed Ninja Spy/Gaben getting stuck in the ceiling while in slow-motion (Chris)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
 		case 29:  //2.3.1
