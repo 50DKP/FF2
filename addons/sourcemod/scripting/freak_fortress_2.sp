@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Beta 4"
+#define PLUGIN_VERSION "2.3.1 Beta 5"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -217,9 +217,9 @@ static const String:ff2versiondates[][]=
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
-	"August 14, 2013",  //2.3.1
-	"August 14, 2013",  //2.3.1
-	"August 14, 2013"  //2.3.1
+	"August 16, 2013",  //2.3.1
+	"August 16, 2013",  //2.3.1
+	"August 16, 2013"  //2.3.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -228,7 +228,7 @@ stock FindVersionData(Handle:panel, versionindex)
 	{
 		case 31:  //2.3.1
 		{
-			DrawPanelText(panel, "Now featuring the Checkers Update!");
+			DrawPanelText(panel, "Now featuring the OHMYGODYESTHEROCKETJUMPER Update!");
 			DrawPanelText(panel, "1) Fixed some material issues on CBS, Gaben, Administrator, and Gangplank (Lawd)");
 			DrawPanelText(panel, "2) Added Robo-Robotic Soldier (Lawd)");
 			DrawPanelText(panel, "3) Gave Ullapool Caber 4 extra uses (Wliu)");
@@ -249,6 +249,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "10) Fixed HUD issues with medic uber percentage, and fixed medic calling out \"I AM FULLY CHARGED!\" when they weren't (Chris)");
 			DrawPanelText(panel, "11) Fixed Hale auto-jumping while you were looking up (Chris)");
 			DrawPanelText(panel, "12) Fixed strange mediguns not being strange (Chris)");
+			DrawPanelText(panel, "13) Made Tomislav spin up immediately (Wliu)");
 		}
 		case 28:  //2.3.0
 		{
@@ -2787,6 +2788,18 @@ public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefiniti
 				//178:  +60% faster weapon switch time
 				//2:  +10% damage
 				//3:  -50% clip size
+			if(hItemOverride != INVALID_HANDLE)
+			{
+				hItem=hItemOverride;
+				return Plugin_Changed;
+			}
+		}
+		case 424:  //Tomislav.  Wliu:  Make Tomislav spin up 100% faster
+		{
+			new Handle:hItemOverride=PrepareItemHandle(hItem, _, _, "87 ; 1.0 ; 238 ; 1 ; 5 ; 1.2", true);
+				//87:  +100% spin-up time
+				//238:  Official Tomislav attribute (no spin-up sound)
+				//5:  Official Tomislav attribute (20% slower firing speed)
 			if(hItemOverride != INVALID_HANDLE)
 			{
 				hItem=hItemOverride;
