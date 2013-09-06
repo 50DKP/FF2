@@ -10,11 +10,12 @@
 #include <freak_fortress_2_subplugin>
 
 #define ME 2048
+#define CBS_MAX_ARROWS 9
 
 public Plugin:myinfo=
 {
 	name="Freak Fortress 2: Abilities of 1st set",
-	author="RainBolt Dash",
+	author="RainBolt Dash, Powerlord, ChrisMiuchiz, Wliu, Friagram",
 };
 
 #define FLAG_ONSLOMO			(1<<0)
@@ -39,7 +40,6 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	OnHaleRage=CreateGlobalForward("VSH_OnDoRage", ET_Hook, Param_FloatByRef);	
 	return APLRes_Success;
 }
-
 
 public OnPluginStart2()
 {
@@ -165,101 +165,140 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	return Plugin_Continue;
 }	
 
-
-//Seeldier's clone attack rage
+//Seeldier's clone attack rage, courtesy of Friagram
 Rage_CloneAttack(const String:ability_name[],index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
-	new bool:changemodel=bool:FF2_GetAbilityArgument(index,this_plugin_name,ability_name,1);
-	new weaponmode=FF2_GetAbilityArgument(index,this_plugin_name,ability_name,2);
 	decl weapon;
-	new Handle:BossKV[8];
 	decl Float:pos[3];
 	decl Float:vel[3];
 	decl String:s[PLATFORM_MAX_PATH];
-	decl String:bossname[32];
+	new String:msg[128];
+	decl clientteam;
 
 	GetEntPropVector(Boss, Prop_Data, "m_vecOrigin", pos);
-	FF2_GetBossSpecial(index,bossname,32);
-	decl maxkv;
-	for(maxkv=0; maxkv<8; maxkv++)
+	new class = FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 1, 1);						// class
+	FF2_GetAbilityArgumentString(index, this_plugin_name, ability_name, 2, s, PLATFORM_MAX_PATH);			// modelpath
+	FF2_GetAbilityArgumentString(index, this_plugin_name, ability_name, 3, msg, 128);						// message
+	new Float:ratio = FF2_GetAbilityArgumentFloat(index, this_plugin_name, ability_name, 4, 0.5);			// Ratio
+	new String:weaponclassname[64] = "tf_weapon_club";
+	FF2_GetAbilityArgumentString(index, this_plugin_name, ability_name, 5, weaponclassname, 64);			// classname
+	new weaponindex = FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 6, 264);				// index
+	new String:weaponattribs[128];
+	FF2_GetAbilityArgumentString(index, this_plugin_name, ability_name, 7, weaponattribs, 128);			// attribs
+	if(ratio < 0.0 || ratio > 1.0)
 	{
-		if(!(BossKV[maxkv]=FF2_GetSpecialKV(maxkv)))
-		{
-			break;
-		}
+		ratio = 1.0;
 	}
-	for(new client=1; client<=MaxClients; client++)
+	PrecacheModel(s);
+	new alive;
+	new dead;
+	new Handle:hPlayers = CreateArray();
+	for(new client=1;client<=MaxClients;client++)
 	{
-		if(IsValidEdict(client) && IsClientConnected(client) && !IsPlayerAlive(client) && GetClientTeam(client)>_:TFTeam_Spectator)
+		if (IsClientInGame(client))
 		{
-			if(LastClass[client] == TFClass_Unknown)
+			clientteam = GetClientTeam(client);
+			if (clientteam > 1 && clientteam != BossTeam)
 			{
-				LastClass[client]=TF2_GetPlayerClass(client);
-			}
-			FF2_SetFF2flags(client,FF2_GetFF2flags(client)|FF2FLAG_ALLOWSPAWNINBOSSTEAM);
-			ChangeClientTeam(client, BossTeam);
-			TF2_RespawnPlayer(client);
-			CloneOwnerIndex[client]=index;
-			if(changemodel)
-			{
-				new see=GetRandomInt(0,maxkv-1);
-				TF2_SetPlayerClass(client,TFClassType:KvGetNum(BossKV[see], "class",0));
-				KvGetString(BossKV[see], "model",s, PLATFORM_MAX_PATH);
-				SetVariantString(s);
-				AcceptEntityInput(client, "SetCustomModel");
-				SetEntProp(client, Prop_Send, "m_bUseClassAnimations",1);
-			}
-			switch (weaponmode)
-			{
-				case 0:
+				if(IsPlayerAlive(client))
 				{
-					TF2_RemoveAllWeapons(client);
+					alive++;
 				}
-				case 1:
+				else
 				{
-					TF2_RemoveAllWeapons(client);
-					weapon=SpawnWeapon(client,"tf_weapon_bottle",191,34,0,"68 ; -1");  //ChrisMiuchiz:  Disable minions' capture rate.
-					if(IsValidEdict(weapon))
-					{
-						SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
-						SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", -1);
-					}
+					PushArrayCell(hPlayers, client);
+					dead++;
 				}
 			}
-			vel[0]=GetRandomFloat(300.0,500.0)*(GetRandomInt(1,0)?1:-1);
-			vel[1]=GetRandomFloat(300.0,500.0)*(GetRandomInt(1,0)?1:-1);
-			vel[2]=GetRandomFloat(300.0,500.0);
-			TeleportEntity(client, pos, NULL_VECTOR, vel);
-			PrintHintText(client,"%t","seeldier_rage_message",bossname);
-			SetEntProp(client, Prop_Data, "m_takedamage", 0);
-			SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage_SaveMinion);
-			CreateTimer(2.0,Timer_Enable_Damage,GetClientUserId(client));
-		}
-	}
-	new ent=MaxClients+1;
-	decl owner;
-	while ((ent=FindEntityByClassname(ent, "tf_wearable")) != -1)
-	{
-		if((owner=GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity"))<=MaxClients && owner>0 && GetClientTeam(owner)==BossTeam)
-		{
-			AcceptEntityInput(ent, "kill");
 		}
 	}
 
-	while ((ent=FindEntityByClassname(ent, "tf_wearable_demoshield")) != -1)
+	decl idx, client, userid;
+	new maxspawn = RoundToCeil(alive * ratio);
+	for(new i; i<dead && i<maxspawn; i++)
 	{
-		if((owner=GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity"))<=MaxClients && owner>0 && GetClientTeam(owner)==BossTeam)
+		idx = GetRandomInt(0, GetArraySize(hPlayers) -1);
+		client = GetArrayCell(hPlayers, idx);
+		RemoveFromArray(hPlayers, idx);
+		if (LastClass[client] == TFClass_Unknown)
+		{
+			LastClass[client] = TF2_GetPlayerClass(client);
+		}
+		FF2_SetFF2flags(client,FF2_GetFF2flags(client)|FF2FLAG_ALLOWSPAWNINBOSSTEAM);
+		ChangeClientTeam(client, BossTeam);
+		TF2_SetPlayerClass(client,TFClassType:class);
+		TF2_RespawnPlayer(client);
+		CloneOwnerIndex[client]=index;
+
+		TF2_RemoveAllWeapons(client);
+		weapon=SpawnWeapon(client,weaponclassname,weaponindex,101,5,weaponattribs);   //stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
+		if (IsValidEdict(weapon))
+		{
+			SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
+			SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", -1);
+			SetEntPropFloat(weapon, Prop_Send, "m_flModelScale", 0.001);	// because i want to fit in.
+		}
+		SetVariantString(s);
+		AcceptEntityInput(client, "SetCustomModel");
+		SetEntProp(client, Prop_Send, "m_bUseClassAnimations", 1);
+
+		vel[0]=GetRandomFloat(300.0,500.0)*(GetRandomInt(1,0)?1:-1);
+		vel[1]=GetRandomFloat(300.0,500.0)*(GetRandomInt(1,0)?1:-1);
+		vel[2]=GetRandomFloat(300.0,500.0);
+		TeleportEntity(client, pos, NULL_VECTOR, vel);
+		if(strlen(msg))
+		{
+			PrintHintText(client, msg);
+		}
+
+		userid = GetClientUserId(client);
+		SetEntProp(client, Prop_Data, "m_takedamage", 0);
+		SDKHook(client, SDKHook_OnTakeDamage, OnTakeDamage_SaveMinion);
+		CreateTimer(4.0,Timer_Enable_Damage,userid);
+
+		new Handle:data;
+		CreateDataTimer(0.5, Timer_EquipModel, data, TIMER_FLAG_NO_MAPCHANGE);		// set the model again, just incase?
+		WritePackCell(data, userid);
+		WritePackString(data, s);
+
+		new Handle:data2;
+		CreateDataTimer(1.5, Timer_EquipModel, data2, TIMER_FLAG_NO_MAPCHANGE);		// set the model again, just incase?
+		WritePackCell(data2, userid);
+		WritePackString(data2, s);
+	}
+	CloseHandle(hPlayers);
+
+	new ent = MaxClients+1;
+	decl owner;
+	while (((ent = FindEntityByClassname(ent, "tf_wearable")) != -1) || ((ent = FindEntityByClassname(ent, "tf_wearable_demoshield")) != -1) || (ent = FindEntityByClassname(ent, "tf_powerup_bottle")) != -1)
+	{
+		if ((owner=GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity"))<=MaxClients && owner>0 && GetClientTeam(owner)==BossTeam)
 		{
 			AcceptEntityInput(ent, "kill");
 		}
 	}
 }
 
+public Action:Timer_EquipModel(Handle:timer, any:pack)
+{
+	ResetPack(pack);
+	new client = GetClientOfUserId(ReadPackCell(pack));
+	if(client && IsClientInGame(client) && IsPlayerAlive(client) && GetClientTeam(client) == BossTeam)
+	{
+		decl String:s[PLATFORM_MAX_PATH];
+		ReadPackString(pack, s, PLATFORM_MAX_PATH);
+		SetVariantString(s);
+		AcceptEntityInput(client, "SetCustomModel");
+		SetEntProp(client, Prop_Send, "m_bUseClassAnimations", 1);
+	}
+}
+
+//Courtesy of Friagram
 public Action:Timer_Enable_Damage(Handle:hTimer,any:userid)
 {
 	new client=GetClientOfUserId(userid);
-	if(client>0)
+	if (client>0)
 	{
 		SetEntProp(client, Prop_Data, "m_takedamage", 2);
 		FF2_SetFF2flags(client,FF2_GetFF2flags(client) & ~FF2FLAG_ALLOWSPAWNINBOSSTEAM);
@@ -359,8 +398,19 @@ Rage_UseBow(index)
 {
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Primary);
-	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_compound_bow", 56, 100, 5, "6 ; 0.5 ; 37 ; 0.0"));
-	SetAmmo(Boss, TFWeaponSlot_Primary,9);
+	new weapon = SpawnWeapon(Boss, "tf_weapon_compound_bow", 1005, 100, 5, "6 ; 0.5 ; 37 ; 0.0 ; 280 ; 19");
+	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", weapon);
+
+	new TFTeam:team = (FF2_GetBossTeam() == _:TFTeam_Blue ? TFTeam_Red : TFTeam_Blue);
+	new RedAlivePlayers = 0;
+	for (new i = 1; i <= MaxClients; ++i)
+	{
+		if (IsClientInGame(i) && TFTeam:GetClientTeam(i) == team && IsPlayerAlive(i))
+		{
+			++RedAlivePlayers;
+		}
+	}
+	SetAmmo(Boss, weapon, ((RedAlivePlayers >= CBS_MAX_ARROWS) ? CBS_MAX_ARROWS : RedAlivePlayers));
 }
 
 
@@ -783,14 +833,16 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 	return entity;
 }
 
-stock SetAmmo(client, slot, ammo)
+stock SetAmmo(client, weapon, ammo, clip=0)
 {
-	new weapon=GetPlayerWeaponSlot(client, slot);
 	if(IsValidEntity(weapon))
 	{
-		new iOffset=GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
-		new iAmmoTable=FindSendPropInfo("CTFPlayer", "m_iAmmo");
-		SetEntData(client, iAmmoTable+iOffset, ammo, 4, true);
+		if (clip)
+		{
+			SetEntProp(weapon, Prop_Send, "m_iClip1", clip);
+		}
+		new iOffset = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1);
+		SetEntProp(client, Prop_Send, "m_iAmmo", ammo, 4, iOffset);
 	}
 }
 

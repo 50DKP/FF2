@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Beta 5"
+#define PLUGIN_VERSION "2.3.1 Beta 6"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -217,9 +217,9 @@ static const String:ff2versiondates[][]=
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
 	"July 24, 2013",  //2.3.0
-	"August 16, 2013",  //2.3.1
-	"August 16, 2013",  //2.3.1
-	"August 16, 2013"  //2.3.1
+	"September 6, 2013",  //2.3.1
+	"September 6, 2013",  //2.3.1
+	"September 6, 2013"  //2.3.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -1031,6 +1031,60 @@ public LoadCharacter(const String:character[])
 		}
 	}
 	Specials++;
+}
+
+public PrecacheCharacter(characterIndex)
+{
+	decl String:s[PLATFORM_MAX_PATH];
+	decl String:s2[PLATFORM_MAX_PATH];
+	decl String:s3[64];
+
+	KvRewind(BossKV[characterIndex]);
+	KvGotoFirstSubKey(BossKV[characterIndex]);
+
+	while (KvGotoNextKey(BossKV[characterIndex]))
+	{	
+		KvGetSectionName(BossKV[characterIndex], s3, 64);
+		if (!strcmp(s3,"mod_precache"))
+		{	
+			for(new i = 1; ; i++)
+			{
+				IntToString(i,s2,4);
+				KvGetString(BossKV[characterIndex], s2, s, PLATFORM_MAX_PATH);
+				if (!s[0])
+				{
+					break;
+				}
+				PrecacheModel(s);
+			}
+		}
+		else if (!strcmp(s3, "sound_bgm"))
+		{
+			for (new i = 1; ; i++)
+			{
+				Format(s2, sizeof(s2), "%s%d", "path", i);
+				KvGetString(BossKV[characterIndex], s2, s, PLATFORM_MAX_PATH);
+				if (!s[0])
+				{
+					break;
+				}
+				PrecacheSound(s);
+			}
+		}
+		else if (!StrContains(s3,"sound_") || !strcmp(s3,"catch_phrase"))
+		{	
+			for(new i = 1; ; i++)
+			{
+				IntToString(i,s2,4);
+				KvGetString(BossKV[characterIndex], s2, s, PLATFORM_MAX_PATH);
+				if (!s[0])
+				{
+					break;
+				}
+				PrecacheSound(s);
+			}
+		}
+	}
 }
 
 public CvarChange(Handle:convar, const String:oldValue[], const String:newValue[])
@@ -2444,16 +2498,23 @@ EquipBoss(index)
 	TF2_RemoveAllWeapons(Boss[index]);
 	decl String:s[64];
 	decl String:s2[128];
-	for(new j=1; ; j++)
+	for(new j=1;;j++)
 	{
 		KvRewind(BossKV[Special[index]]);
-		Format(s,10,"weapon%i",j);
-		if(KvJumpToKey(BossKV[Special[index]],s))
+		Format(s, 10, "weapon%i", j);
+		if(KvJumpToKey(BossKV[Special[index]], s))
 		{
-			KvGetString(BossKV[Special[index]], "name",s, 64);
-			KvGetString(BossKV[Special[index]], "attributes",s2, 128);
-			Format(s2,128,"68 ; 2 ; 2 ; 3.0 ; 259 ; 1 ; 269 ; 1 ; %s",s2);
-			new BossWeapon=SpawnWeapon(Boss[index],s,KvGetNum(BossKV[Special[index]], "index"),101,5,s2);
+			KvGetString(BossKV[Special[index]], "name", s, 64);
+			KvGetString(BossKV[Special[index]], "attributes", s2, 128);
+			if (s2[0]!='\0')
+			{
+				Format(s2, 128, "68 ; 2 ; 2 ; 3.0 ; 259 ; 1 ; 269 ; 1 ; %s", s2);
+			}
+			else
+			{
+				s2="68 ; 2.0 ; 2 ; 3.1 ; 259 ; 1.0";
+			}
+			new BossWeapon=SpawnWeapon(Boss[index], s, KvGetNum(BossKV[Special[index]], "index"), 101, 5, s2);
 			if(!KvGetNum(BossKV[Special[index]], "show",0))
 			{
 				SetEntProp(BossWeapon, Prop_Send, "m_iWorldModelIndex", -1);
@@ -2923,7 +2984,11 @@ stock Handle:PrepareItemHandle(Handle:hItem, String:name[]="", index=-1, const S
 	static Handle:hWeapon;
 	new addattribs=0;
 	new String:weaponAttribsArray[32][32];
-	new attribCount=ExplodeString(att, " ; ", weaponAttribsArray, 32, 32);
+	new attribCount = ExplodeString(att, ";", weaponAttribsArray, 32, 32);
+	if (attribCount % 2 != 0)
+	{
+		--attribCount;
+	}
 
 	new flags=OVERRIDE_ATTRIBUTES;
 	if(!dontpreserve)
@@ -2985,8 +3050,15 @@ stock Handle:PrepareItemHandle(Handle:hItem, String:name[]="", index=-1, const S
 	{
 		TF2Items_SetNumAttributes(hWeapon, (attribCount/2));
 		new i2=0;
-		for(new i=0; i < attribCount; i += 2)
+		for(new i=0; i<attribCount && i2<16; i+=2)
 		{
+			new attrib = StringToInt(weaponAttribsArray[i]);
+			if (attrib == 0)
+			{
+				LogError("Bad weapon attribute passed: %s ; %s", weaponAttribsArray[i], weaponAttribsArray[i+1]);
+				CloseHandle(hWeapon);
+				return INVALID_HANDLE;
+			}
 			TF2Items_SetAttribute(hWeapon, i2, StringToInt(weaponAttribsArray[i]), StringToFloat(weaponAttribsArray[i+1]));
 			i2++;
 		}
@@ -4895,25 +4967,25 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					}
 					case 307:  //Ullapool Caber
 					{
-						static detonations=5;
-						new bool:warn=true;
+						new detonations=5;
+						//new bool:warn=true;
 						if(detonations >= 0)
 						{
 							ResetCaber(GetPlayerWeaponSlot(attacker, TFWeaponSlot_Melee));
 							detonations--;
 							if(detonations > 0)
 							{
-								CPrintToChat(attacker,"{olive}[FF2]{default} You have {red}%t{default} cabers left",detonations);
+								CPrintToChat(attacker, "{olive}[FF2]{default} You have {red}%t{default} cabers left", detonations);
 							}
-							else
+							/*else
 							{
 								warn=true;
-							}
+							}*/
 						}
-						else if(warn)
+						else //if(warn)
 						{
-							CPrintToChat(attacker,"{olive}[FF2]{default} {red}NO MORE CABERS LEFT!{default}");
-							warn=false;
+							CPrintToChat(attacker, "{olive}[FF2]{default} {red}NO MORE CABERS LEFT!{default}");
+							//warn=false;
 						}
 					}
 					case 317:  //Candycane
@@ -6024,15 +6096,26 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 	TF2Items_SetLevel(hWeapon, level);
 	TF2Items_SetQuality(hWeapon, qual);
 	new String:atts[32][32];
-	new count=ExplodeString(att, " ; ", atts, 32, 32);
-	if(count > 0)
+	new count=ExplodeString(att, ";", atts, 32, 32);
+	if (count%2!=0)
+	{
+		--count;
+	}
+
+	if(count>0)
 	{
 		TF2Items_SetNumAttributes(hWeapon, count/2);
 		new i2=0;
-		for(new i=0; i < count; i+= 2)
+		for(new i=0; i<count; i+=2)
 		{
-			TF2Items_SetAttribute(hWeapon, i2, StringToInt(atts[i]), StringToFloat(atts[i+1]));
-			i2++;
+			new attrib=StringToInt(atts[i]);
+			if (attrib==0)
+			{
+				LogError("Bad weapon attribute passed: %s ; %s", atts[i], atts[i+1]);
+				CloseHandle(hWeapon);
+				return -1;
+			}
+			TF2Items_SetAttribute(hWeapon, i2, attrib, StringToFloat(atts[i+1]));
 		}
 	}
 	else

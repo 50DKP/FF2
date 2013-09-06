@@ -24,6 +24,7 @@ new Handle:jumpHUD;
 
 new bool:bEnableSuperDuperJump[MB];
 new Float:UberRageCount[MB];
+new Float:charge;
 new BossTeam=_:TFTeam_Blue;
 
 new Handle:cvarOldJump = INVALID_HANDLE;
@@ -42,6 +43,7 @@ public OnPluginStart2()
 	jumpHUD = CreateHudSynchronizer();
 	HookEvent("object_deflected", event_deflect, EventHookMode_Pre);
 	HookEvent("teamplay_round_start", event_round_start);
+	HookEvent("teamplay_round_end", event_round_end);
 	HookEvent("player_death", event_player_death);
 	LoadTranslations("freak_fortress_2.phrases");
 	
@@ -57,6 +59,17 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	}
 	CreateTimer(0.3,Timer_GetBossTeam);
 	CreateTimer(9.11, StartBossTimer);
+	return Plugin_Continue;
+}
+
+public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadcast)
+{
+	for(new i=0;i<MB;i++)
+	{
+		OnHaleJump=INVALID_HANDLE;
+		OnHaleWeighdown=INVALID_HANDLE;
+		charge=100.0;
+	}
 	return Plugin_Continue;
 }
 
@@ -244,7 +257,7 @@ public Action:EnableSG(Handle:hTimer,any:iid)
 
 Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 {
-	new Float:charge=FF2_GetBossCharge(index,slot);
+	charge=FF2_GetBossCharge(index,slot);
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	new Float:multiplier=FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,3,1.0);
 	switch (action)
@@ -350,7 +363,7 @@ Charge_OnBraveJump(const String:ability_name[],index,slot,action)
 
 Charge_OnTeleporter(const String:ability_name[],index,slot,action)
 {
-	new Float:charge=FF2_GetBossCharge(index,slot);
+	charge=FF2_GetBossCharge(index,slot);
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
 	switch (action)
 	{
@@ -493,7 +506,7 @@ Charge_OnWeightDown(index,slot)
 	{
 		return;
 	}
-	new Float:charge=FF2_GetBossCharge(index,slot)+0.2;
+	charge=FF2_GetBossCharge(index,slot)+0.2;
 	if (!(GetEntityFlags(Boss) & FL_ONGROUND))
 	{
 		if (charge >= 4.0)
