@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.3.1 Beta 6"
+#define PLUGIN_VERSION "2.3.1"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -229,7 +229,7 @@ stock FindVersionData(Handle:panel, versionindex)
 		case 31:  //2.3.1
 		{
 			DrawPanelText(panel, "Now featuring the OHMYGODYESTHEROCKETJUMPER Update!");
-			DrawPanelText(panel, "1) Fixed some material issues on CBS, Gaben, Administrator, and Gangplank (Lawd)");
+			DrawPanelText(panel, "1) Fixed some material issues on CBS and Gaben (Lawd)");
 			DrawPanelText(panel, "2) Added Robo-Robotic Soldier (Lawd)");
 			DrawPanelText(panel, "3) Gave Ullapool Caber 4 extra uses (Wliu)");
 			DrawPanelText(panel, "4) Removed Sticky Jumper and Rocket Jumper from the weapon blacklist, but they have 75% less primary ammo (Wliu)");
@@ -240,7 +240,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) Miscellaneous translation updates (Wliu)");
 			DrawPanelText(panel, "6) Fixed some sound issues (Wliu)");
 			DrawPanelText(panel, "7) Nerfed Old Nick's rage (Wliu)");
-			DrawPanelText(panel, "8) Added Psycho (Lawd/Wliu)");
+			DrawPanelText(panel, "8) Added Psycho-might be broken (Lawd/Wliu)");
 			DrawPanelText(panel, "9) Fixed Ninja Spy/Gaben getting stuck in the ceiling while in slow-motion (Chris)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
@@ -250,6 +250,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "11) Fixed Hale auto-jumping while you were looking up (Chris)");
 			DrawPanelText(panel, "12) Fixed strange mediguns not being strange (Chris)");
 			DrawPanelText(panel, "13) Made Tomislav spin up immediately (Wliu)");
+			DrawPanelText(panel, "14) [Dev] Updated to recent TF2Items/Official FF2 changes (Wliu)");
 		}
 		case 28:  //2.3.0
 		{
