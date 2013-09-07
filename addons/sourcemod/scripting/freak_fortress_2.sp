@@ -4967,25 +4967,19 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					}
 					case 307:  //Ullapool Caber
 					{
-						new detonations=5;
-						//new bool:warn=true;
-						if(detonations >= 0)
+						static Float:detonations=5.0;
+						if(detonations > 0)
 						{
-							ResetCaber(GetPlayerWeaponSlot(attacker, TFWeaponSlot_Melee));
-							detonations--;
-							if(detonations > 0)
+							detonations = detonations - 0.5;
+							if(detonations == RoundToFloor(detonations))
 							{
-								CPrintToChat(attacker, "{olive}[FF2]{default} You have {red}%t{default} cabers left", detonations);
+								CPrintToChat(attacker,"{olive}[FF2]{default} You have {red}%i{default} cabers left",RoundFloat(detonations));
+								ResetCaber(GetPlayerWeaponSlot(attacker, TFWeaponSlot_Melee));
 							}
-							/*else
-							{
-								warn=true;
-							}*/
 						}
-						else //if(warn)
+						else
 						{
-							CPrintToChat(attacker, "{olive}[FF2]{default} {red}NO MORE CABERS LEFT!{default}");
-							//warn=false;
+							CPrintToChat(attacker,"{olive}[FF2]{default} {red}NO MORE CABERS LEFT!{default}");
 						}
 					}
 					case 317:  //Candycane
