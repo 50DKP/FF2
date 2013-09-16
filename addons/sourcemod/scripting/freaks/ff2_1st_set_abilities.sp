@@ -294,11 +294,10 @@ public Action:Timer_EquipModel(Handle:timer, any:pack)
 	}
 }
 
-//Courtesy of Friagram
 public Action:Timer_Enable_Damage(Handle:hTimer,any:userid)
 {
 	new client=GetClientOfUserId(userid);
-	if (client>0)
+	if(client>0)
 	{
 		SetEntProp(client, Prop_Data, "m_takedamage", 2);
 		FF2_SetFF2flags(client,FF2_GetFF2flags(client) & ~FF2FLAG_ALLOWSPAWNINBOSSTEAM);
@@ -833,15 +832,11 @@ stock SpawnWeapon(client,String:name[],index,level,qual,String:att[])
 	return entity;
 }
 
-stock SetAmmo(client, weapon, ammo, clip=0)
+stock SetAmmo(client, weapon, ammo)
 {
 	if(IsValidEntity(weapon))
 	{
-		if (clip)
-		{
-			SetEntProp(weapon, Prop_Send, "m_iClip1", clip);
-		}
-		new iOffset = GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1);
+		new iOffset=GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
 		SetEntProp(client, Prop_Send, "m_iAmmo", ammo, 4, iOffset);
 	}
 }

@@ -73,25 +73,20 @@ Rage_NewWeapon(index, const String:ability_name[])
 	TF2_RemoveWeaponSlot(Boss, slot);
 	new weapon=SpawnWeapon(Boss, classname, FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 2, 56), 100, 5, attributes);
 	if(FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 6))
-	{
 		SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", weapon);
-	}
-
 	new ammo=FF2_GetAbilityArgument(index,this_plugin_name,ability_name, 5);
-	new clip=FF2_GetAbilityArgument(index,this_plugin_name,ability_name, 7);
 	if(ammo>0)
-	{
-		SetAmmo(Boss, weapon, ammo, clip);
-	}
+		SetAmmo(Boss, weapon, ammo);
 }
 
-stock SetAmmo(client, weapon, ammo, clip=0)
+stock SetAmmo(client, weapon, ammo)
 {
 	if (IsValidEntity(weapon))
 	{
-		SetEntProp(weapon, Prop_Send, "m_iClip1", clip);
-		new iOffset=GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1);
-		SetEntProp(client, Prop_Send, "m_iAmmo", ammo, 4, iOffset);
+		SetEntProp(weapon, Prop_Send, "m_iClip1", 0);
+		new iOffset=GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
+		new iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
+		SetEntData(client, iAmmoTable+iOffset, ammo, 4, true);
 	}
 }
 
@@ -103,37 +98,21 @@ stock SpawnWeapon(client, String:name[], index, level, qual, String:att[])
 	TF2Items_SetLevel(hWeapon, level);
 	TF2Items_SetQuality(hWeapon, qual);
 	new String:atts[32][32];
-	new count = ExplodeString(att, ";", atts, 32, 32);
-	if (count%2!=0)
-	{
-		--count;
-	}
-
+	new count = ExplodeString(att, " ; ", atts, 32, 32);
 	if (count > 0)
 	{
 		TF2Items_SetNumAttributes(hWeapon, count/2);
 		new i2=0;
 		for(new i=0; i<count; i+=2)
 		{
-			new attrib=StringToInt(atts[i]);
-			if (attrib==0)
-			{
-				LogError("Bad weapon attribute passed: %s ; %s", atts[i], atts[i+1]);
-				return -1;
-			}
-			TF2Items_SetAttribute(hWeapon, i2, attrib, StringToFloat(atts[i+1]));
+			TF2Items_SetAttribute(hWeapon, i2, StringToInt(atts[i]), StringToFloat(atts[i+1]));
 			i2++;
 		}
 	}
 	else
-	{
 		TF2Items_SetNumAttributes(hWeapon, 0);
-	}
-
 	if (hWeapon==INVALID_HANDLE)
-	{
 		return -1;
-	}
 	new entity = TF2Items_GiveNamedItem(client, hWeapon);
 	CloseHandle(hWeapon);
 	EquipPlayerWeapon(client, entity);
