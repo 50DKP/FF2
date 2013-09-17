@@ -51,7 +51,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 public Action:Timer_Disable_Anims(Handle:hTimer)
 {
 	decl Boss;
-	for (new index=0; Boss=GetClientOfUserId(FF2_GetBossUserId(index))>0; index++)
+	for(new index=0; (Boss=GetClientOfUserId(FF2_GetBossUserId(index)))>0; index++)
 	{
 		if (FF2_HasAbility(index,this_plugin_name,"special_noanims"))
 		{
@@ -73,10 +73,14 @@ Rage_NewWeapon(index, const String:ability_name[])
 	TF2_RemoveWeaponSlot(Boss, slot);
 	new weapon=SpawnWeapon(Boss, classname, FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 2, 56), 100, 5, attributes);
 	if(FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 6))
+	{
 		SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", weapon);
+	}
 	new ammo=FF2_GetAbilityArgument(index,this_plugin_name,ability_name, 5);
 	if(ammo>0)
+	{
 		SetAmmo(Boss, weapon, ammo);
+	}
 }
 
 stock SetAmmo(client, weapon, ammo)
@@ -99,7 +103,7 @@ stock SpawnWeapon(client, String:name[], index, level, qual, String:att[])
 	TF2Items_SetQuality(hWeapon, qual);
 	new String:atts[32][32];
 	new count = ExplodeString(att, " ; ", atts, 32, 32);
-	if (count > 0)
+	if(count>0)
 	{
 		TF2Items_SetNumAttributes(hWeapon, count/2);
 		new i2=0;
@@ -110,9 +114,14 @@ stock SpawnWeapon(client, String:name[], index, level, qual, String:att[])
 		}
 	}
 	else
+	{
 		TF2Items_SetNumAttributes(hWeapon, 0);
+	}
+	
 	if (hWeapon==INVALID_HANDLE)
+	{
 		return -1;
+	}
 	new entity = TF2Items_GiveNamedItem(client, hWeapon);
 	CloseHandle(hWeapon);
 	EquipPlayerWeapon(client, entity);
