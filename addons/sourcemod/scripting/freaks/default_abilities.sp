@@ -45,11 +45,7 @@ public OnPluginStart2()
 	HookEvent("player_death", event_player_death);
 	LoadTranslations("freak_fortress_2.phrases");
 	
-<<<<<<< HEAD
-	cvarOldJump = CreateConVar("ff2_oldjump", "1", "Use old Saxton Hale jump equations", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-=======
 	cvarOldJump = CreateConVar("ff2_oldjump", "1", "Use old Saxton Hale jump equations", FCVAR_PLUGIN, true, 0.0, true, 1.0);  //Wliu:  Enabled oldjump.
->>>>>>> origin/development
 }
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)

@@ -1,11 +1,12 @@
 "VertexLitGeneric"
 {
-	"$basetexture" "freak_fortress_2\cbs\cbs_head"
+	"$basetexture" "freak_fortress_2/cbs/cbs_head"
 	"$bumpmap"     "models/player/shared/shared_normal"
 	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "1"
 	"$detailblendfactor" .01
 	"$detailblendmode" 6
+
 
 
 	"$yellow" "0"

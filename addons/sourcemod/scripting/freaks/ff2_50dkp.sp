@@ -1,6 +1,8 @@
 /*
 CHANGELOG:
 ----------
+v1.6.1 (August 13, 2013 A.D.):  Changed versioning format to x.y.z, and added URL (Wliu).
+v1.6 (August 5, 2013 A.D.):  Added rage_cleaver for Psycho (Wliu).
 v1.5 (July 22, 2013 A.D.):  Added Gaben_Ban (workaround) for Gaben when he kills somebody (Wliu).
 v1.4 (June 28, 2013 A.D.):  Fixed Fempyro's airblast cost and ammo pickup again (Wliu).
 v1.3 (June 25, 2013 A.D.):  Fixed Fempyro picking up ammo (Wliu).
@@ -8,7 +10,7 @@ v1.2 (June 18, 2013 A.D.):  Removed rage_freeze (separate plugin) and fixed Femp
 v1.1 (June 3, 2013 A.D.):  Added rage_freeze to freeze raged players (Wliu).
 v1.0 (May 30, 2013 A.D.):  Re-created ff2_50dkp because it got deleted somewhere (Wliu).
 
-Current bosses that use this:  Fempyro, Gaben
+Current bosses that use this:  Fempyro, Gaben (soon), Psycho
 */
 
 #pragma semicolon 1
@@ -22,17 +24,18 @@ Current bosses that use this:  Fempyro, Gaben
 #include <tf2_stocks>
 #include <tf2items>
 
-#define PLUGIN_VERSION	"1.5"
+#define PLUGIN_VERSION "1.6.1"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
 new bool:gabenBan=false;
 
-public Plugin:myinfo =
+public Plugin:myinfo=
 {
 	name = "50DKP-FF2 Plugin",
 	author = "Wliu",
 	description = "A FF2 plugin for the 50DKP community",
 	version = PLUGIN_VERSION,
+	url = "http://www.50dkp.com"
 };
 
 public OnPluginStart2()
@@ -57,6 +60,10 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	{
 		gabenBan=true;
 	}
+	else if(!strcmp(ability_name,"rage_cleaver"))
+	{
+		Rage_Cleaver(index);
+	}
 	return Plugin_Continue;
 }
 
@@ -77,6 +84,20 @@ Rage_Fempyro(index)
 		//258:  All ammo becomes health
 		//37:  No ammo
 	SetAmmo(Boss, TFWeaponSlot_Primary, 30);
+}
+
+Rage_Cleaver(index)
+{
+	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
+	TF2_RemoveWeaponSlot(Boss, TFWeaponSlot_Secondary);
+	SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", SpawnWeapon(Boss, "tf_weapon_cleaver", 812, 101, 5, "77 ; 0 ; 258 ; 1 ; 37 ; 0"));
+		//Weapon:  Cleaver
+		//Level:  101
+		//Quality:  Unique
+		//77:  Clip size is 0
+		//258:  All ammo becomes health
+		//37:  No ammo
+	SetAmmo(Boss, TFWeaponSlot_Secondary, 5);
 }
 
 /*=========ABILITIES START=========*/

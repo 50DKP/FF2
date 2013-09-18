@@ -1,4 +1,4 @@
-50DKP-FF2
+FF2-50DKP
 =========
 
 [50DKP's](http://www.50dkp.com) FF2 updates!
@@ -16,4 +16,4 @@ Most of the work is done in the [development](https://github.com/50DKP/FF2/tree/
 
 [Lawd Vawldawmawrt](https://github.com/Lawdy)-Additional FF2 updater.  Mainly works on adding new bosses and giving suggestions.
 
-[Carge](https://github.com/Carge/)-Additional FF2 updater.  Mainly works on adding new bosses and complaining.
+[Carge](https://github.com/Carge/)-Additional FF2 updater.  Mainly works on adding new maps.
