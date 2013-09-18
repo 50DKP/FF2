@@ -24,7 +24,7 @@ Updated by Otokiru, Powerlord, and RavensBro after Rainbolt Dash got sucked into
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.4.0 Beta 1"
+#define PLUGIN_VERSION "2.4.0"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -183,7 +183,8 @@ static const String:ff2versiontitles[][]=
 	"2.3.0",
 	"2.3.1",
 	"2.3.1",
-	"2.3.1"
+	"2.3.1",
+	"2.4.0"
 };
 
 static const String:ff2versiondates[][]=
@@ -219,19 +220,27 @@ static const String:ff2versiondates[][]=
 	"July 24, 2013",  //2.3.0
 	"September 6, 2013",  //2.3.1
 	"September 6, 2013",  //2.3.1
-	"September 6, 2013"  //2.3.1
+	"September 6, 2013",  //2.3.1
+	"September 17, 2013"  //2.4.0
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch (versionindex)
 	{
+		case 32:
+		{
+			DrawPanelText(panel, "Now featuring the I'm Stupid Update!");
+			DrawPanelText(panel, "1) Reverted Caber changes (Wliu)");
+			DrawPanelText(panel, "2) Reverted certain internal code changes that seemed to be causing the crashes (Wliu)");
+			DrawPanelText(panel, "3) Changed game description to FF2-50DKP (version #) (Wliu)");
+		}
 		case 31:  //2.3.1
 		{
 			DrawPanelText(panel, "Now featuring the OHMYGODYESTHEROCKETJUMPER Update!");
 			DrawPanelText(panel, "1) Fixed some material issues on CBS and Gaben (Lawd)");
 			DrawPanelText(panel, "2) Added Robo-Robotic Soldier (Lawd)");
-			DrawPanelText(panel, "3) Gave Ullapool Caber 4 extra uses (Wliu)");
+			DrawPanelText(panel, "3) Gave Ullapool Caber 4 extra uses (Wliu/Chris)");
 			DrawPanelText(panel, "4) Removed Sticky Jumper and Rocket Jumper from the weapon blacklist, but they have 75% less primary ammo (Wliu)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
@@ -744,7 +753,7 @@ public OnConfigsExecuted()
 		if(steamtools)
 		{
 			decl String:gameDesc[64];
-			Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 (%s)", PLUGIN_VERSION);
+			Format(gameDesc, sizeof(gameDesc), "FF2-50DKP (%s)", PLUGIN_VERSION);
 			Steam_SetGameDescription(gameDesc);
 		}
 		Enabled=true;
@@ -1083,7 +1092,7 @@ public CvarChange(Handle:convar, const String:oldValue[], const String:newValue[
 			if(steamtools)
 			{
 				decl String:gameDesc[64];
-				Format(gameDesc, sizeof(gameDesc), "Freak Fortress 2 v%s", PLUGIN_VERSION);
+				Format(gameDesc, sizeof(gameDesc), "FF2-50DKP (%s)", PLUGIN_VERSION);
 				Steam_SetGameDescription(gameDesc);
 			}
 		}
@@ -4893,7 +4902,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							TF2_RemoveCondition(attacker, TFCond_OnFire);
 						}
 					}
-					case 307:  //Ullapool Caber
+					/*case 307:  //Ullapool Caber
 					{
 						static Float:detonations=5.0;
 						if(detonations > 0)
@@ -4909,7 +4918,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						{
 							CPrintToChat(attacker,"{olive}[FF2]{default} {red}NO MORE CABERS LEFT!{default}");
 						}
-					}
+					}*/
 					case 317:  //Candycane
 					{
 						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
