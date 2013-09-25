@@ -513,7 +513,8 @@ new Float:BossSpeed[MAXSPECIALS];
 new Float:BossRageDamage[MAXSPECIALS];
 new String:ChancesString[64];
 
-public Plugin:myinfo={
+public Plugin:myinfo=
+{
 	name="Freak Fortress 2",
 	author="Rainbolt Dash, FlaminSarge",
 	description="RUUUUNN!! COWAAAARRDSS!",
