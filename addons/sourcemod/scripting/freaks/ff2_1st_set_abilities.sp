@@ -745,6 +745,50 @@ public Action:event_player_death(Handle:event, const String:name[], bool:dontBro
 				SetEntPropEnt(attacker, Prop_Data, "m_hActiveWeapon",weapon);
 			}
 		}
+		else if(FF2_HasAbility(a_index, this_plugin_name, "special_cbscout_multimelee"))  //Multiple melee weapons (CBSscout)-Added by Wliu b/c of Lawd's insistence
+		{
+			if(GetEntPropEnt(attacker, Prop_Send, "m_hActiveWeapon")==GetPlayerWeaponSlot(attacker, TFWeaponSlot_Melee))
+			{
+				TF2_RemoveWeaponSlot(attacker, TFWeaponSlot_Melee);
+				decl weapon;
+				switch (GetRandomInt(0, 7))
+				{
+					case 0:
+					{
+						weapon=SpawnWeapon(attacker, "tf_weapon_bat", 317, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+					case 1:
+					{
+						weapon=SpawnWeapon(attacker, "tf_weapon_bat", 325, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+					case 2:
+					{
+						weapon=SpawnWeapon(attacker, "tf_weapon_bat", 349, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+					case 3:
+					{
+						weapon=SpawnWeapon(attacker, "tf_weapon_bat", 355, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+					case 4:
+					{
+						weapon=SpawnWeapon(attacker, "tf_weapon_bat", 450, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+					case 5:
+					{
+						weapon=SpawnWeapon(attacker, "tf_weapon_bat", 452, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+					case 6:
+					{
+						weapon=SpawnWeapon(attacker, "tf_weapon_bat_fish", 572, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+					case 7:
+					{
+						weapon=SpawnWeapon(attacker, "saxxy", 939, 101, 5, "68 ; 2 ; 2 ; 3.0");
+					}
+				}
+				SetEntPropEnt(attacker, Prop_Data, "m_hActiveWeapon",weapon);
+			}
+		}
 	}
 	else
 	{
