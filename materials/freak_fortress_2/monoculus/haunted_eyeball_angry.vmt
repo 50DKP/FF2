@@ -1,0 +1,29 @@
+"VertexlitGeneric"
+{
+	"$baseTexture" "freak_fortress_2\monoculus\haunted_eyeball_angry"
+
+
+
+	"$bumpmap" "freak_fortress_2\monoculus\haunted_eyeball_normal"  
+//	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+//	"$detailscale" "5"
+//	"$detailblendfactor" .01
+//	"$detailblendmode" 6
+//	"$yellow" "0"
+
+ 	$nodecal 1
+
+//	"$phong" "1"
+//	"$phongexponent" "25"
+	"$phongboost" "6"
+	"$lightwarptexture" "models/player/pyro/pyro_lightwarp"
+	"$phongfresnelranges"	"[1 1 1]"
+	"$phongexponenttexture" "freak_fortress_2\monoculus\halloween_demoeye_brown_exp"
+	"$basemapalphaphongmask" "1"
+	"$phongalbedotint" "1"
+
+//	"$envmap" "env_cubemap"
+//	"$envmaptint" "[.25 .25 .25]"
+
+
+}

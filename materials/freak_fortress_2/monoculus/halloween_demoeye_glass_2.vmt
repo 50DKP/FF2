@@ -1,0 +1,20 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "freak_fortress_2\monoculus/haunted_eyeball_glass"
+
+//	"$translucent" "1"
+	"$additive" "1"
+
+	"$nodecal" "1"
+
+	
+
+	"$phong" "1"
+	"$phongexponent" "2"
+	"$phongboost" ".2"	
+	"$lightwarptexture" "models/props_halloween/halloween_lens_lightwarp"
+//	"$lightwarptexture" "models/player/pyro/pyro_lightwarp"
+	"$phongfresnelranges"	"[1 1 1]"
+
+
+}
