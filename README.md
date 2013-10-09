@@ -3,9 +3,9 @@ FF2-50DKP
 
 [50DKP's](http://www.50dkp.com) FF2 updates!
 
-[Quick link for freak_fortress_2.sp](/addons/sourcemod/scripting/freak_fortress_2.sp)
+**CURRENT VERSION:  2.4.0**
 
-Most of the work is done in the [development](https://github.com/50DKP/FF2/tree/development) branch.  When the changes are considered stable, they are then merged into the master branch and a changelog is written.
+Most of the work is done in the [development](https://github.com/50DKP/FF2/tree/development) branch.  When the changes are considered stable, they are then merged into the [master](https://github.com/50DKP/FF2/tree/master) branch and a changelog is written.
 
 ###Updaters
 ***

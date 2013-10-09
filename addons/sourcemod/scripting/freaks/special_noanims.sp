@@ -94,22 +94,28 @@ stock SetAmmo(client, weapon, ammo)
 	}
 }
 
-stock SpawnWeapon(client, String:name[], index, level, qual, String:att[])
+stock SpawnWeapon(client, String:name[], index, level, quality, String:att[])
 {
 	new Handle:hWeapon = TF2Items_CreateItem(OVERRIDE_ALL|FORCE_GENERATION);
 	TF2Items_SetClassname(hWeapon, name);
 	TF2Items_SetItemIndex(hWeapon, index);
 	TF2Items_SetLevel(hWeapon, level);
-	TF2Items_SetQuality(hWeapon, qual);
+	TF2Items_SetQuality(hWeapon, quality);
 	new String:atts[32][32];
-	new count = ExplodeString(att, " ; ", atts, 32, 32);
+	new count=ExplodeString(att, ";", atts, 32, 32);
 	if(count>0)
 	{
 		TF2Items_SetNumAttributes(hWeapon, count/2);
 		new i2=0;
 		for(new i=0; i<count; i+=2)
 		{
-			TF2Items_SetAttribute(hWeapon, i2, StringToInt(atts[i]), StringToFloat(atts[i+1]));
+			new attrib=StringToInt(atts[i]);
+			if(attrib==0)
+			{
+				LogError("Bad weapon attribute passed: %s ; %s", attrib, atts[i+1]);
+				return -1;
+			}
+			TF2Items_SetAttribute(hWeapon, i2, attrib, StringToFloat(atts[i+1]));
 			i2++;
 		}
 	}
@@ -118,11 +124,11 @@ stock SpawnWeapon(client, String:name[], index, level, qual, String:att[])
 		TF2Items_SetNumAttributes(hWeapon, 0);
 	}
 	
-	if (hWeapon==INVALID_HANDLE)
+	if(hWeapon==INVALID_HANDLE)
 	{
 		return -1;
 	}
-	new entity = TF2Items_GiveNamedItem(client, hWeapon);
+	new entity=TF2Items_GiveNamedItem(client, hWeapon);
 	CloseHandle(hWeapon);
 	EquipPlayerWeapon(client, entity);
 	return entity;
