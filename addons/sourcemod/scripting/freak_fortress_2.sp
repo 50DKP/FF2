@@ -4943,13 +4943,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						return Plugin_Changed;
 					}
 				}
-				case TFClass_Soldier:  //Battalion's Backup
+				case TFClass_Soldier: if(IsValidEdict((weapon=GetPlayerWeaponSlot(client, 1))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")==226 && !(FF2flags[client] & FF2FLAG_ISBUFFED))  //Battalion's Backup
 				{
-					if(IsValidEdict((weapon=GetPlayerWeaponSlot(client, 1))) && GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex")==226 && !(FF2flags[client] & FF2FLAG_ISBUFFED))
-					{
-						SetEntPropFloat(client, Prop_Send, "m_flRageMeter", 100.0);
-						FF2flags[client]|=FF2FLAG_ISBUFFED;
-					}
+					SetEntPropFloat(client, Prop_Send, "m_flRageMeter", 100.0);
+					FF2flags[client]|=FF2FLAG_ISBUFFED;
 				}
 			}
 			new buffweapon=GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary);
