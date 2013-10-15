@@ -11,6 +11,7 @@ rage_new_weapon:
 	arg4 - weapon's slot (0 - primary. 1 - secondary. 2 - melee. 3 - pda. 4 - spy's watches)
 	arg5 - weapon's ammo
 	arg6 - force switch to this weapon
+	arg7 - weapon's clip
 */
 #pragma semicolon 1
 
@@ -20,10 +21,10 @@ rage_new_weapon:
 #include <freak_fortress_2>
 #include <freak_fortress_2_subplugin>
 
-public Plugin:myinfo =
+public Plugin:myinfo=
 {
-	name = "Freak Fortress 2: special_noanims",
-	author = "RainBolt Dash",
+	name="Freak Fortress 2: special_noanims",
+	author="RainBolt Dash",
 };
 
 public OnPluginStart2()
@@ -33,7 +34,7 @@ public OnPluginStart2()
 
 public Action:FF2_OnAbility2(index, const String:plugin_name[], const String:ability_name[], action)
 {
-	if (!strcmp(ability_name, "rage_new_weapon"))
+	if(!strcmp(ability_name, "rage_new_weapon"))
 	{
 		Rage_NewWeapon(index, ability_name);
 	}
@@ -42,8 +43,8 @@ public Action:FF2_OnAbility2(index, const String:plugin_name[], const String:abi
 
 public Action:event_round_start(Handle:event, const String:name[], bool:dontBroadcast)
 {
-	CreateTimer(0.41,Timer_Disable_Anims);
-	CreateTimer(9.31,Timer_Disable_Anims);
+	CreateTimer(0.41, Timer_Disable_Anims);
+	CreateTimer(9.31, Timer_Disable_Anims);
 	return Plugin_Continue;
 }
 
@@ -76,21 +77,22 @@ Rage_NewWeapon(index, const String:ability_name[])
 	{
 		SetEntPropEnt(Boss, Prop_Send, "m_hActiveWeapon", weapon);
 	}
-	new ammo=FF2_GetAbilityArgument(index,this_plugin_name,ability_name, 5);
+
+	new ammo=FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 5);
+	new clip=FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 7);
 	if(ammo>0)
 	{
-		SetAmmo(Boss, weapon, ammo);
+		SetAmmo(Boss, weapon, ammo, clip);
 	}
 }
 
-stock SetAmmo(client, weapon, ammo)
+stock SetAmmo(client, weapon, ammo, clip=0)
 {
 	if (IsValidEntity(weapon))
 	{
-		SetEntProp(weapon, Prop_Send, "m_iClip1", 0);
-		new iOffset=GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1)*4;
-		new iAmmoTable = FindSendPropInfo("CTFPlayer", "m_iAmmo");
-		SetEntData(client, iAmmoTable+iOffset, ammo, 4, true);
+		SetEntProp(weapon, Prop_Send, "m_iClip1", clip);
+		new iOffset=GetEntProp(weapon, Prop_Send, "m_iPrimaryAmmoType", 1);
+		SetEntProp(client, Prop_Send, "m_iAmmo", ammo, 4, iOffset);
 	}
 }
 

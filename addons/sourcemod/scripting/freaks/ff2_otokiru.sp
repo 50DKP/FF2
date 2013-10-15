@@ -1,11 +1,11 @@
 /*
 CHANGELOG:
 ----------
+v1.5 (October 14, 2013 A.D.):  Nerfed minions so much that nothing good will ever happen to them from now on (Wliu).
 v1.4 (July 13, 2013 A.D.):  Fixed minions getting x15 cap rate (Wliu).
 v1.3:  Tried to remove cap rate from minions (Wliu).
 v1.2:  Initial version commited to 50DKP/FF2 (Otokiru).
 */
-
 #pragma semicolon 1
 
 #include <sourcemod>
@@ -335,54 +335,61 @@ public Action:RemoveDisguise(Handle:timer, any:index)
 		TF2_RemovePlayerDisguise(index);
 }
 
-Charge_Salmon(const String:ability_name[],index,slot,action)
+Charge_Salmon(const String:ability_name[], index, slot, action)
 {
-	new Float:charge=FF2_GetBossCharge(index,slot);
+	new Float:charge=FF2_GetBossCharge(index, slot);
 	new Boss=GetClientOfUserId(FF2_GetBossUserId(index));
-	new var3=FF2_GetAbilityArgument(index,this_plugin_name,ability_name, 3);	//sound
-	new var4=FF2_GetAbilityArgument(index,this_plugin_name,ability_name, 4);	//summon_per_rage
-	new Float:duration=FF2_GetAbilityArgumentFloat(index,this_plugin_name,ability_name,5,3.0); //uber_protection
+	new var3=FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 3);  //Sound
+	new var4=FF2_GetAbilityArgument(index, this_plugin_name, ability_name, 4);  //Minions summoned per rage
+	new Float:duration=FF2_GetAbilityArgumentFloat(index, this_plugin_name, ability_name, 5, 3.0);  //Uber duration
 
 	switch (action)
 	{
 		case 1:
 		{
 			SetHudTextParams(-1.0, 0.88, 0.15, 255, 255, 255, 255);
-			ShowSyncHudText(Boss, jumpHUD, "%t","salmon_status_2",-RoundFloat(charge));
+			ShowSyncHudText(Boss, jumpHUD, "%t", "salmon_status_2", -RoundFloat(charge));
 		}	
 		case 2:
 		{
 			SetHudTextParams(-1.0, 0.88, 0.15, 255, 255, 255, 255);
-			if (bEnableSuperDuperJump[index])
+			if(bEnableSuperDuperJump[index])
 			{
 				SetHudTextParams(-1.0, 0.88, 0.15, 255, 64, 64, 255);
-				ShowSyncHudText(Boss, jumpHUD,"%t","super_duper_jump");
+				ShowSyncHudText(Boss, jumpHUD, "%t", "super_duper_jump");
 			}	
 			else
-				ShowSyncHudText(Boss, jumpHUD, "%t","salmon_status",RoundFloat(charge));
+			{
+				ShowSyncHudText(Boss, jumpHUD, "%t", "salmon_status", RoundFloat(charge));
+			}
 		}
 		case 3:
 		{
-			new Action:act = Plugin_Continue;
-			new super = bEnableSuperDuperJump[index];
+			new Action:act=Plugin_Continue;
+			new super=bEnableSuperDuperJump[index];
 			Call_StartForward(OnHaleJump);
 			Call_PushCellRef(super);
 			Call_Finish(act);
-			if (act != Plugin_Continue && act != Plugin_Changed)
-				return;
-			if (act == Plugin_Changed) bEnableSuperDuperJump[index] = super;
-			
-			if (bEnableSuperDuperJump[index])
+			if(act!=Plugin_Continue && act!=Plugin_Changed)
 			{
-				decl Float:vel[3];
-				decl Float:rot[3];
-				GetEntPropVector(Boss, Prop_Data, "m_vecVelocity", vel);
-				GetClientEyeAngles(Boss, rot);
-				vel[2]=750.0+500.0*charge/70+2000;
-				vel[0]+=Cosine(DegToRad(rot[0]))*Cosine(DegToRad(rot[1]))*500;
-				vel[1]+=Cosine(DegToRad(rot[0]))*Sine(DegToRad(rot[1]))*500;
+				return;
+			}
+			else if(act==Plugin_Changed)
+			{
+				bEnableSuperDuperJump[index]=super;
+			}
+			
+			if(bEnableSuperDuperJump[index])
+			{
+				decl Float:velocity[3];
+				decl Float:rotation[3];
+				GetEntPropVector(Boss, Prop_Data, "m_vecVelocity", velocity);
+				GetClientEyeAngles(Boss, rotation);
+				velocity[2]=750.0+500.0*charge/70+2000;
+				velocity[0]+=Cosine(DegToRad(rotation[0]))*Cosine(DegToRad(rotation[1]))*500;
+				velocity[1]+=Cosine(DegToRad(rotation[0]))*Sine(DegToRad(rotation[1]))*500;
 				bEnableSuperDuperJump[index]=false;
-				TeleportEntity(Boss, NULL_VECTOR, NULL_VECTOR, vel);
+				TeleportEntity(Boss, NULL_VECTOR, NULL_VECTOR, velocity);
 			}
 			else
 			{
@@ -394,23 +401,21 @@ Charge_Salmon(const String:ability_name[],index,slot,action)
 
 				for (new i=0; i<var4; i++)
 				{
-					new client = GetRandomDeadPlayer();
-					if(client != -1)
+					new client=GetRandomDeadPlayer();
+					if(client!=-1)
 					{
-						bSalmon = true;
-						FF2_SetFF2flags(client,FF2_GetFF2flags(client)|FF2FLAG_ALLOWSPAWNINBOSSTEAM);
-						ChangeClientTeam(client,BossTeam);
+						bSalmon=true;
+						FF2_SetFF2flags(client, FF2_GetFF2flags(client) | FF2FLAG_ALLOWSPAWNINBOSSTEAM);
+						ChangeClientTeam(client, BossTeam);
 						TF2_RespawnPlayer(client);
 						TF2_AddCondition(client, TFCond_Ubercharged, duration);
-						/* The following is incredibly hacky, find a way to fix it XD */
-						new weapon=SpawnWeapon(client,"tf_weapon_pda_engineer_destroy",26,34,0,"68 ; -1");  //ChrisMiuchiz/Wliu:  Disable minions' capture rate.
+						/*The following is incredibly hacky, find a way to fix it XD*/
+						new weapon=SpawnWeapon(client, "tf_weapon_pda_engineer_destroy", 26, 34, 0, "68 ; -1 ; 69 ; 0.0 ; 109 ; 0.0 ; 252 ; -1 ; 258 ; 1 ; 15 ; 1 ; 288 ; 1; 412 ; 0.5");  //ChrisMiuchiz/Wliu:  Disable minions' capture rate, along with a bunch of other nerfs.  Should make minions a lot more balanced.
 						if (IsValidEdict(weapon))
 						{
-							SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon",weapon);
+							SetEntPropEnt(client, Prop_Send, "m_hActiveWeapon", weapon);
 							SetEntProp(weapon, Prop_Send, "m_iWorldModelIndex", -1);
 						}
-						/*new weapon=GetPlayerWeaponSlot(client, TFWeaponSlot_Melee);
-						new newweapon=SpawnWeapon(client,*/
 					}
 				}
 			}			
