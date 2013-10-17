@@ -23,7 +23,7 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.4.1 Beta 3"
+#define PLUGIN_VERSION "2.4.1 Beta 4"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -224,9 +224,9 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",	//2.3.1
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
-	"October 14, 2013",		//2.4.1
-	"October 14, 2013",		//2.4.1
-	"October 14, 2013"		//2.4.1
+	"October 15, 2013",		//2.4.1
+	"October 15, 2013",		//2.4.1
+	"October 15, 2013"		//2.4.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -257,6 +257,7 @@ stock FindVersionData(Handle:panel, versionindex)
 		{
 			DrawPanelText(panel, "11) Kunai now heals 200 health on backstab, and has no more health cap (Wliu)");
 			DrawPanelText(panel, "12) Nerfed Administrator's minions so much, you won't even believe how much I nerfed them (Wliu).");
+			DrawPanelText(panel, "13) Fixed Psycho's lifeloss ability barely having any range (Wliu).");
 			DrawPanelText(panel, "We will have a Halloween update this year, courtesy of Friagram and Ravensbro (and possibly Lawd)!");
 		}
 		case 32:  //2.4.0
