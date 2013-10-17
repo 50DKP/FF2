@@ -23,7 +23,7 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.4.1 Beta 4"
+#define PLUGIN_VERSION "2.4.1 Beta 5"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -224,26 +224,26 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",	//2.3.1
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
-	"October 15, 2013",		//2.4.1
-	"October 15, 2013",		//2.4.1
-	"October 15, 2013"		//2.4.1
+	"October 17, 2013",		//2.4.1
+	"October 17, 2013",		//2.4.1
+	"October 17, 2013"		//2.4.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch(versionindex)
 	{
-		case 35:
+		case 35:  //2.4.1
 		{
 			DrawPanelText(panel, "The Tiny Bugfixes Update is now live!");
 			DrawPanelText(panel, "1) Added missing demopan download (AeroAcrobat/Wliu)");
 			DrawPanelText(panel, "2) Removed 2 missing Psycho sounds and added a new win one(AeroAcrobat/Lawd/Wliu)");
 			DrawPanelText(panel, "3) Removed item_fx.pcf from Travis (AeroAcrobat/Wliu)");
 			DrawPanelText(panel, "4) Nerfed Psycho's melee swing rate (Wliu)");
-			DrawPanelText(panel, "5) Added missing backstab sounds to Saxton hale and HHH (Lawd/Wliu/Powerlord)");
+			DrawPanelText(panel, "5) Added missing backstab sounds to Saxton hale and HHH (Powerlord/Lawd)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 34:
+		case 34:  //2.4.1
 		{
 			DrawPanelText(panel, "6) Added Gaben BGM (Lawd)");
 			DrawPanelText(panel, "7) Removed Merasmus until Lawd resizes him (Lawd)");
@@ -253,11 +253,13 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "10) Medigun can now overheal 50% more health (Powerlord)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 33:
+		case 33:  //2.4.1
 		{
 			DrawPanelText(panel, "11) Kunai now heals 200 health on backstab, and has no more health cap (Wliu)");
-			DrawPanelText(panel, "12) Nerfed Administrator's minions so much, you won't even believe how much I nerfed them (Wliu).");
-			DrawPanelText(panel, "13) Fixed Psycho's lifeloss ability barely having any range (Wliu).");
+			DrawPanelText(panel, "12) Nerfed Administrator's minions so much, you won't even believe how much I nerfed them (Wliu)");
+			DrawPanelText(panel, "13) Fixed Psycho's lifeloss ability barely having any range (Wliu)");
+			DrawPanelText(panel, "14) Fixed some sniper rifles not highlighting Hale, and added something new to Hitman's Heatmaker (Powerlord)");
+			DrawPanelText(panel, "15) Fixed Petty Boy's Pocket Pistol not having minicrits (Powerlord)");
 			DrawPanelText(panel, "We will have a Halloween update this year, courtesy of Friagram and Ravensbro (and possibly Lawd)!");
 		}
 		case 32:  //2.4.0
@@ -3439,43 +3441,49 @@ public Action:event_uberdeployed(Handle:event, const String:name[], bool:dontBro
 				if(IsValidClient(target, false) && IsPlayerAlive(target))
 				{
 					TF2_AddCondition(target, TFCond_HalloweenCritCandy, 0.5);
+					uberTarget[client]=target;
+				}
+				else
+				{
+					uberTarget[client]=-1;
 				}
 				SetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel", 1.50);
-				CreateTimer(0.4, Timer_Lazor, EntIndexToEntRef(medigun), TIMER_REPEAT|TIMER_FLAG_NO_MAPCHANGE);
+				CreateTimer(0.4, Timer_Uber, EntIndexToEntRef(medigun), TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 			}
 		}
 	}
 	return Plugin_Continue;
 }
 
-public Action:Timer_Lazor(Handle:hTimer,any:medigunid)
+public Action:Timer_Uber(Handle:hTimer, any:medigunid)
 {
 	new medigun=EntRefToEntIndex(medigunid);
 	if(medigun && IsValidEntity(medigun) && FF2RoundState==1)
 	{
 		new client=GetEntPropEnt(medigun, Prop_Send, "m_hOwnerEntity");
-		if(client<1)
-		{
-			return Plugin_Stop;
-		}
 		new Float:charge=GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel");
-		if(GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon")==medigun)
+		if(IsValidClient(client) && IsPlayerAlive(client) && GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon")==medigun)
 		{
 			new target=GetHealingTarget(client);
 			if(charge>0.05)
 			{
-				TF2_AddCondition(client, TFCond_HalloweenCritCandy, 0.5);
+				TF2_AddCondition(target, TFCond_HalloweenCritCandy, 0.5);
 				if(IsValidClient(target, false) && IsPlayerAlive(target))
 				{
 					TF2_AddCondition(target, TFCond_HalloweenCritCandy, 0.5);
+					uberTarget[client]=target;
+				}
+				else
+				{
+					uberTarget[client]=-1;
 				}
 			}
-		}
-		if(charge<=0.05)
-		{
-			CreateTimer(3.0, Timer_Lazor2, EntIndexToEntRef(medigun));
-			FF2flags[client] &= ~FF2FLAG_UBERREADY;
-			return Plugin_Stop;
+			else
+			{
+				CreateTimer(3.0, Timer_SetUberPercentage, EntIndexToEntRef(medigun));
+				FF2flags[client]&=~FF2FLAG_UBERREADY;
+				return Plugin_Stop;
+			}
 		}
 	}
 	else
@@ -3485,7 +3493,7 @@ public Action:Timer_Lazor(Handle:hTimer,any:medigunid)
 	return Plugin_Continue;
 }
 
-public Action:Timer_Lazor2(Handle:hTimer,any:medigunid)
+public Action:Timer_SetUberPercentage(Handle:hTimer, any:medigunid)
 {
 	new medigun=EntRefToEntIndex(medigunid);
 	if(IsValidEntity(medigun))
@@ -3624,13 +3632,14 @@ public Action:Command_Points(client, args)
 		return Plugin_Handled;
 	}
 
-	for(new i=0; i<target_count; i++)
+	for(new target=0; target<target_count; target++)
 	{
-		if(IsClientSourceTV(target_list[i]) || IsClientReplay(target_list[i]))
+		if(IsClientSourceTV(target_list[target]) || IsClientReplay(target_list[target]))
 		{
 			continue;
 		}
-		SetClientQueuePoints(target_list[i], GetClientQueuePoints(target_list[i])+points);
+		SetClientQueuePoints(target_list[target], GetClientQueuePoints(target_list[target])+points);
+		LogAction(client, target_list[target], "\"%L\" added %d queue points to \"%L\"", client, points, target_list[target]);
 		ReplyToCommand(client, "[FF2] Added %d queue points to %s", points, target_name);
 	}
 	return Plugin_Handled;
@@ -3771,8 +3780,12 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 			TF2_RegeneratePlayer(client);
 			CreateTimer(0.1, Timer_RegenPlayer, GetClientUserId(client), TIMER_FLAG_NO_MAPCHANGE);
 		}
+		CreateTimer(0.2, MakeNotBoss, GetClientUserId(client));
 	}
-	CreateTimer(0.2, MakeNotBoss, GetClientUserId(client));
+	else
+	{
+		CreateTimer(0.1, checkItems, client);
+	}
 
 	FF2flags[client]&=~(FF2FLAG_UBERREADY | FF2FLAG_ISBUFFED | FF2FLAG_TALKING | FF2FLAG_ALLOWSPAWNINBOSSTEAM | FF2FLAG_USINGABILITY | FF2FLAG_CLASSHELPED);
 	FF2flags[client]|=FF2FLAG_USEBOSSTIMER;
@@ -3828,10 +3841,6 @@ public Action:ClientTimer(Handle:hTimer)
 				ShowSyncHudText(client, rageHUD, "Damage: %d", Damage[client]);
 			}
 
-			if(!IsPlayerAlive(client))
-			{
-				continue;
-			}
 			new TFClassType:class=TF2_GetPlayerClass(client);
 			new weapon=GetEntPropEnt(client, Prop_Send, "m_hActiveWeapon");
 			if(weapon<=MaxClients || !IsValidEntity(weapon) || !GetEdictClassname(weapon, wepclassname, sizeof(wepclassname)))
@@ -3956,7 +3965,7 @@ public Action:ClientTimer(Handle:hTimer)
 				{
 					addthecrit=true;
 				}
-				case 22, 23, 160, 209, 294, 449:  //Pistols
+				case 22, 23, 160, 209, 294, 449, 773:  //Pistols
 				{
 					addthecrit=true;
 					if(class==TFClass_Scout && cond==TFCond_HalloweenCritCandy)
@@ -4956,7 +4965,7 @@ public Action:event_hurt(Handle:event, const String:name[], bool:dontBroadcast)
 	{
 		if(IsValidClient(healers[client]) && IsPlayerAlive(healers[client]))
 		{
-			if(damage<10 || TF2_IsPlayerInCondition(healers[client], TFCond_Ubercharged))
+			if(damage<10 || uberTarget[healers[client]]==attacker)
 			{
 				Damage[healers[client]]+=damage;
 			}
@@ -5017,9 +5026,14 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				damage*=0.3;
 				return Plugin_Changed;
 			}
-
+			else if(TF2_IsPlayerInCondition(client, TFCond_DefenseBuffMmmph))
+			{
+				damage*=9;
+				TF2_AddCondition(client, TFCond_Bonked, 0.1);
+				return Plugin_Changed;
+			}
 			new ent=-1;
-			while((ent=FindEntityByClassname2(ent, "tf_wearable_demoshield"))!=-1)  //SHIELDS
+			while((ent=FindEntityByClassname2(ent, "tf_wearable_demoshield"))!=-1)  //Shields
 			{
 				if(GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity")==client && !GetEntProp(ent, Prop_Send, "m_bDisguiseWearable"))
 				{
@@ -5155,16 +5169,59 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				new wepindex=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntProp(weapon, Prop_Send, "m_iItemDefinitionIndex"):-1);
 				switch(wepindex)  //WEAPON BALANCE 3 (on hit)
 				{
-					case 14, 201, 664, 851, 792, 801, 881, 890, 899, 908, 752, 957, 966:  //ChrisMiuchiz:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 664 Festive, 851 AWPer Hand, 792 Botkiller (Silver), 801 Gold Botkiller, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 752 Hitman's Heatmaker, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
+					case 14, 201, 230, 402, 526, 664, 752, 792, 801, 851, 881, 890, 899, 908, 957, 966:  //ChrisMiuchiz/Powerlord:  14 Sniper Rifle, 201 Sniper Rifle (Renamed/Strange), 230 Sydney Sleeper, 402 Bazaar Bargain, 526 Machina, 664 Festive, 752 Hitman's Heatmaker, 792 Botkiller (Silver), 801 Gold Botkiller, 851 AWPer Hand, 881 Rust Botkiller, 890 Blood Botkiller, 899 Carbonado Botkiller, 908 Diamond Botkiller, 957 Silver Botkiller Sniper Rifle Mk.II, 966 Gold Botkiller Sniper Rifle Mk.II
 					{
-						new Float:chargelevel=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
-						new Float:time=2.0;
-						time+=4*(chargelevel/100);
-						SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
-						GlowTimer[index]+=RoundToCeil(time);
-						if(GlowTimer[index]>30.0)
+						switch(wepindex)
 						{
-							GlowTimer[index]=30.0;
+							case 14, 201, 664, 792, 801, 851, 881, 890, 899, 908, 957, 966:  //Sniper Rifle, Strange/Renamed Sniper Rifle, Festive Sniper Rifle, Botkiller Sniper Rifles
+							{
+								if(FF2RoundState!=2)
+								{
+									new Float:chargelevel=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
+									new Float:time=2.0;
+									time+=4*(chargelevel/100);
+									SetEntProp(client, Prop_Send, "m_bGlowEnabled", 1);
+									GlowTimer[index]+=RoundToCeil(time);
+									if(GlowTimer[index]>30.0)
+									{
+										GlowTimer[index]=30.0;
+									}
+								}
+							}
+							case 752:  //Hitman's Heatmaker
+							{
+								if(FF2RoundState!=2)
+								{
+									new Float:chargelevel=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage"):0.0);
+									new Float:add=10+(chargelevel/10);
+									if(TF2_IsPlayerInCondition(attacker, TFCond:46))
+									{
+										add/=3;
+									}
+									new Float:rage = GetEntPropFloat(attacker, Prop_Send, "m_flRageMeter");
+									SetEntPropFloat(attacker, Prop_Send, "m_flRageMeter", (rage+add>100) ? 100.0:rage+add);
+								}
+							}
+						}
+
+						if (!(damagetype & DMG_CRIT))
+						{
+							if (TF2_IsPlayerInCondition(attacker, TFCond_CritCola) || TF2_IsPlayerInCondition(attacker, TFCond_Buffed) || TF2_IsPlayerInCondition(attacker, TFCond_CritHype))
+							{
+								damage*=1.7;
+							}
+							else
+							{
+								if(wepindex!=230 || BossCharge[index][0]>90)
+								{
+									damage*=2.9;
+								}
+								else
+								{
+									damage*=2.4;
+								}
+							}
+							return Plugin_Changed;
 						}
 					}
 					case 61:  //Ambassador.  Wliu:  Highlight Hale on Ambassador headshot for 5 seconds.
@@ -5685,19 +5742,14 @@ stock RandomlyDisguise(client)
 {
 	if(IsValidClient(client) && IsPlayerAlive(client))
 	{
-		TF2_AddCondition(client, TFCond_Disguised, 99999.0);
 		new disguisetarget=-1;
 		new team=GetClientTeam(client);
 		new Handle:hArray=CreateArray();
-		for(new clientcheck=0;  clientcheck<=MaxClients;  clientcheck++)
+		for(new clientcheck=0; clientcheck<=MaxClients; clientcheck++)
 		{
 			if(IsValidClient(clientcheck) && GetClientTeam(clientcheck)==team && clientcheck!=client)
 			{
-				new TFClassType:class=TF2_GetPlayerClass(clientcheck);
-				if(class==TFClass_Scout || class==TFClass_Medic || class==TFClass_Engineer || class==TFClass_Sniper || class==TFClass_Pyro)
-				{
-					PushArrayCell(hArray, clientcheck);
-				}
+				PushArrayCell(hArray, clientcheck);
 			}
 		}
 
@@ -5714,38 +5766,40 @@ stock RandomlyDisguise(client)
 		{
 			disguisetarget=client;
 		}
-		new disguisehealth=GetRandomInt(75,125);
 		new class=GetRandomInt(0, 4);
-		new TFClassType:classarray[]={ TFClass_Scout, TFClass_Pyro, TFClass_Medic, TFClass_Engineer, TFClass_Sniper };
-		new disguiseclass=_:(disguisetarget!=client ? (TF2_GetPlayerClass(disguisetarget)) : classarray[class]);
+		new TFClassType:classarray[]={TFClass_Scout, TFClass_Pyro, TFClass_Medic, TFClass_Engineer, TFClass_Sniper};
 		CloseHandle(hArray);
 
-		SetEntProp(client, Prop_Send, "m_nDisguiseClass", disguiseclass);
-		SetEntProp(client, Prop_Send, "m_nDisguiseTeam", team);
-		SetEntProp(client, Prop_Send, "m_iDisguiseTargetIndex", disguisetarget);
-		SetEntProp(client, Prop_Send, "m_iDisguiseHealth", disguisehealth);
-		TF2_DisguisePlayer(client, TFTeam:team, TFClassType:disguiseclass);
-		FakeClientCommandEx(client, "lastdisguise");
-		TF2_AddCondition(client, TFCond_Disguised, 99999.0);
+		if (TF2_GetPlayerClass(client) == TFClass_Spy) TF2_DisguisePlayer(client, TFTeam:team, classarray[class], disguisetarget);
+		else
+		{
+			TF2_AddCondition(client, TFCond_Disguised, -1.0);
+			SetEntProp(client, Prop_Send, "m_nDisguiseTeam", team);
+			SetEntProp(client, Prop_Send, "m_nDisguiseClass", classarray[class]);
+			SetEntProp(client, Prop_Send, "m_iDisguiseTargetIndex", disguisetarget);
+			SetEntProp(client, Prop_Send, "m_iDisguiseHealth", 200);
+		}
 	}
 }
 
 public Action:TF2_CalcIsAttackCritical(client, weapon, String:weaponname[], &bool:result)
 {
-	if(!Enabled)
+	if(!Enabled || !IsValidClient(client))
 	{
 		return Plugin_Continue;
 	}
 
-	if(FF2RoundState!=1)
+	if(IsBoss(client))
 	{
-		return Plugin_Continue;
-	}
-
-	if(IsBoss(client) && !BossCrits)
-	{
-		result=false;
-		return Plugin_Changed;
+		if(FF2RoundState!=-1 || TF2_IsPlayerCritBuffed(client))
+		{
+			return Plugin_Continue;
+		}
+		if(!BossCrits)
+		{
+			result=false;
+			return Plugin_Changed;
+		}
 	}
 	return Plugin_Continue;
 }
@@ -6317,6 +6371,10 @@ public bool:PickSpecial(index, index2)
 stock SpawnWeapon(client, String:name[], index, level, quality, String:att[])
 {
 	new Handle:hWeapon=TF2Items_CreateItem(OVERRIDE_ALL|FORCE_GENERATION);
+	if(hWeapon==INVALID_HANDLE)
+	{
+		return -1;
+	}
 	TF2Items_SetClassname(hWeapon, name);
 	TF2Items_SetItemIndex(hWeapon, index);
 	TF2Items_SetLevel(hWeapon, level);
@@ -6349,33 +6407,37 @@ stock SpawnWeapon(client, String:name[], index, level, quality, String:att[])
 	{
 		TF2Items_SetNumAttributes(hWeapon, 0);
 	}
-
-	if(hWeapon==INVALID_HANDLE)
-	{
-		return -1;
-	}
 	new entity=TF2Items_GiveNamedItem(client, hWeapon);
 	CloseHandle(hWeapon);
 	EquipPlayerWeapon(client, entity);
 	return entity;
 }
 
-public HintPanelH(Handle:menu, MenuAction:action, param1, param2)
+public HintPanelH(Handle:menu, MenuAction:action, client, param2)
 {
+	if(!IsValidClient(client))
+	{
+		return;
+	}
+
+	if(action==MenuAction_Select || (action==MenuAction_Cancel && param2==MenuCancel_Exit))
+	{
+		FF2flags[client]|=FF2FLAG_CLASSHELPED;
+	}
 	return;
 }
 
-public QueuePanelH(Handle:menu, MenuAction:action, param1, param2)
+public QueuePanelH(Handle:menu, MenuAction:action, client, param2)
 {
 	if(action==MenuAction_Select && param2==10)
 	{
-		TurnToZeroPanel(param1,param1);
+		TurnToZeroPanel(client, client);
 	}
 	return false;  
 }
 
 
-public Action:QueuePanelCmd(client, Args)
+public Action:QueuePanelCmd(client, args)
 {
 	if(!Enabled2)
 	{
@@ -6384,17 +6446,17 @@ public Action:QueuePanelCmd(client, Args)
 	new Handle:panel=CreatePanel();
 	SetGlobalTransTarget(client);
 	decl String:s[512];
-	Format(s,512,"%t","thequeue"); 	
-	new i,tBoss,bool:added[MAXPLAYERS+1];
+	Format(s, 512, "%t", "thequeue"); 	
+	new i, boss, bool:added[MAXPLAYERS+1];
 	decl j;
 	SetPanelTitle(panel, s); 	
 	for(j=0; j<=MaxClients; j++)
 	{
-		if((tBoss=Boss[i]) && IsValidEdict(tBoss) && IsClientInGame(tBoss))
+		if((boss=Boss[i]) && IsValidEdict(boss) && IsClientInGame(boss))
 		{
-			added[tBoss]=true;
-			Format(s,64,"%N - %i",tBoss,GetClientQueuePoints(tBoss));
-			DrawPanelItem(panel,s);
+			added[boss]=true;
+			Format(s, 64, "%N - %i", boss, GetClientQueuePoints(boss));
+			DrawPanelItem(panel, s);
 			i++;
 		}
 	}
@@ -6402,21 +6464,21 @@ public Action:QueuePanelCmd(client, Args)
 	new pingas;
 	do
 	{
-		tBoss=FindBosses(added); 	
-		if(tBoss && IsValidEdict(tBoss) && IsClientInGame(tBoss))
+		boss=FindBosses(added); 	
+		if(boss && IsValidEdict(boss) && IsClientInGame(boss))
 		{	
-			if(client==tBoss)
+			if(client==boss)
 			{
-				Format(s,64,"%N - %i",tBoss,GetClientQueuePoints(tBoss));
-				DrawPanelText(panel,s);
+				Format(s,64,"%N - %i", boss, GetClientQueuePoints(boss));
+				DrawPanelText(panel, s);
 				i--;
 			}
 			else
 			{
-				Format(s,64,"%N - %i",tBoss,GetClientQueuePoints(tBoss));
-				DrawPanelItem(panel,s);
+				Format(s,64,"%N - %i", boss, GetClientQueuePoints(boss));
+				DrawPanelItem(panel, s);
 			}
-			added[tBoss]=true;
+			added[boss]=true;
 			i++;
 		}
 		pingas++;
@@ -6427,8 +6489,8 @@ public Action:QueuePanelCmd(client, Args)
 	{
 		DrawPanelItem(panel,"");
 	}
-	Format(s,64,"%t (%t)","your_points",GetClientQueuePoints(client),"to0");
-	DrawPanelItem(panel,s);
+	Format(s,64,"%t (%t)", "your_points", GetClientQueuePoints(client), "to0");
+	DrawPanelItem(panel, s);
 	SendPanelToClient(panel, client, QueuePanelH, 9001);
 	CloseHandle(panel);
 	return Plugin_Handled;
@@ -6443,7 +6505,7 @@ public Action:ResetQueuePointsCmd(client, args)
 
 	if(client && !args)
 	{
-		TurnToZeroPanel(client,client);
+		TurnToZeroPanel(client, client);
 		return Plugin_Handled;
 	}
 
@@ -6455,7 +6517,7 @@ public Action:ResetQueuePointsCmd(client, args)
 	new AdminId:admin=GetUserAdmin(client);
 	if((admin==INVALID_ADMIN_ID) || !GetAdminFlag(admin, Admin_Cheats))
 	{
-		TurnToZeroPanel(client,client);
+		TurnToZeroPanel(client, client);
 		return Plugin_Handled;
 	}
 
@@ -6470,28 +6532,28 @@ public Action:ResetQueuePointsCmd(client, args)
 		ReplyToTargetError(client, target_count);
 		return Plugin_Handled;
 	}
-	TurnToZeroPanel(client,target_list[0]);
+	TurnToZeroPanel(client, target_list[0]);
 	return Plugin_Handled;
 }
 
-public TurnToZeroPanelH(Handle:menu, MenuAction:action, param1, param2)
+public TurnToZeroPanelH(Handle:menu, MenuAction:action, client, param2)
 {
 	if(action==MenuAction_Select && param2==1)
 	{
-		if(shortname[param1]==param1)
+		if(shortname[client]==client)
 		{
-			CPrintToChat(param1,"{olive}[FF2]{default} %t","to0_done");
+			CPrintToChat(client, "{olive}[FF2]{default} %t", "to0_done");
 		}
 		else
 		{
-			CPrintToChat(param1,"{olive}[FF2]{default} %t","to0_done_admin",shortname[param1]);
-			CPrintToChat(shortname[param1],"{olive}[FF2]{default} %t","to0_done_by_admin",param1);
+			CPrintToChat(client, "{olive}[FF2]{default} %t", "to0_done_admin", shortname[client]);
+			CPrintToChat(shortname[client], "{olive}[FF2]{default} %t", "to0_done_by_admin", client);
 		}
-		SetClientQueuePoints(shortname[param1],0);
+		SetClientQueuePoints(shortname[client], 0);
 	}
 }
 
-public Action:TurnToZeroPanel(caller,client)
+public Action:TurnToZeroPanel(caller, client)
 {
 	if(!Enabled2)
 	{
@@ -6502,18 +6564,18 @@ public Action:TurnToZeroPanel(caller,client)
 	SetGlobalTransTarget(caller);
 	if(caller==client)
 	{
-		Format(s,512,"%t","to0_title");
+		Format(s, 512, "%t", "to0_title");
 	}
 	else
 	{
-		Format(s,512,"%t","to0_title_admin",client);
+		Format(s, 512, "%t", "to0_title_admin", client);
 	}
-	PrintToChat(caller,s);
-	SetPanelTitle(panel,s);
-	Format(s,512,"%t","Yes");
-	DrawPanelItem(panel,s);
-	Format(s,512,"%t","No");
-	DrawPanelItem(panel,s);
+	PrintToChat(caller, s);
+	SetPanelTitle(panel, s);
+	Format(s, 512, "%t", "Yes");
+	DrawPanelItem(panel, s);
+	Format(s, 512, "%t", "No");
+	DrawPanelItem(panel, s);
 	shortname[caller]=client;
 	SendPanelToClient(panel, caller, TurnToZeroPanelH, 9001);
 	CloseHandle(panel);
@@ -6581,9 +6643,9 @@ stock IsBoss(client)
 		return 0;
 	}
 
-	for(new client2=0; client2<=MaxClients; client2++)
+	for(new boss=0; boss<=MaxClients; boss++)
 	{
-		if(Boss[client2]==client)
+		if(Boss[boss]==client)
 		{
 			return 1;
 		}
@@ -6598,7 +6660,7 @@ DoOverlay(client,const String:overlay[])
 	ClientCommand(client, "r_screenoverlay \"%s\"", overlay);
 	SetCommandFlags("r_screenoverlay", iFlags);
 }
-public FF2PanelH(Handle:menu, MenuAction:action, param1, param2)
+public FF2PanelH(Handle:menu, MenuAction:action, client, param2)
 {
 	if(action==MenuAction_Select)
 	{
@@ -6606,31 +6668,31 @@ public FF2PanelH(Handle:menu, MenuAction:action, param1, param2)
 		{
 			case 1:
 			{
-				Command_GetHP(param1);
+				Command_GetHP(client);
 			}
 			case 2:
 			{
-				HelpPanel2(param1);
+				HelpPanel2(client);
 			}
 			case 3:
 			{
-				NewPanel(param1, maxversion);
+				NewPanel(client, maxversion);
 			}
 			case 4:
 			{
-				QueuePanelCmd(param1,0);
+				QueuePanelCmd(client, 0);
 			}
 			case 5:
 			{
-				MusicTogglePanel(param1);
+				MusicTogglePanel(client);
 			}
 			case 6:
 			{
-				VoiceTogglePanel(param1);
+				VoiceTogglePanel(client);
 			}
 			case 7:
 			{
-				HelpPanel3(param1);
+				HelpPanel3(client);
 			}
 			default:
 			{
@@ -6673,7 +6735,7 @@ public Action:FF2Panel(client, args)
 	return Plugin_Handled;
 }
 
-public NewPanelH(Handle:menu, MenuAction:action, param1, param2)
+public NewPanelH(Handle:menu, MenuAction:action, client, param2)
 {
 	if(action==MenuAction_Select)
 	{
@@ -6681,24 +6743,24 @@ public NewPanelH(Handle:menu, MenuAction:action, param1, param2)
 		{
 			case 1:
 			{
-				if(curHelp[param1]<=0)
+				if(curHelp[client]<=0)
 				{
-					NewPanel(param1, 0);
+					NewPanel(client, 0);
 				}
 				else
 				{
-					NewPanel(param1, --curHelp[param1]);
+					NewPanel(client, --curHelp[client]);
 				}
 			}
 			case 2:
 			{
-				if(curHelp[param1]>=maxversion)
+				if(curHelp[client]>=maxversion)
 				{
-					NewPanel(param1, maxversion);
+					NewPanel(client, maxversion);
 				}
 				else
 				{
-					NewPanel(param1, ++curHelp[param1]);
+					NewPanel(client, ++curHelp[client]);
 				}
 			}
 			default:
@@ -6727,28 +6789,28 @@ public Action:NewPanel(client, versionindex)
 	new Handle:panel=CreatePanel();
 	decl String:s[90];
 	SetGlobalTransTarget(client);
-	Format(s,90,"=%t:=","whatsnew", ff2versiontitles[versionindex],ff2versiondates[versionindex]);
+	Format(s, 90, "=%t:=", "whatsnew", ff2versiontitles[versionindex], ff2versiondates[versionindex]);
 	SetPanelTitle(panel, s);
 	FindVersionData(panel, versionindex);
 	if(versionindex>0)
 	{
-		Format(s,90, "%t", "older");
+		Format(s, 90, "%t", "older");
 	}
 	else
 	{
-		Format(s,90, "%t", "noolder");
+		Format(s, 90, "%t", "noolder");
 	}
 	DrawPanelItem(panel, s);  
 	if(versionindex<maxversion)
 	{
-		Format(s,90, "%t", "newer");
+		Format(s, 90, "%t", "newer");
 	}
 	else
 	{
-		Format(s,90, "%t", "nonewer");
+		Format(s, 90, "%t", "nonewer");
 	}
 	DrawPanelItem(panel, s);  
-	Format(s,512,"%t","menu_6");
+	Format(s, 512, "%t", "menu_6");
 	DrawPanelItem(panel,s);    
 	SendPanelToClient(panel, client, NewPanelH, 9001);
 	CloseHandle(panel);
@@ -6775,7 +6837,7 @@ public Action:HelpPanel3(client)
 	SetPanelTitle(panel, "Turn the Freak Fortress 2 class info...");
 	DrawPanelItem(panel, "On");
 	DrawPanelItem(panel, "Off");
-	SendPanelToClient(panel, client, ClassinfoTogglePanelH,9001);
+	SendPanelToClient(panel, client, ClassinfoTogglePanelH, 9001);
 	CloseHandle(panel);
 	return Plugin_Handled;
 }
@@ -6876,10 +6938,10 @@ public Action:HelpPanel2(client)
 	new Handle:panel=CreatePanel();
 	if(class!=TFClass_Sniper)
 	{
-		Format(s,512,"%t\n%s","help_melee",s);
+		Format(s, 512, "%t\n%s", "help_melee", s);
 	}
-	SetPanelTitle(panel,s);
-	DrawPanelItem(panel,"Exit");
+	SetPanelTitle(panel, s);
+	DrawPanelItem(panel, "Exit");
 	SendPanelToClient(panel, client, HintPanelH, 20);
 	CloseHandle(panel);
 	return Plugin_Continue;
@@ -6889,18 +6951,18 @@ public Action:HelpPanelBoss(index)
 {
 	decl String:s[512];
 	decl String:lang[20];
-	GetLanguageInfo(GetClientLanguage(Boss[index]),lang,8,s,8);
-	Format(lang,20,"description_%s",lang);	
+	GetLanguageInfo(GetClientLanguage(Boss[index]), lang, 8, s, 8);
+	Format(lang, 20, "description_%s", lang);	
 	KvRewind(BossKV[Special[index]]);
 	KvGetString(BossKV[Special[index]], lang, s, 512);
 	if(!s[0])
 	{
 		return Plugin_Continue;
 	}
-	ReplaceString(s,512,"\\n","\n");
+	ReplaceString(s, 512, "\\n", "\n");
 	new Handle:panel=CreatePanel();
-	SetPanelTitle(panel,s);
-	DrawPanelItem(panel,"Exit");
+	SetPanelTitle(panel, s);
+	DrawPanelItem(panel, "Exit");
 	SendPanelToClient(panel, Boss[index], HintPanelH, 20);
 	CloseHandle(panel);
 	return Plugin_Continue;
@@ -6968,6 +7030,7 @@ public Action:VoiceTogglePanelCmd(client, args)
 	VoiceTogglePanel(client);
 	return Plugin_Handled;
 }
+
 public Action:VoiceTogglePanel(client)
 {
 	if(!Enabled || !IsValidClient(client))
@@ -6978,7 +7041,7 @@ public Action:VoiceTogglePanel(client)
 	SetPanelTitle(panel, "Turn the Freak Fortress 2 voices...");
 	DrawPanelItem(panel, "On");   
 	DrawPanelItem(panel, "Off");   
-	SendPanelToClient(panel, client, VoiceTogglePanelH,9001);
+	SendPanelToClient(panel, client, VoiceTogglePanelH, 9001);
 	CloseHandle(panel);
 	return Plugin_Continue;
 }
@@ -6997,7 +7060,7 @@ public VoiceTogglePanelH(Handle:menu, MenuAction:action, client, param2)
 			{
 				SetClientSoundOptions(client, SOUNDEXCEPT_VOICE, true);
 			}
-			CPrintToChat(client,"{olive}[FF2]{default} %t", "ff2_voice", param2==2 ? "off":"on");
+			CPrintToChat(client, "{olive}[FF2]{default} %t", "ff2_voice", param2==2 ? "off":"on");
 
 			if(param2==2)
 			{
@@ -7013,11 +7076,13 @@ public Action:HookSound(clients[64], &numClients, String:sample[PLATFORM_MAX_PAT
 	{
 		return Plugin_Continue;
 	}
+
 	new index=GetBossIndex(ent);
 	if(index==-1)
 	{
 		return Plugin_Continue;
 	}
+
 	if(!StrContains(sample, "vo") && !(FF2flags[Boss[index]] & FF2FLAG_TALKING))
 	{
 		if(bBlockVoice[Special[index]])
@@ -7061,7 +7126,8 @@ stock GetAmmo(client, slot)
 	}
 	return 0;
 }
-stock GetHealingTarget(client,bool:checkgun=false)
+
+stock GetHealingTarget(client, bool:checkgun=false)
 {
 	decl String:s[64];
 	new medigun=GetPlayerWeaponSlot(client, TFWeaponSlot_Secondary);
@@ -7135,7 +7201,7 @@ public NextmapPanelH(Handle:menu, MenuAction:action, client, param2)
 }
 
 
-public NextmapPanelH2(Handle:menu,num_votes,num_clients,const client_info[][2],num_items, const item_info[][2])
+public NextmapPanelH2(Handle:menu, num_votes, num_clients, const client_info[][2], num_items, const item_info[][2])
 {
 	decl String:mode[42], String:nextmap[42];
 	GetMenuItem(menu, item_info[0][VOTEINFO_ITEM_INDEX], mode, 42);
