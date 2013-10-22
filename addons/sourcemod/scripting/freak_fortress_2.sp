@@ -708,7 +708,7 @@ public OnPluginStart()
 	
 	if(strcmp(oldversion, ff2versiontitles[maxversion], false)!=0)
 	{
-		LogError("[Freak Fortress 2] Warning: your config may be outdated. Back up your /cfg/sourcemod/FreakFortress2.cfg and delete it, and FF2 will generate a new one that you can then modify to your original values.");
+		LogError("[FF2] Warning: your config may be outdated. Back up your /cfg/sourcemod/FreakFortress2.cfg and delete it, and FF2 will generate a new one that you can then modify to your original values.");
 	}
 	LoadTranslations("freak_fortress_2.phrases");
 	LoadTranslations("common.phrases");
