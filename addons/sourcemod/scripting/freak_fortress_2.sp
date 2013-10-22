@@ -24,7 +24,7 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.4.1 Beta 6"
+#define PLUGIN_VERSION "2.4.1 Beta 7"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -225,8 +225,8 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
 	"October 21, 2013",		//2.4.1
-	"October 20, 2013",		//2.4.1
-	"October 20, 2013"		//2.4.1
+	"October 21, 2013",		//2.4.1
+	"October 21, 2013"		//2.4.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -260,6 +260,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "13) Fixed some sniper rifles not highlighting Hale, and added something new to Hitman's Heatmaker (Powerlord)");
 			DrawPanelText(panel, "14) Fixed Petty Boy's Pocket Pistol not having minicrits (Powerlord)");
 			DrawPanelText(panel, "15) Added 3 new Halloween bosses, courtesy of Friagram and RavensBro!");
+			DrawPanelText(panel, "16) Fixed a few round-related bugs (Wliu)");
 			DrawPanelText(panel, "NOTE:  Powerlord is no more, so we are now also maintaining official FF2.  Except less frequent updates.");
 		}
 		case 32:  //2.4.0
@@ -2195,6 +2196,7 @@ public Action:Timer_MusicPlay(Handle:timer,any:client)
 		MusicIndex=-1;
 		return Plugin_Continue;
 	}
+
 	KvRewind(BossKV[Special[0]]);
 	if(KvJumpToKey(BossKV[Special[0]], "sound_bgm"))
 	{
@@ -2233,6 +2235,7 @@ public Action:Timer_MusicPlay(Handle:timer,any:client)
 				time=time2;
 			}
 		}
+
 		if(strlen(s[0])>5)
 		{
 			if(!client)
@@ -4363,7 +4366,7 @@ public Action:DoTaunt(client, const String:command[], argc)
 	}
 	else
 	{
-		if(GameRules_GetRoundState()==RoundState_StartGame)
+		if(GameRules_GetRoundState()!=RoundState_RoundRunning)
 		{
 			return Plugin_Handled;
 		}
@@ -4389,38 +4392,38 @@ public Action:DoTaunt(client, const String:command[], argc)
 
 	if(RoundFloat(BossCharge[index][0])==100)
 	{
-		decl i,j,count;
 		decl String:s[10];
 		decl String:lives[MAXRANDOMS][3];
-		for(i=1; i<MAXRANDOMS; i++)
+		for(new i=1; i<MAXRANDOMS; i++)
 		{
-			Format(s,10,"ability%i",i);
+			Format(s, 10, "ability%i", i);
 			KvRewind(BossKV[Special[index]]);
-			if(KvJumpToKey(BossKV[Special[index]],s))
+			if(KvJumpToKey(BossKV[Special[index]], s))
 			{
-				if(KvGetNum(BossKV[Special[index]], "arg0",0))
+				if(KvGetNum(BossKV[Special[index]], "arg0", 0))
 				{
 					continue;
 				}
-				KvGetString(BossKV[Special[index]], "life",s,10); 		
+
+				KvGetString(BossKV[Special[index]], "life", s, 10); 		
 				if(!s[0])
 				{
 					decl String:ability_name[64], String:plugin_name[64];
-					KvGetString(BossKV[Special[index]], "plugin_name",plugin_name,64);
-					KvGetString(BossKV[Special[index]], "name",ability_name,64);
-					UseAbility(ability_name,plugin_name,index,0);
+					KvGetString(BossKV[Special[index]], "plugin_name", plugin_name, 64);
+					KvGetString(BossKV[Special[index]], "name", ability_name, 64);
+					UseAbility(ability_name, plugin_name, index, 0);
 				}
 				else	
 				{
-					count=ExplodeString(s, " ", lives, MAXRANDOMS, 3);
-					for(j=0; j<count; j++)
+					new count=ExplodeString(s, " ", lives, MAXRANDOMS, 3);
+					for(new j=0; j<count; j++)
 					{
 						if(StringToInt(lives[j])==BossLives[index])
 						{
 							decl String:ability_name[64], String:plugin_name[64];
-							KvGetString(BossKV[Special[index]], "plugin_name",plugin_name,64);
-							KvGetString(BossKV[Special[index]], "name",ability_name,64);
-							UseAbility(ability_name,plugin_name,index,0);
+							KvGetString(BossKV[Special[index]], "plugin_name", plugin_name, 64);
+							KvGetString(BossKV[Special[index]], "name", ability_name, 64);
+							UseAbility(ability_name, plugin_name, index, 0);
 							break;
 						}
 					}
@@ -4430,17 +4433,17 @@ public Action:DoTaunt(client, const String:command[], argc)
 		decl Float:pos[3];
 		GetEntPropVector(client, Prop_Send, "m_vecOrigin", pos);
 		decl String:s2[PLATFORM_MAX_PATH];
-		if(RandomSoundAbility("sound_ability",s2,PLATFORM_MAX_PATH))
+		if(RandomSoundAbility("sound_ability", s2, PLATFORM_MAX_PATH))
 		{
 			FF2flags[Boss[index]] |= FF2FLAG_TALKING;
 			EmitSoundToAll(s2, client, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, pos, NULL_VECTOR, true, 0.0);
 			EmitSoundToAll(s2, client, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, pos, NULL_VECTOR, true, 0.0);
-			for(i=1;  i<=MaxClients;  i++)
+			for(new boss=1; boss<=MaxClients; boss++)
 			{
-				if(IsClientInGame(i) && i!=Boss[index])
+				if(IsClientInGame(boss) && boss!=Boss[index])
 				{
-					EmitSoundToClient(i,s2, client, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, pos, NULL_VECTOR, true, 0.0);
-					EmitSoundToClient(i,s2, client, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, pos, NULL_VECTOR, true, 0.0);
+					EmitSoundToClient(boss, s2, client, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, pos, NULL_VECTOR, true, 0.0);
+					EmitSoundToClient(boss, s2, client, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, SNDVOL_NORMAL, 100, client, pos, NULL_VECTOR, true, 0.0);
 				}
 			}
 			FF2flags[Boss[index]] &= ~FF2FLAG_TALKING;

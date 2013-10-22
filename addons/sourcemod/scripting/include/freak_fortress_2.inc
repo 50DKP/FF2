@@ -31,7 +31,7 @@ native bool:FF2_IsFF2Enabled();
 						1 - action
 						2 - someone wins
  */
-native FF2_GetRoundState();
+/*native FF2_GetRoundState();*/
 
 /**
  * Gets UserID of current Boss
