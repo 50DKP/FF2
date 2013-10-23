@@ -24,7 +24,7 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.4.1 Beta 7"
+#define PLUGIN_VERSION "2.4.1 Beta 8"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -44,7 +44,7 @@ new bool:b_allowBossChgClass=false;
 new bool:b_BossChgClassDetected=false;
 new OtherTeam=2;
 new BossTeam=3;
-//new FF2RoundState;
+new FF2RoundState;
 new playing;
 new healthcheckused;
 new RedAlivePlayers;
@@ -224,9 +224,9 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",	//2.3.1
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
-	"October 21, 2013",		//2.4.1
-	"October 21, 2013",		//2.4.1
-	"October 21, 2013"		//2.4.1
+	"October 22, 2013",		//2.4.1
+	"October 22, 2013",		//2.4.1
+	"October 22, 2013"		//2.4.1
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -259,9 +259,9 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "12) Fixed Psycho's lifeloss ability barely having any range (Wliu)");
 			DrawPanelText(panel, "13) Fixed some sniper rifles not highlighting Hale, and added something new to Hitman's Heatmaker (Powerlord)");
 			DrawPanelText(panel, "14) Fixed Petty Boy's Pocket Pistol not having minicrits (Powerlord)");
-			DrawPanelText(panel, "15) Added 3 new Halloween bosses, courtesy of Friagram and RavensBro!");
-			DrawPanelText(panel, "16) Fixed a few round-related bugs (Wliu)");
-			DrawPanelText(panel, "NOTE:  Powerlord is no more, so we are now also maintaining official FF2.  Except less frequent updates.");
+			DrawPanelText(panel, "15) Fixed a few round-related bugs (Wliu)");
+			DrawPanelText(panel, "16) Minor translation updates (Wliu)");
+			DrawPanelText(panel, "17) Added 3 new Halloween bosses, courtesy of Friagram and RavensBro!");
 		}
 		case 32:  //2.4.0
 		{
@@ -569,7 +569,7 @@ public APLRes:AskPluginLoad2(Handle:myself, bool:late, String:error[], err_max)
 	CreateNative("FF2_GetBossCharge", Native_GetBossCharge);
 	CreateNative("FF2_SetBossCharge", Native_SetBossCharge);
 	CreateNative("FF2_GetClientDamage", Native_GetDamage);
-	//CreateNative("FF2_GetRoundState", Native_GetRoundState);
+	CreateNative("FF2_GetRoundState", Native_GetRoundState);
 	CreateNative("FF2_GetSpecialKV", Native_GetSpecialKV);
 	CreateNative("FF2_StopMusic", Native_StopMusic);
 	CreateNative("FF2_GetRageDist", Native_GetRageDist);
@@ -606,11 +606,11 @@ public OnPluginStart()
 	cvarVersion=CreateConVar("ff2_version", PLUGIN_VERSION, "Freak Fortress 2 Version", FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_PLUGIN|FCVAR_SPONLY|FCVAR_DONTRECORD);
 	cvarPointType=CreateConVar("ff2_point_type", "0", "Select condition to enable point (0 - alive players, 1 - time)", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarPointDelay=CreateConVar("ff2_point_delay", "6", "Addition (for each player) delay before point's activation.", FCVAR_PLUGIN);
-	cvarAliveToEnable=CreateConVar("ff2_point_alive", "5", "Enable control points when there are X people left alive.", FCVAR_PLUGIN);
-	cvarAnnounce=CreateConVar("ff2_announce", "120.0", "Info about mode will show every X seconds. Must be greater than 1.0 to show.", FCVAR_PLUGIN, true, 0.0);
-	cvarEnabled=CreateConVar("ff2_enabled", "1", "Do you really want set it to 0?", FCVAR_PLUGIN|FCVAR_DONTRECORD, true, 0.0, true, 1.0);
+	cvarAliveToEnable=CreateConVar("ff2_point_alive", "5", "Enable control points when there are x people left alive.", FCVAR_PLUGIN);
+	cvarAnnounce=CreateConVar("ff2_announce", "120.0", "Info about mode will show every x seconds. Must be greater than 1.0 to show.", FCVAR_PLUGIN, true, 0.0);
+	cvarEnabled=CreateConVar("ff2_enabled", "1", "Do you really want to set it to 0?", FCVAR_PLUGIN|FCVAR_DONTRECORD, true, 0.0, true, 1.0);
 	cvarCrits=CreateConVar("ff2_crits", "1", "Can Boss get crits?", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-	cvarFirstRound=CreateConVar("ff2_first_round", "0", "Disable(0) or Enable(1) FF2 in 1st round.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	cvarFirstRound=CreateConVar("ff2_first_round", "0", "Disable (0) or Enable (1) FF2 in 1st round.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarCircuitStun=CreateConVar("ff2_circuit_stun", "2", "0 to disable Short Circuit stun, >0 to make it stun Boss for x seconds", FCVAR_PLUGIN, true, 0.0);
 	cvarUseCountdown=CreateConVar("ff2_countdown", "120", "Seconds of deathly countdown (begins when only 1 enemy is left)", FCVAR_PLUGIN);
 	cvarSpecForceBoss=CreateConVar("ff2_spec_force_boss", "0", "Spectators are allowed in Boss' queue.", FCVAR_PLUGIN, true, 0.0, true, 1.0);
@@ -987,21 +987,21 @@ EnableSubPlugins(bool:force=false)
 	new Handle:dir=OpenDirectory(path);
 	while(ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
 	{
-		if(filetype==FileType_File && StrContains(fname, ".smx",false)!=-1)
+		if(filetype==FileType_File && StrContains(fname, ".smx", false)!=-1)
 		{
-			Format(fname_old,PLATFORM_MAX_PATH,"%s/%s",path,fname);
+			Format(fname_old, PLATFORM_MAX_PATH,"%s/%s", path, fname);
 			ReplaceString(fname, PLATFORM_MAX_PATH, ".smx", ".ff2", false);
-			Format(fname,PLATFORM_MAX_PATH,"%s/%s",path,fname);
+			Format(fname, PLATFORM_MAX_PATH, "%s/%s", path, fname);
 			DeleteFile(fname);
-			RenameFile(fname,fname_old);
+			RenameFile(fname, fname_old);
 		}
 	}
 	dir=OpenDirectory(path);
 	while(ReadDirEntry(dir, fname, PLATFORM_MAX_PATH, filetype))
 	{
-		if(filetype==FileType_File && StrContains(fname, ".ff2",false)!=-1)
+		if(filetype==FileType_File && StrContains(fname, ".ff2", false)!=-1)
 		{
-			ServerCommand("sm plugins load freaks/%s",fname);
+			ServerCommand("sm plugins load freaks/%s", fname);
 		}
 	}
 }
@@ -1048,7 +1048,7 @@ public LoadCharacter(const String:character[])
 			BuildPath(Path_SM, s, PLATFORM_MAX_PATH, "plugins/freaks/%s.ff2", plugin_name);
 			if(!FileExists(s))
 			{
-				LogError("Character %s needs plugin %s!", character, plugin_name);
+				LogError("[FF2] Character %s needs plugin %s!", character, plugin_name);
 				return;
 			}
 		}
@@ -1327,7 +1327,7 @@ stock bool:IsFF2Map(bool:forceRecalc=false)
 		BuildPath(Path_SM, s, PLATFORM_MAX_PATH, "configs/freak_fortress_2/maps.cfg");
 		if(!FileExists(s))
 		{
-			LogError("[FF2] Unable to find %s, disabling plugin.", s);
+			LogError("[FF2] Unable to find %s, disabling plugin!", s);
 			isFF2Map=false;
 			found=true;
 			return false;
@@ -1335,7 +1335,7 @@ stock bool:IsFF2Map(bool:forceRecalc=false)
 		new Handle:fileh=OpenFile(s, "r");
 		if(fileh==INVALID_HANDLE)
 		{
-			LogError("[FF2] Error reading maps from %s, disabling plugin.", s);
+			LogError("[FF2] Error reading maps from %s, disabling plugin!", s);
 			isFF2Map=false;
 			found=true;
 			return false;
@@ -1451,7 +1451,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	{
 		return Plugin_Continue;
 	}
-	//FF2RoundState=0;
+	FF2RoundState=CheckRoundState();
 
 	if(FileExists("bNextMapToFF2"))
 	{
@@ -1497,8 +1497,8 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	{
 		new score1=GetTeamScore(OtherTeam);
 		new score2=GetTeamScore(BossTeam);
-		SetTeamScore(2,score1);
-		SetTeamScore(3,score2);
+		SetTeamScore(2, score1);
+		SetTeamScore(3, score2);
 		OtherTeam=2;
 		BossTeam=3;
 	}
@@ -1717,7 +1717,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 
 public Action:Timer_EnableCap(Handle:timer)
 {
-	if(GameRules_GetRoundState()==RoundState_Init)
+	if(FF2RoundState==-1)
 	{
 		SetControlPoint(true);
 		if(checkdoors)
@@ -1739,7 +1739,7 @@ public Action:Timer_EnableCap(Handle:timer)
 
 public Action:Timer_GogoBoss(Handle:hTimer)
 {
-	if(GameRules_GetRoundState()==RoundState_StartGame)
+	if(FF2RoundState==0)
 	{
 		decl boss;
 		for(boss=0; boss<=MaxClients; boss++)
@@ -1839,7 +1839,7 @@ public Action:Timer_CheckDoors(Handle:hTimer)
 		return Plugin_Stop;
 	}
 
-	if((!Enabled && GameRules_GetRoundState()!=RoundState_Init) || (Enabled && GameRules_GetRoundState()!=RoundState_Init))
+	if((!Enabled && FF2RoundState!=-1) || (Enabled && FF2RoundState!=-1))
 	{
 		return Plugin_Continue;
 	}
@@ -1876,7 +1876,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 		return Plugin_Continue;
 	}
 
-	//FF2RoundState=2;
+	FF2RoundState=CheckRoundState();
 	if((GetEventInt(event, "team")==BossTeam))
 	{
 		if(RandomSound("sound_win", s, PLATFORM_MAX_PATH))
@@ -2135,7 +2135,7 @@ public Action:StartBossTimer(Handle:hTimer)
 
 	if(!round)
 	{
-		//FF2RoundState=2;
+		FF2RoundState=CheckRoundState();
 		return Plugin_Continue; 		
 	}
 
@@ -2269,7 +2269,7 @@ public Action:Timer_MusicPlay(Handle:timer,any:client)
 public Action:Timer_MusicTheme(Handle:timer,any:userid)
 {
 	MusicTimer=INVALID_HANDLE;
-	if(Enabled && GameRules_GetRoundState()==RoundState_RoundRunning)
+	if(Enabled && FF2RoundState==1)
 	{
 		KvRewind(BossKV[Special[0]]);
 		if(KvJumpToKey(BossKV[Special[0]], "sound_bgm"))
@@ -2511,21 +2511,21 @@ public Action:GottamTimer(Handle:hTimer)
 
 public Action:StartRound(Handle:hTimer)
 {
-	//FF2RoundState=1;
-	for(new client=0; client<=MaxClients; client++)
+	FF2RoundState=CheckRoundState;
+	for(new boss=0; boss<=MaxClients; boss++)
 	{
-		if(!IsValidClient(Boss[client]))
+		if(!IsValidClient(Boss[boss]))
 		{
 			continue;
 		}
 
-		new bool:primary=IsValidEntity(GetPlayerWeaponSlot(Boss[client], TFWeaponSlot_Primary));
-		new bool:secondary=IsValidEntity(GetPlayerWeaponSlot(Boss[client], TFWeaponSlot_Secondary));
-		new bool:melee=IsValidEntity(GetPlayerWeaponSlot(Boss[client], TFWeaponSlot_Melee));
-		TF2_RemovePlayerDisguise(Boss[client]);
+		new bool:primary=IsValidEntity(GetPlayerWeaponSlot(Boss[boss], TFWeaponSlot_Primary));
+		new bool:secondary=IsValidEntity(GetPlayerWeaponSlot(Boss[boss], TFWeaponSlot_Secondary));
+		new bool:melee=IsValidEntity(GetPlayerWeaponSlot(Boss[boss], TFWeaponSlot_Melee));
+		TF2_RemovePlayerDisguise(Boss[boss]);
 		if(primary || secondary || melee)
 		{
-			CreateTimer(0.05, Timer_ReEquipBoss, client, TIMER_FLAG_NO_MAPCHANGE);
+			CreateTimer(0.05, Timer_ReEquipBoss, boss, TIMER_FLAG_NO_MAPCHANGE);
 		}
 	}
 	CreateTimer(10.0, Timer_SkipFF2Panel);
@@ -2551,7 +2551,7 @@ public Action:Timer_SkipFF2Panel(Handle:hTimer)
 		added[client]=true;
 		if(client && !IsBoss(client))
 		{
-			CPrintToChat(client, "{olive}[FF2]{default} %t", "to0_near");
+			CPrintToChat(client, "{olive}[FF2]{default} %t", "points_reset_near");
 			i++;
 		}
 		j++;
@@ -2561,7 +2561,7 @@ public Action:Timer_SkipFF2Panel(Handle:hTimer)
 
 public Action:MessageTimer(Handle:hTimer)
 {
-	if(GameRules_GetRoundState()!=RoundState_Init)
+	if(FF2RoundState!=-1)
 	{
 		return Plugin_Continue;
 	}
@@ -2617,7 +2617,7 @@ public Action:MessageTimer(Handle:hTimer)
 
 public Action:MakeModelTimer(Handle:hTimer,any:index)
 {	
-	if(!Boss[index] || !IsValidEdict(Boss[index]) || !IsClientInGame(Boss[index]) || !IsPlayerAlive(Boss[index]) || GameRules_GetRoundState()==RoundState_TeamWin || GameRules_GetRoundState()==RoundState_Stalemate)
+	if(!Boss[index] || !IsValidEdict(Boss[index]) || !IsClientInGame(Boss[index]) || !IsPlayerAlive(Boss[index]) || FF2RoundState==2)
 	{
 		return Plugin_Stop;
 	}
@@ -2736,7 +2736,7 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 
 	if(!IsPlayerAlive(Boss[index]))
 	{
-		if(GameRules_GetRoundState()==RoundState_StartGame)
+		if(FF2RoundState==0)
 		{
 			TF2_RespawnPlayer(Boss[index]);
 		}
@@ -3248,7 +3248,7 @@ stock Handle:PrepareItemHandle(Handle:hItem, String:name[]="", index=-1, const S
 public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 {
 	new client=GetClientOfUserId(clientid);
-	if(!IsValidClient(client) || !IsPlayerAlive(client) || GameRules_GetRoundState()==RoundState_TeamWin || GameRules_GetRoundState()==RoundState_Stalemate || IsBoss(client))
+	if(!IsValidClient(client) || !IsPlayerAlive(client) || FF2RoundState==2 || IsBoss(client))
 	{
 		return Plugin_Continue;
 	}
@@ -3281,7 +3281,7 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 
 public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check weapons)
 {
-	if(!IsValidClient(client) || !IsPlayerAlive(client) || GameRules_GetRoundState()==RoundState_TeamWin || GameRules_GetRoundState()==RoundState_Stalemate || IsBoss(client))
+	if(!IsValidClient(client) || !IsPlayerAlive(client) || FF2RoundState==2 || IsBoss(client))
 	{
 		return Plugin_Continue;
 	}
@@ -3493,7 +3493,7 @@ public Action:event_uberdeployed(Handle:event, const String:name[], bool:dontBro
 public Action:Timer_Uber(Handle:hTimer, any:medigunid)
 {
 	new medigun=EntRefToEntIndex(medigunid);
-	if(medigun && IsValidEntity(medigun) && GameRules_GetRoundState()==RoundState_RoundRunning)
+	if(medigun && IsValidEntity(medigun) && FF2RoundState==1)
 	{
 		new client=GetEntPropEnt(medigun, Prop_Send, "m_hOwnerEntity");
 		new Float:charge=GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel");
@@ -3550,7 +3550,7 @@ public Action:Command_GetHPCmd(client, args)
 
 public Action:Command_GetHP(client)
 {
-	if(!Enabled || GameRules_GetRoundState()!=RoundState_Init)
+	if(!Enabled || FF2RoundState!=-1)
 	{
 		return Plugin_Continue;
 	}
@@ -3813,7 +3813,7 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 	SetVariantString("");
 	AcceptEntityInput(client, "SetCustomModel");
 
-	if((GameRules_GetRoundState()!=RoundState_Init || !(FF2flags[client] & FF2FLAG_ALLOWSPAWNINBOSSTEAM)))
+	if((FF2RoundState!=-1 || !(FF2flags[client] & FF2FLAG_ALLOWSPAWNINBOSSTEAM)))
 	{
 		if(!(FF2flags[client] & FF2FLAG_HASONGIVED))
 		{
@@ -3845,7 +3845,7 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 		b_BossChgClassDetected=false; 
 	}
 
-	if(GetBossIndex(client)!=-1 && GameRules_GetRoundState()==RoundState_StartGame)
+	if(GetBossIndex(client)!=-1 && FF2RoundState==0)
 	{
 		TF2_RemoveAllWeapons(client);
 	}
@@ -3854,7 +3854,7 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 
 public Action:ClientTimer(Handle:hTimer)
 {
-	if(GameRules_GetRoundState()>RoundState_TeamWin || GameRules_GetRoundState()==RoundState_Init)
+	if(FF2RoundState>1 || FF2RoundState==-1)
 	{
 		return Plugin_Stop;
 	}
@@ -4142,7 +4142,7 @@ public Action:BossTimer(Handle:hTimer)
 			continue;
 		}
 
-		if(GameRules_GetRoundState()==RoundState_TeamWin || GameRules_GetRoundState()==RoundState_Stalemate)
+		if(FF2RoundState==2)
 		{
 			break;
 		}
@@ -4366,7 +4366,7 @@ public Action:DoTaunt(client, const String:command[], argc)
 	}
 	else
 	{
-		if(GameRules_GetRoundState()!=RoundState_RoundRunning)
+		if(FF2RoundState!=1)
 		{
 			return Plugin_Handled;
 		}
@@ -4454,7 +4454,7 @@ public Action:DoTaunt(client, const String:command[], argc)
 
 public Action:DoSuicide(client, const String:command[], argc)
 {
-	if(Enabled && IsBoss(client) && GameRules_GetRoundState()<=RoundState_StartGame)
+	if(Enabled && IsBoss(client) && FF2RoundState<=0)
 	{
 		return Plugin_Handled;
 	}
@@ -4532,7 +4532,7 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new client=GetClientOfUserId(GetEventInt(event, "userid"));
-	if(Enabled && client && GetClientHealth(client)<=0 && GameRules_GetRoundState()==RoundState_RoundRunning)
+	if(Enabled && client && GetClientHealth(client)<=0 && FF2RoundState==1)
 	{
 		OnPlayerDeath(client, GetClientOfUserId(GetEventInt(event, "attacker")), (GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER)!=0);
 	}
@@ -4541,7 +4541,7 @@ public Action:event_player_death(Handle:event, const String:name[], bool:dontBro
 
 OnPlayerDeath(client, attacker, bool:fake=false)
 {
-	if(GameRules_GetRoundState()!=RoundState_Init)
+	if(FF2RoundState!=-1)
 	{
 		return;
 	}
@@ -4735,7 +4735,7 @@ public Action:event_jarate(UserMsg:msg_id, Handle:bf, const players[], playersNu
 
 public Action:CheckAlivePlayers(Handle:hTimer)
 {
-	if(GameRules_GetRoundState()==RoundState_TeamWin || GameRules_GetRoundState()==RoundState_Stalemate)
+	if(FF2RoundState==2)
 	{
 		return Plugin_Continue;
 	}
@@ -4800,7 +4800,7 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 
 public Action:Timer_DrawGame(Handle:timer)
 {
-	if(BossHealth[0]<2000 || GameRules_GetRoundState()!=RoundState_Init)
+	if(BossHealth[0]<2000 || FF2RoundState!=-1)
 	{
 		return Plugin_Stop;
 	}
@@ -4958,9 +4958,9 @@ public Action:event_hurt(Handle:event, const String:name[], bool:dontBroadcast)
 			decl String:aname[64];
 			KvRewind(BossKV[Special[index]]);
 			KvGetString(BossKV[Special[index]], "name", aname, 64, "=Failed name=");
-			if(BossLives[index]<=1)  //ChrisMiuchiz:  Grammar.
+			if(BossLives[index]<=1)  //ChrisMiuchiz:  Grammar
 			{
-				Format(s, 256, "%t", "ff2_lives_left1", aname, BossLives[index]); 
+				Format(s, 256, "%t", "ff2_lives_left1", aname); 
 			}
 
 			if(BossLives[index]>=2)
@@ -5050,7 +5050,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 		return Plugin_Continue;
 	}
 
-	if(GameRules_GetRoundState()==RoundState_StartGame && IsBoss(client))
+	if(FF2RoundState==0 && IsBoss(client))
 	{
 		damage*=0.0;
 		return Plugin_Changed;
@@ -5217,7 +5217,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						{
 							case 14, 201, 664, 792, 801, 851, 881, 890, 899, 908, 957, 966:  //Sniper Rifle, Strange/Renamed Sniper Rifle, Festive Sniper Rifle, Botkiller Sniper Rifles
 							{
-								if(GameRules_GetRoundState()!=RoundState_TeamWin)
+								if(FF2RoundState!=2)
 								{
 									new Float:chargelevel=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
 									new Float:time=2.0;
@@ -5232,7 +5232,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							}
 							case 752:  //Hitman's Heatmaker
 							{
-								if(GameRules_GetRoundState()!=RoundState_TeamWin)
+								if(FF2RoundState!=2)
 								{
 									new Float:chargelevel=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage"):0.0);
 									new Float:add=10+(chargelevel/10);
@@ -5833,7 +5833,7 @@ public Action:TF2_CalcIsAttackCritical(client, weapon, String:weaponname[], &boo
 
 	if(IsBoss(client))
 	{
-		if(GameRules_GetRoundState()!=RoundState_Init || TF2_IsPlayerCritBuffed(client))
+		if(FF2RoundState!=-1 || TF2_IsPlayerCritBuffed(client))
 		{
 			return Plugin_Continue;
 		}
@@ -6532,7 +6532,7 @@ public Action:QueuePanelCmd(client, args)
 	{
 		DrawPanelItem(panel,"");
 	}
-	Format(s,64,"%t (%t)", "your_points", GetClientQueuePoints(client), "to0");
+	Format(s, 64, "%t (%t)", "your_points", GetClientQueuePoints(client), "points_reset");
 	DrawPanelItem(panel, s);
 	SendPanelToClient(panel, client, QueuePanelH, 9001);
 	CloseHandle(panel);
@@ -6585,12 +6585,12 @@ public TurnToZeroPanelH(Handle:menu, MenuAction:action, client, param2)
 	{
 		if(shortname[client]==client)
 		{
-			CPrintToChat(client, "{olive}[FF2]{default} %t", "to0_done");
+			CPrintToChat(client, "{olive}[FF2]{default} %t", "points_reset_done");
 		}
 		else
 		{
-			CPrintToChat(client, "{olive}[FF2]{default} %t", "to0_done_admin", shortname[client]);
-			CPrintToChat(shortname[client], "{olive}[FF2]{default} %t", "to0_done_by_admin", client);
+			CPrintToChat(client, "{olive}[FF2]{default} %t", "points_reset_done_admin", shortname[client]);
+			CPrintToChat(shortname[client], "{olive}[FF2]{default} %t", "points_reset_done_by_admin", client);
 		}
 		SetClientQueuePoints(shortname[client], 0);
 	}
@@ -6607,11 +6607,11 @@ public Action:TurnToZeroPanel(caller, client)
 	SetGlobalTransTarget(caller);
 	if(caller==client)
 	{
-		Format(s, 512, "%t", "to0_title");
+		Format(s, 512, "%t", "points_reset_title");
 	}
 	else
 	{
-		Format(s, 512, "%t", "to0_title_admin", client);
+		Format(s, 512, "%t", "points_reset_title_admin", client);
 	}
 	PrintToChat(caller, s);
 	SetPanelTitle(panel, s);
@@ -7586,14 +7586,14 @@ public Native_SetBossCharge(Handle:plugin, numParams)
 	BossCharge[index][slot]=Float:GetNativeCell(3);
 }
 
-/*public Native_GetRoundState(Handle:plugin, numParams)
+public Native_GetRoundState(Handle:plugin, numParams)
 {
-	if(GameRules_GetRoundState()<=RoundState_StartGame)
+	if(FF2RoundState<=0)
 	{
 		return 0;
 	}
-	return GameRules_GetRoundState();
-}*/
+	return FF2RoundState;
+}
 
 public Native_GetRageDist(Handle:plugin, numParams)
 {
@@ -7896,22 +7896,7 @@ public Action:VSH_OnGetRoundState(&result)
 {
 	if(Enabled)
 	{
-		if(GameRules_GetRoundState()==RoundState_Init)
-		{
-			result=-1;
-		}
-		else if(GameRules_GetRoundState()==RoundState_Pregame || GameRules_GetRoundState()==RoundState_StartGame || GameRules_GetRoundState()==RoundState_Preround)
-		{
-			result=0;
-		}
-		else if(GameRules_GetRoundState()==RoundState_RoundRunning)
-		{
-			result=1;
-		}
-		else
-		{
-			result=2;
-		}
+		result=FF2RoundState;
 		return Plugin_Changed;
 	}
 	return Plugin_Continue;
@@ -8010,6 +7995,26 @@ public OnEntityDestroyed(entity)
 		{
 			g_Monoculus=FindEntityByClassname(entity, MONOCULUS);
 		}
+	}
+}
+
+public CheckRoundState()
+{
+	if(GameRules_GetRoundState()==RoundState_Init)
+	{
+		return -1;
+	}
+	else if(GameRules_GetRoundState()==RoundState_Pregame || GameRules_GetRoundState()==RoundState_StartGame || GameRules_GetRoundState()==RoundState_Preround)
+	{
+		return 0;
+	}
+	else if(GameRules_GetRoundState()==RoundState_RoundRunning)
+	{
+		return 1;
+	}
+	else
+	{
+		return 2;
 	}
 }
 

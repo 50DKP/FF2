@@ -2,7 +2,7 @@
 {
 	"needmoreplayers"
 	{
-		"en"	"Freak Fortress 2 is currently disabled. More players are required."
+		"en"	"Freak Fortress 2 is currently disabled. More players are required!"
 	}
 	"type_ff2_to_open_menu"
 	{
@@ -16,12 +16,12 @@
 	"wait_hp"
 	{
 		"#format" "{1:i},{2:s}"
-		"en"  "You cannot check the boss's hp right now. Wait {1} more second(s). Last known hp value was {2}."
+		"en"  "You cannot check the boss's health right now. Wait {1} more seconds. The last known health value was {2}."
 	}
 	"damage"
 	{
 		"#format" "{1:i}"
-		"en"	"Dmg dealt by you - {1}"
+		"en"	"Dmg dealt by you: {1}"
 	}
 	"point_enable"
 	{
@@ -38,7 +38,7 @@
 	}
 	"health"
 	{
-		"#format" "{1:i},{2:i}"
+		"#format" "{1:i}, {2:i}"
 		"en"	"Health: {1} out of {2}"
 	}
 	"do_rage"
@@ -48,7 +48,7 @@
 	"rage_meter"
 	{
 		"#format" "{1:i}"
-		"en"	"Rage is {1} percent ready"
+		"en"	"Rage is {1} percent ready!"
 	}
 	"super_duper_jump"
 	{
@@ -59,20 +59,20 @@
 		"#format" "{1:i}"
 		"en"	"Teleportation is {1} percent ready. When at 100 percent look up and stand up."
 	}
-	"jump_status"
-	{
-		"#format" "{1:i}"
-		"en"	"Jump charge is {1} percent. Look upwards and stand up for jump"
-	}
 	"teleport_status_2"
 	{
 		"#format" "{1:i}"
-		"en"	"Teleportation will be avaliable in {1} second(s)."
+		"en"	"Teleportation will be avaliable in {1} seconds."
+	}
+	"jump_status"
+	{
+		"#format" "{1:i}"
+		"en"	"Jump charge is {1} percent. Look upwards and stand up for jump."
 	}
 	"jump_status_2"
 	{
 		"#format" "{1:i}"
-		"en"	"Super Jump will be avaliable in {1} second(s)."
+		"en"	"Super Jump will be avaliable in {1} seconds."
 	}
 	"help_scout"
 	{
@@ -124,7 +124,7 @@
 	}
 	"menu_2"
 	{
-		"en"	"Investigate the boss('s) current health level (/ff2hp)"
+		"en"	"Investigate the boss'(s) current hp (/ff2hp)"
 	}
 	"menu_3"
 	{
@@ -144,8 +144,8 @@
 	}
 	"whatsnew"
 	{
-		"#format" "{1:s},{2:s}"
-		"en"	"Whats new in v.{1} ({2})"
+		"#format" "{1:s}, {2:s}"
+		"en"	"Whats new in v{1} ({2})"
 	}
 	"help_mode"
 	{
@@ -157,7 +157,7 @@
 	}
 	"noolder"
 	{
-		"en"	"No older versions avaliable"
+		"en"	"No older versions avaliable!"
 	}
 	"newer"
 	{
@@ -165,35 +165,35 @@
 	}
 	"nonewer"
 	{
-		"en"	"No newer versions avaliable"
+		"en"	"No newer versions avaliable!"
 	}
 	"menu_7"
 	{
-		"en"	"Type /ff2classinfo to see your class changes"
+		"en"	"Type /ff2classinfo to see changes to your class."
 	}
 	"damage_fx"
 	{
 		"#format" "{1:i}"
-		"en"	"You dealt {1} damage in this round"
+		"en"	"You dealt {1} damage in this round!"
 	}
 	"scores"
 	{
 		"#format" "{1:i}"
-		"en"	"You earned {1} points in this round"
+		"en"	"You earned {1} points in this round!"
 	}
 	"ff2_start"
 	{
-		"#format" "{1:N},{2:s},{3:i},{4:s}"
+		"#format" "{1:N}, {2:s}, {3:i}, {4:s}"
 		"en"	"{1} became\n {2}\n with {3}{4} hp"
 	}
 	"ff2_hp"
 	{
-		"#format" "{1:s},{2:i},{3:i},{4:s}"
+		"#format" "{1:s}, {2:i}, {3:i}, {4:s}"
 		"en"	"Current {1}'s hp amount is {2} of {3}{4}"
 	}
 	"ff2_alive"
 	{
-		"#format" "{1:s},{2:i},{3:i},{4:s}"
+		"#format" "{1:s}, {2:i}, {3:i}, {4:s}"
 		"en"	"{1} left with {2} of {3}{4} hp left."
 	}
 	"select_charset"
@@ -210,40 +210,40 @@
 		"#format" "{1:i}"
 		"en"    "You earned {1} queue points."
 	}
-	"to0"
+	"points_reset"
 	{
-		"en"	"Set to 0"
+		"en"	"Reset queue points"
 	}	
-	"to0_title"
+	"points_reset_title"
 	{
-		"en"	"Do you really want to set your queue points to 0?"
+		"en"	"Do you really want to reset your queue points?"
 	}	
-	"to0_title_admin"
+	"points_reset_title_admin"
 	{
 		"#format" "{1:N}"
-		"en"	"Do you really want to set {1}'s queue points to 0?"
+		"en"	"Do you really want to reset {1}'s queue points?"
 	}	
-	"to0_done"
+	"points_reset_done"
 	{
-		"en"	"You now have {olive}0{default} queue points"
+		"en"	"You have successfully reset your queue points!"
 	}
-	"to0_done_admin"
+	"points_reset_done_admin"
 	{
 		"#format" "{1:N}"
-		"en"	"Now {olive}{1}{default} has {olive}0{default} queue points"
+		"en"	"You have successfully reset {olive}{1}{default}'s queue points!"
 	}
-	"to0_done_by_admin"
+	"points_reset_done_by_admin"
 	{
 		"#format" "{1:N}"
-		"en"	"{olive}{1}{default} set your queue points to {olive}0{default}"
+		"en"	"{olive}{1}{default} reset your queue points!"
 	}
-	"to0_near"
+	"points_reset_near"
 	{
-		"en"	"{axis}You will become the Boss soon. Type {default}{olive}/ff2next{default} {axis}to make sure.{default}"
+		"en"	"{red}You will become the Boss soon.  Type {default}{olive}/ff2next{default} {red}to make sure.{default}"
 	}
 	"first_round"
 	{
-		"en"	"Waiting for players to finish loading. Gamemode will be arena for this round"
+		"en"	"Waiting for players to finish loading.  Gamemode will be arena for this round."
 	}
 	"used_weighdown"
 	{
@@ -252,12 +252,12 @@
 	"ff2_music"
 	{
 		"#format" "{1:s}"
-		"en"	"Freak Fortress 2 Boss's music is {1} now."
+		"en"	"Boss's music is {1} now."
 	}
 	"ff2_voice"
 	{
 		"#format" "{1:s}"
-		"en"	"FF2 monolologues: {1}."
+		"en"	"FF2 monologues: {1}."
 	}
 	"ff2_voice2"
 	{
@@ -269,7 +269,7 @@
 	}
 	"menu_9"
 	{
-		"en"	"Toggle monolologues (/ff2voice)"
+		"en"	"Toggle monologues (/ff2voice)"
 	}
 	"menu_9a"
 	{
@@ -282,36 +282,36 @@
 	}
 	"ff2_last_update"
 	{
-		"#format" "{1:s},{2:s}"
-		"en"	"Whats new in v{olive}{1}{default} ({olive}{2}{default})?  Type {olive}/ff2new{default}."
+		"#format" "{1:s}, {2:s}"
+		"en"	"What's new in v{olive}{1}{default} ({olive}{2}{default})?  Type {olive}/ff2new{default} to find out."
 	}
 	"charge_status"
 	{
 		"#format" "{1:i}"
-		"en"	"Charge is {1} percent ready. When at 100 percent, depress charge button."
+		"en"	"Charge is {1} percent ready.  When at 100 percent, let go of the charge button."
 	}
 	"nextmap_charset"
 	{
-		"#format" "{1:s},{2:s}"
-		"en"	"There will be {2} character pack in {1} map."
+		"#format" "{1:s}, {2:s}"
+		"en"	"The character pack {1} will be on {2}."
 	}
 	"ff2_buttons_reload"
 	{
-		"en"	"Press reload button to use ability!"
+		"en"	"Press reload button to use your ability!"
 	}
 	"ff2_buttons_rmb"
 	{
-		"en"	"Press right mouse button to use ability!"
+		"en"	"Press right mouse button to use your ability!"
 	}
 	"ff2_lives_left"
 	{
-		"#format"	"{1:s},{2:i}"
-		"en"	"{1} lost 1 life! There are {2} more!"
+		"#format"	"{1:s}, {2:i}"
+		"en"	"{1} lost 1 life!  There are {2} more!"
 	}
 	"ff2_lives_left1"
 	{
-		"#format"	"{1:s},{2:i}"
-		"en"	"{1} lost 1 life! There is {2} more!"
+		"#format"	"{1:s}"
+		"en"	"{1} lost 1 life!  There is 1 more!"
 	}
 	"ff2_50dkp_help"
 	{

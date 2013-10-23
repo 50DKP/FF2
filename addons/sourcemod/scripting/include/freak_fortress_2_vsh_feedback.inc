@@ -60,22 +60,7 @@ public Native_VSHGetHealthMax(Handle:plugin, numParams)
 
 public Native_VSHGetRoundState(Handle:plugin, numParams)
 {
-	if(GameRules_GetRoundState()==RoundState_Init)
-	{
-		return -1;
-	}
-	else if(GameRules_GetRoundState()==RoundState_Pregame || GameRules_GetRoundState()==RoundState_StartGame || GameRules_GetRoundState()==RoundState_Preround)
-	{
-		return 0;
-	}
-	else if(GameRules_GetRoundState()==RoundState_RoundRunning)
-	{
-		return 1;
-	}
-	else
-	{
-		return 2;
-	}
+	return FF2RoundState;
 }
 
 public Native_VSHGetDamage(Handle:plugin, numParams)
