@@ -60,7 +60,7 @@ public Native_VSHGetHealthMax(Handle:plugin, numParams)
 
 public Native_VSHGetRoundState(Handle:plugin, numParams)
 {
-	return FF2RoundState;
+	return CheckRoundState();
 }
 
 public Native_VSHGetDamage(Handle:plugin, numParams)

@@ -44,7 +44,7 @@ new bool:b_allowBossChgClass=false;
 new bool:b_BossChgClassDetected=false;
 new OtherTeam=2;
 new BossTeam=3;
-new FF2RoundState;
+//new FF2RoundState;
 new playing;
 new healthcheckused;
 new RedAlivePlayers;
@@ -123,7 +123,6 @@ new bool:BossCrits=true;
 new Float:circuitStun=0.0;
 new UseCountdown=120;
 new bool:SpecForceBoss=false;
-new bool:halloween=false;
 
 new Handle:MusicTimer;
 new Handle:BossInfoTimer[MAXPLAYERS+1][2];
@@ -142,6 +141,7 @@ new tf_arena_use_queue;
 new mp_teams_unbalance_limit;
 new tf_arena_first_blood;
 new mp_forcecamera;
+new bool:halloween=false;
 new Float:tf_scout_hype_pep_max;
 new Handle:cvarNextmap;
 new bool:areSubPluginsEnabled;
@@ -617,7 +617,7 @@ public OnPluginStart()
 	cvarEnableEurekaEffect=CreateConVar("ff2_enable_eureka", "0", "1- allow Eureka Effect, else disallow", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarForceBossTeam=CreateConVar("ff2_force_team", "0", "0- Use plugin logic, 1- random team, 2- red, 3- blue", FCVAR_PLUGIN, true, 0.0, true, 3.0);
 	cvarHealthBar=CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0);
-	cvarHalloween=CreateConVar("ff2_halloween", "0", "Enable halloween FF2 characters", FCVAR_PLUGIN, true, 0.0, true, 1.0);
+	cvarHalloween=CreateConVar("ff2_halloween", "0", "0-Disable Halloween bosses, 1-Enable Halloween bosses, 2-Use TF2 logic", FCVAR_PLUGIN, true, 0.0, true, 2.0);
 	cvarAllowSpectators=FindConVar("mp_allowspectators");
 
 	HookConVarChange(cvarHealthBar, HealthbarEnableChanged);
@@ -783,6 +783,14 @@ public OnConfigsExecuted()
 		tf_arena_first_blood=GetConVarInt(FindConVar("tf_arena_first_blood"));
 		mp_forcecamera=GetConVarInt(FindConVar("mp_forcecamera"));
 		tf_scout_hype_pep_max=GetConVarFloat(FindConVar("tf_scout_hype_pep_max"));
+		if(halloween==2)
+		{
+			new TF2Halloween=GetConVarInt(FindConVar("tf_forced_holiday"));
+			if(TF2Halloween==2)
+			{
+				halloween=true;
+			}
+		}
 
 		SetConVarInt(FindConVar("tf_arena_use_queue"), 0);
 		SetConVarInt(FindConVar("mp_teams_unbalance_limit"), 0);
@@ -1451,7 +1459,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 	{
 		return Plugin_Continue;
 	}
-	FF2RoundState=CheckRoundState();
+	//FF2RoundState=CheckRoundState();
 
 	if(FileExists("bNextMapToFF2"))
 	{
@@ -1717,7 +1725,7 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 
 public Action:Timer_EnableCap(Handle:timer)
 {
-	if(FF2RoundState==-1)
+	if(CheckRoundState()==-1)
 	{
 		SetControlPoint(true);
 		if(checkdoors)
@@ -1739,7 +1747,7 @@ public Action:Timer_EnableCap(Handle:timer)
 
 public Action:Timer_GogoBoss(Handle:hTimer)
 {
-	if(FF2RoundState==0)
+	if(CheckRoundState()==0)
 	{
 		decl boss;
 		for(boss=0; boss<=MaxClients; boss++)
@@ -1802,8 +1810,8 @@ public Action:BossInfoTimer_showinfo(Handle:hTimer,any:index)
 			break;
 		}
 	}
-	new need_info_bout_reload=see && CheckInfoCookies(Boss[index],0);
-	new need_info_bout_rmb=CheckInfoCookies(Boss[index],1);
+	new need_info_bout_reload=see && CheckInfoCookies(Boss[index], 0);
+	new need_info_bout_rmb=CheckInfoCookies(Boss[index], 1);
 	if(need_info_bout_reload)
 	{
 		SetHudTextParams(0.75, 0.7, 0.15, 255, 255, 255, 255);
@@ -1839,7 +1847,7 @@ public Action:Timer_CheckDoors(Handle:hTimer)
 		return Plugin_Stop;
 	}
 
-	if((!Enabled && FF2RoundState!=-1) || (Enabled && FF2RoundState!=-1))
+	if((!Enabled && CheckRoundState()!=-1) || (Enabled && CheckRoundState()!=-1))
 	{
 		return Plugin_Continue;
 	}
@@ -1876,7 +1884,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 		return Plugin_Continue;
 	}
 
-	FF2RoundState=CheckRoundState();
+	//CheckRoundState()=2;
 	if((GetEventInt(event, "team")==BossTeam))
 	{
 		if(RandomSound("sound_win", s, PLATFORM_MAX_PATH))
@@ -2135,7 +2143,7 @@ public Action:StartBossTimer(Handle:hTimer)
 
 	if(!round)
 	{
-		FF2RoundState=CheckRoundState();
+		//CheckRoundState()=1;
 		return Plugin_Continue; 		
 	}
 
@@ -2269,7 +2277,7 @@ public Action:Timer_MusicPlay(Handle:timer,any:client)
 public Action:Timer_MusicTheme(Handle:timer,any:userid)
 {
 	MusicTimer=INVALID_HANDLE;
-	if(Enabled && FF2RoundState==1)
+	if(Enabled && CheckRoundState()==1)
 	{
 		KvRewind(BossKV[Special[0]]);
 		if(KvJumpToKey(BossKV[Special[0]], "sound_bgm"))
@@ -2511,7 +2519,7 @@ public Action:GottamTimer(Handle:hTimer)
 
 public Action:StartRound(Handle:hTimer)
 {
-	FF2RoundState=CheckRoundState;
+	CheckRoundState()=CheckRoundState;
 	for(new boss=0; boss<=MaxClients; boss++)
 	{
 		if(!IsValidClient(Boss[boss]))
@@ -2561,7 +2569,7 @@ public Action:Timer_SkipFF2Panel(Handle:hTimer)
 
 public Action:MessageTimer(Handle:hTimer)
 {
-	if(FF2RoundState!=-1)
+	if(CheckRoundState()!=-1)
 	{
 		return Plugin_Continue;
 	}
@@ -2617,7 +2625,7 @@ public Action:MessageTimer(Handle:hTimer)
 
 public Action:MakeModelTimer(Handle:hTimer,any:index)
 {	
-	if(!Boss[index] || !IsValidEdict(Boss[index]) || !IsClientInGame(Boss[index]) || !IsPlayerAlive(Boss[index]) || FF2RoundState==2)
+	if(!Boss[index] || !IsValidEdict(Boss[index]) || !IsClientInGame(Boss[index]) || !IsPlayerAlive(Boss[index]) || CheckRoundState()==2)
 	{
 		return Plugin_Stop;
 	}
@@ -2659,6 +2667,7 @@ EquipBoss(index)
 					Format(s2, 128, "68 ; 2 ; 2 ; 3.0 ; %s", s2);
 						//68:  +2 cap rate
 						//2:  x3 damage
+						//%s:  Boss-specific attributes
 				}
 			}
 			else
@@ -2669,15 +2678,14 @@ EquipBoss(index)
 						//68:  +1 cap rate
 						//2:  x3 damage
 						//49:  Disables double-jump
-						//%s:  Boss-specific attributes
-					//LogError("Malformed config detected!  Reverting to default attributes to avoid plugin crash.");
+					PrintToServer("Malformed config detected!  Reverting to default attributes to avoid plugin crash.");
 				}
 				else
 				{
 					s2="68 ; 2 ; 2 ; 3.0";
 						//68:  +2 cap rate
 						//2:  x3 damage
-					//LogError("Malformed config detected!  Reverting to default attributes to avoid plugin crash.");
+					PrintToServer("Malformed config detected!  Reverting to default attributes to avoid plugin crash.");
 				}
 			}
 
@@ -2736,7 +2744,7 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 
 	if(!IsPlayerAlive(Boss[index]))
 	{
-		if(FF2RoundState==0)
+		if(CheckRoundState()==0)
 		{
 			TF2_RespawnPlayer(Boss[index]);
 		}
@@ -3248,7 +3256,7 @@ stock Handle:PrepareItemHandle(Handle:hItem, String:name[]="", index=-1, const S
 public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 {
 	new client=GetClientOfUserId(clientid);
-	if(!IsValidClient(client) || !IsPlayerAlive(client) || FF2RoundState==2 || IsBoss(client))
+	if(!IsValidClient(client) || !IsPlayerAlive(client) || CheckRoundState()==2 || IsBoss(client))
 	{
 		return Plugin_Continue;
 	}
@@ -3281,7 +3289,7 @@ public Action:MakeNotBoss(Handle:hTimer,any:clientid)
 
 public Action:checkItems(Handle:hTimer,any:client)  //WEAPON BALANCE 2 (check weapons)
 {
-	if(!IsValidClient(client) || !IsPlayerAlive(client) || FF2RoundState==2 || IsBoss(client))
+	if(!IsValidClient(client) || !IsPlayerAlive(client) || CheckRoundState()==2 || IsBoss(client))
 	{
 		return Plugin_Continue;
 	}
@@ -3493,7 +3501,7 @@ public Action:event_uberdeployed(Handle:event, const String:name[], bool:dontBro
 public Action:Timer_Uber(Handle:hTimer, any:medigunid)
 {
 	new medigun=EntRefToEntIndex(medigunid);
-	if(medigun && IsValidEntity(medigun) && FF2RoundState==1)
+	if(medigun && IsValidEntity(medigun) && CheckRoundState()==1)
 	{
 		new client=GetEntPropEnt(medigun, Prop_Send, "m_hOwnerEntity");
 		new Float:charge=GetEntPropFloat(medigun, Prop_Send, "m_flChargeLevel");
@@ -3550,7 +3558,7 @@ public Action:Command_GetHPCmd(client, args)
 
 public Action:Command_GetHP(client)
 {
-	if(!Enabled || FF2RoundState!=-1)
+	if(!Enabled || CheckRoundState()!=-1)
 	{
 		return Plugin_Continue;
 	}
@@ -3813,7 +3821,7 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 	SetVariantString("");
 	AcceptEntityInput(client, "SetCustomModel");
 
-	if((FF2RoundState!=-1 || !(FF2flags[client] & FF2FLAG_ALLOWSPAWNINBOSSTEAM)))
+	if((CheckRoundState()!=-1 || !(FF2flags[client] & FF2FLAG_ALLOWSPAWNINBOSSTEAM)))
 	{
 		if(!(FF2flags[client] & FF2FLAG_HASONGIVED))
 		{
@@ -3845,7 +3853,7 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 		b_BossChgClassDetected=false; 
 	}
 
-	if(GetBossIndex(client)!=-1 && FF2RoundState==0)
+	if(GetBossIndex(client)!=-1 && CheckRoundState()==0)
 	{
 		TF2_RemoveAllWeapons(client);
 	}
@@ -3854,7 +3862,7 @@ public Action:event_player_spawn(Handle:event, const String:name[], bool:dontBro
 
 public Action:ClientTimer(Handle:hTimer)
 {
-	if(FF2RoundState>1 || FF2RoundState==-1)
+	if(CheckRoundState()>1 || CheckRoundState()==-1)
 	{
 		return Plugin_Stop;
 	}
@@ -4142,7 +4150,7 @@ public Action:BossTimer(Handle:hTimer)
 			continue;
 		}
 
-		if(FF2RoundState==2)
+		if(CheckRoundState()==2)
 		{
 			break;
 		}
@@ -4366,7 +4374,7 @@ public Action:DoTaunt(client, const String:command[], argc)
 	}
 	else
 	{
-		if(FF2RoundState!=1)
+		if(CheckRoundState()!=1)
 		{
 			return Plugin_Handled;
 		}
@@ -4454,7 +4462,7 @@ public Action:DoTaunt(client, const String:command[], argc)
 
 public Action:DoSuicide(client, const String:command[], argc)
 {
-	if(Enabled && IsBoss(client) && FF2RoundState<=0)
+	if(Enabled && IsBoss(client) && CheckRoundState()<=0)
 	{
 		return Plugin_Handled;
 	}
@@ -4532,7 +4540,7 @@ public Action:DoJoinTeam(client, const String:command[], argc)
 public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new client=GetClientOfUserId(GetEventInt(event, "userid"));
-	if(Enabled && client && GetClientHealth(client)<=0 && FF2RoundState==1)
+	if(Enabled && client && GetClientHealth(client)<=0 && CheckRoundState()==1)
 	{
 		OnPlayerDeath(client, GetClientOfUserId(GetEventInt(event, "attacker")), (GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER)!=0);
 	}
@@ -4541,7 +4549,7 @@ public Action:event_player_death(Handle:event, const String:name[], bool:dontBro
 
 OnPlayerDeath(client, attacker, bool:fake=false)
 {
-	if(FF2RoundState!=-1)
+	if(CheckRoundState()!=-1)
 	{
 		return;
 	}
@@ -4735,7 +4743,7 @@ public Action:event_jarate(UserMsg:msg_id, Handle:bf, const players[], playersNu
 
 public Action:CheckAlivePlayers(Handle:hTimer)
 {
-	if(FF2RoundState==2)
+	if(CheckRoundState()==2)
 	{
 		return Plugin_Continue;
 	}
@@ -4800,7 +4808,7 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 
 public Action:Timer_DrawGame(Handle:timer)
 {
-	if(BossHealth[0]<2000 || FF2RoundState!=-1)
+	if(BossHealth[0]<2000 || CheckRoundState()!=-1)
 	{
 		return Plugin_Stop;
 	}
@@ -5050,7 +5058,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 		return Plugin_Continue;
 	}
 
-	if(FF2RoundState==0 && IsBoss(client))
+	if(CheckRoundState()==0 && IsBoss(client))
 	{
 		damage*=0.0;
 		return Plugin_Changed;
@@ -5217,7 +5225,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						{
 							case 14, 201, 664, 792, 801, 851, 881, 890, 899, 908, 957, 966:  //Sniper Rifle, Strange/Renamed Sniper Rifle, Festive Sniper Rifle, Botkiller Sniper Rifles
 							{
-								if(FF2RoundState!=2)
+								if(CheckRoundState()!=2)
 								{
 									new Float:chargelevel=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage") : 0.0);
 									new Float:time=2.0;
@@ -5232,7 +5240,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 							}
 							case 752:  //Hitman's Heatmaker
 							{
-								if(FF2RoundState!=2)
+								if(CheckRoundState()!=2)
 								{
 									new Float:chargelevel=(IsValidEntity(weapon) && weapon>MaxClients ? GetEntPropFloat(weapon, Prop_Send, "m_flChargedDamage"):0.0);
 									new Float:add=10+(chargelevel/10);
@@ -5833,7 +5841,7 @@ public Action:TF2_CalcIsAttackCritical(client, weapon, String:weaponname[], &boo
 
 	if(IsBoss(client))
 	{
-		if(FF2RoundState!=-1 || TF2_IsPlayerCritBuffed(client))
+		if(CheckRoundState()!=-1 || TF2_IsPlayerCritBuffed(client))
 		{
 			return Plugin_Continue;
 		}
@@ -7588,11 +7596,11 @@ public Native_SetBossCharge(Handle:plugin, numParams)
 
 public Native_GetRoundState(Handle:plugin, numParams)
 {
-	if(FF2RoundState<=0)
+	if(CheckRoundState()<=0)
 	{
 		return 0;
 	}
-	return FF2RoundState;
+	return CheckRoundState();
 }
 
 public Native_GetRageDist(Handle:plugin, numParams)
@@ -7896,7 +7904,7 @@ public Action:VSH_OnGetRoundState(&result)
 {
 	if(Enabled)
 	{
-		result=FF2RoundState;
+		result=CheckRoundState();
 		return Plugin_Changed;
 	}
 	return Plugin_Continue;
