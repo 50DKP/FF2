@@ -141,7 +141,7 @@ new tf_arena_use_queue;
 new mp_teams_unbalance_limit;
 new tf_arena_first_blood;
 new mp_forcecamera;
-new bool:halloween=false;
+new bool:halloween;
 new Float:tf_scout_hype_pep_max;
 new Handle:cvarNextmap;
 new bool:areSubPluginsEnabled;
@@ -774,7 +774,6 @@ public OnConfigsExecuted()
 	AliveToEnable=GetConVarInt(cvarAliveToEnable);
 	BossCrits=GetConVarBool(cvarCrits);
 	circuitStun=GetConVarFloat(cvarCircuitStun);
-	halloween=GetConVarBool(cvarHalloween);
 
 	if(IsFF2Map() && GetConVarBool(cvarEnabled))
 	{
@@ -783,7 +782,7 @@ public OnConfigsExecuted()
 		tf_arena_first_blood=GetConVarInt(FindConVar("tf_arena_first_blood"));
 		mp_forcecamera=GetConVarInt(FindConVar("mp_forcecamera"));
 		tf_scout_hype_pep_max=GetConVarFloat(FindConVar("tf_scout_hype_pep_max"));
-		if(halloween==2)
+		if(GetConVarInt(cvarHalloween)==2)
 		{
 			new TF2Halloween=GetConVarInt(FindConVar("tf_forced_holiday"));
 			if(TF2Halloween==2)
@@ -2519,7 +2518,7 @@ public Action:GottamTimer(Handle:hTimer)
 
 public Action:StartRound(Handle:hTimer)
 {
-	CheckRoundState()=CheckRoundState;
+	//FF2RoundState=CheckRoundState();
 	for(new boss=0; boss<=MaxClients; boss++)
 	{
 		if(!IsValidClient(Boss[boss]))
