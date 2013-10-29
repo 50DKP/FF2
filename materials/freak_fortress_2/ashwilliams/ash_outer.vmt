@@ -1,0 +1,59 @@
+VertexLitGeneric
+{
+	"$basetexture"	"freak_fortress_2\ashwilliams\ash_outer"
+	"$model" "1"
+
+	"$phong" 1
+	"$phongboost" "3.5"
+
+	"$phongtint" "[0.05 0.00 0.00]"
+	"$phongfresnelranges" "[0.5 0.5 2]"
+	"$nodecal" 1
+	"$ambientocclusion" 1
+	"$halflambert" 0
+	"$diffuseexp" "1.5"
+	"$lightwarptexture" 	"models/lightwarps/weapon_lightwarp"
+	"$rimlight" 1
+	"$surfaceprop" flesh
+	
+	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+	"$detailscale" "5"
+	"$detailblendfactor" .01
+	"$detailblendmode" 6
+
+
+	"$yellow" "0"
+	"$one" "1"
+	
+	// Cloaking
+	"$cloakPassEnabled" "1"
+
+	"360?$color2" "[ 0.7 0.7 0.7 ]"
+
+	"Proxies"
+	{
+		"spy_invis"
+		{
+		}
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$detail"
+			"animatedtextureframenumvar" "$detailframe"
+			"animatedtextureframerate" 30
+		}
+		"BurnLevel"
+		{
+			"resultVar" "$detailblendfactor"
+		}
+		"YellowLevel"
+		{
+			"resultVar" "$yellow"
+		}
+		"Equals"
+		{
+			"srcVar1"  "$yellow"
+			"resultVar" "$color2"
+		}
+
+	}
+}

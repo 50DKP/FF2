@@ -1,0 +1,7 @@
+"UnlitGeneric"
+{
+	"$baseTexture" "freak_fortress_2\doom\doomguy_normal_c"
+	"$translucent" 1
+	"$ignorez"     "1"
+	"$no_fullbright" "1"	
+}

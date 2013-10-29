@@ -1,0 +1,56 @@
+"VertexLitGeneric"
+{
+	"$basetexture"	"freak_fortress_2/the_hidden_v3/hidden_glow"
+	"$bumpmap" "freak_fortress_2/the_hidden_v3/hidden_head_normal"
+	"$surfaceprop" "glass"
+                "$nocull" "1"
+	"$additive" 1
+//	"$translucent" 1
+	"$envmap" "env_cubemap"
+//	"$envmapcontrast" 1
+//	"$envmapsaturation" 1
+	"$envmaptint" "[ .1 .4 1]"
+	"$color" "[ .2 1 1]"
+//	"%keywords" "tf"
+
+	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+	"$detailscale" "5"
+	"$detailblendfactor" .01
+	"$detailblendmode" 6
+
+
+	"$yellow" "0"
+	"$one" "1"
+	
+	// Cloaking
+	"$cloakPassEnabled" "1"
+
+	"360?$color2" "[ 0.7 0.7 0.7 ]"
+
+	"Proxies"
+	{
+		"spy_invis"
+		{
+		}
+		"AnimatedTexture"
+		{
+			"animatedtexturevar" "$detail"
+			"animatedtextureframenumvar" "$detailframe"
+			"animatedtextureframerate" 30
+		}
+		"BurnLevel"
+		{
+			"resultVar" "$detailblendfactor"
+		}
+		"YellowLevel"
+		{
+			"resultVar" "$yellow"
+		}
+		"Equals"
+		{
+			"srcVar1"  "$yellow"
+			"resultVar" "$color2"
+		}
+
+	}
+}
