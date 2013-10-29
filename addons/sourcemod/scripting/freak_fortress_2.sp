@@ -24,7 +24,7 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.4.1 Beta 8"
+#define PLUGIN_VERSION "2.5.0 Beta 9"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -184,9 +184,10 @@ static const String:ff2versiontitles[][]=
 	"2.3.1",
 	"2.3.1",
 	"2.4.0",
-	"2.4.1",
-	"2.4.1",
-	"2.4.1"
+	"2.5.0",
+	"2.5.0",
+	"2.5.0",
+	"2.5.0"
 };
 
 static const String:ff2versiondates[][]=
@@ -224,18 +225,19 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",	//2.3.1
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
-	"October 22, 2013",		//2.4.1
-	"October 22, 2013",		//2.4.1
-	"October 22, 2013"		//2.4.1
+	"October 28, 2013",		//2.5.0
+	"October 28, 2013",		//2.5.0
+	"October 28, 2013",		//2.5.0
+	"October 28, 2013"		//2.5.0
 };
 
 stock FindVersionData(Handle:panel, versionindex)
 {
 	switch(versionindex)
 	{
-		case 35:  //2.4.1
+		case 36:  //2.5.0
 		{
-			DrawPanelText(panel, "The Tiny Bugfixes Update is now live!");
+			DrawPanelText(panel, "The Not-So-Tiny Bugfixes Update is now live!");
 			DrawPanelText(panel, "1) Added missing demopan download (AeroAcrobat/Wliu)");
 			DrawPanelText(panel, "2) Removed 2 missing Psycho sounds and added a new win one(AeroAcrobat/Lawd/Wliu)");
 			DrawPanelText(panel, "3) Removed item_fx.pcf from Travis (AeroAcrobat/Wliu)");
@@ -243,7 +245,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "5) Added missing backstab sounds to Saxton hale and HHH (Powerlord/Lawd)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 34:  //2.4.1
+		case 35:  //2.5.0
 		{
 			DrawPanelText(panel, "6) Added Gaben BGM (Lawd)");
 			DrawPanelText(panel, "7) Removed Merasmus, Vagineer, and Administrator (Lawd/Wliu)");
@@ -253,7 +255,7 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "10) Medigun can now overheal 50% more health (Powerlord)");
 			DrawPanelText(panel, "See next page (press 2)");
 		}
-		case 33:  //2.4.1
+		case 34:  //2.5.0
 		{
 			DrawPanelText(panel, "11) Kunai now heals 200 health on backstab, and has no more health cap (Wliu)");
 			DrawPanelText(panel, "12) Fixed Psycho's lifeloss ability barely having any range (Wliu)");
@@ -261,7 +263,11 @@ stock FindVersionData(Handle:panel, versionindex)
 			DrawPanelText(panel, "14) Fixed Petty Boy's Pocket Pistol not having minicrits (Powerlord)");
 			DrawPanelText(panel, "15) Fixed a few round-related bugs (Wliu)");
 			DrawPanelText(panel, "16) Minor translation updates (Wliu)");
-			DrawPanelText(panel, "17) Added 3 new Halloween bosses, courtesy of Friagram and RavensBro!");
+			DrawPanelText(panel, "17) Nerfed Rocket's shotgun damage (Wliu)");
+		}
+		case 33:  //2.5.0
+		{
+			DrawPanelText(panel, "18) Added 3 new Halloween bosses, courtesy of Friagram and RavensBro!");
 		}
 		case 32:  //2.4.0
 		{
@@ -1294,7 +1300,7 @@ public Action:Timer_Announce(Handle:hTimer)
 			}
 			case 6:
 			{
-				CPrintToChatAll("{olive}FF2-50DKP{default} is brought to you by:  {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}ChrisMiuchiz{default}.");
+				CPrintToChatAll("{olive}FF2-50DKP{default} is brought to you by: {olive}Wliu{default}, {olive}Lawd{default}, {olive}Carge{default}, and {olive}ChrisMiuchiz{default}.");
 			}
 			case 7:
 			{
