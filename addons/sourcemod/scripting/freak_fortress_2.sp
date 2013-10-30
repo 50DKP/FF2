@@ -24,7 +24,7 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #include <clientprefs>
 #include <steamtools>
 
-#define PLUGIN_VERSION "2.5.0 Beta 9"
+#define PLUGIN_VERSION "2.5.0 RC 1"
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -239,7 +239,7 @@ stock FindVersionData(Handle:panel, versionindex)
 		{
 			DrawPanelText(panel, "The Not-So-Tiny Bugfixes Update is now live!");
 			DrawPanelText(panel, "1) Added missing demopan download (AeroAcrobat/Wliu)");
-			DrawPanelText(panel, "2) Removed 2 missing Psycho sounds and added a new win one(AeroAcrobat/Lawd/Wliu)");
+			DrawPanelText(panel, "2) Removed 2 missing Psycho sounds and added a new win one (AeroAcrobat/Lawd/Wliu)");
 			DrawPanelText(panel, "3) Removed item_fx.pcf from Travis (AeroAcrobat/Wliu)");
 			DrawPanelText(panel, "4) Nerfed Psycho's melee swing rate (Wliu)");
 			DrawPanelText(panel, "5) Added missing backstab sounds to Saxton hale and HHH (Powerlord/Lawd)");
@@ -267,7 +267,9 @@ stock FindVersionData(Handle:panel, versionindex)
 		}
 		case 33:  //2.5.0
 		{
-			DrawPanelText(panel, "18) Added 3 new Halloween bosses, courtesy of Friagram and RavensBro!");
+			DrawPanelText(panel, "18) Some tweaks to Scout bosses (Wliu)");
+			DrawPanelText(panel, "19) Added a new Halloween mode (Wliu)");
+			DrawPanelText(panel, "20) Added 3 new Halloween bosses (Friagram/RavensBro)");
 		}
 		case 32:  //2.4.0
 		{
@@ -788,15 +790,25 @@ public OnConfigsExecuted()
 		tf_arena_first_blood=GetConVarInt(FindConVar("tf_arena_first_blood"));
 		mp_forcecamera=GetConVarInt(FindConVar("mp_forcecamera"));
 		tf_scout_hype_pep_max=GetConVarFloat(FindConVar("tf_scout_hype_pep_max"));
-		if(GetConVarInt(cvarHalloween)==2)
+		switch(GetConVarInt(cvarHalloween))
 		{
-			new TF2Halloween=GetConVarInt(FindConVar("tf_forced_holiday"));
-			if(TF2Halloween==2)
+			case 1:
 			{
 				halloween=true;
 			}
+			case 2:
+			{
+				new TF2Halloween=GetConVarInt(FindConVar("tf_forced_holiday"));
+				if(TF2Halloween==2)
+				{
+					halloween=true;
+				}
+			}
+			default:
+			{
+				halloween=false;
+			}
 		}
-
 		SetConVarInt(FindConVar("tf_arena_use_queue"), 0);
 		SetConVarInt(FindConVar("mp_teams_unbalance_limit"), 0);
 		SetConVarInt(FindConVar("tf_arena_first_blood"), 0);
@@ -2643,23 +2655,23 @@ public Action:MakeModelTimer(Handle:hTimer,any:index)
 	return Plugin_Continue;
 }
 
-EquipBoss(index)
+EquipBoss(client)
 {
-	DoOverlay(Boss[index], "");
-	TF2_RemoveAllWeapons(Boss[index]);
+	DoOverlay(Boss[client], "");
+	TF2_RemoveAllWeapons(Boss[client]);
 	decl String:s[64];
 	decl String:s2[128];
 	for(new j=1; ; j++)
 	{
-		KvRewind(BossKV[Special[index]]);
+		KvRewind(BossKV[Special[client]]);
 		Format(s, 10, "weapon%i", j);
-		if(KvJumpToKey(BossKV[Special[index]], s))
+		if(KvJumpToKey(BossKV[Special[client]], s))
 		{
-			KvGetString(BossKV[Special[index]], "name", s, 64);
-			KvGetString(BossKV[Special[index]], "attributes", s2, 128);
+			KvGetString(BossKV[Special[client]], "name", s, 64);
+			KvGetString(BossKV[Special[client]], "attributes", s2, 128);
 			if(s2[0]!='\0')
 			{
-				if(TF2_GetPlayerClass(index)==TFClass_Scout)
+				if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
 				{
 					Format(s2, 128, "68 ; 1 ; 2 ; 3.0 ; 49 ; 1 ; %s", s2);
 						//68:  +1 cap rate
@@ -2677,7 +2689,7 @@ EquipBoss(index)
 			}
 			else
 			{
-				if(TF2_GetPlayerClass(index)==TFClass_Scout)
+				if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
 				{
 					s2="68 ; 1 ; 2 ; 3.0 ; 49 ; 1";
 						//68:  +1 cap rate
@@ -2694,18 +2706,18 @@ EquipBoss(index)
 				}
 			}
 
-			new BossWeapon=SpawnWeapon(Boss[index], s, KvGetNum(BossKV[Special[index]], "index"), 101, 5, s2);
-			if(!KvGetNum(BossKV[Special[index]], "show", 0))
+			new BossWeapon=SpawnWeapon(Boss[client], s, KvGetNum(BossKV[Special[client]], "client"), 101, 5, s2);
+			if(!KvGetNum(BossKV[Special[client]], "show", 0))
 			{
-				SetEntProp(BossWeapon, Prop_Send, "m_iWorldModelIndex", -1);
-				SetEntProp(BossWeapon, Prop_Send, "m_nModelIndexOverrides", -1, _, 0);
+				SetEntProp(BossWeapon, Prop_Send, "m_iWorldModelclient", -1);
+				SetEntProp(BossWeapon, Prop_Send, "m_nModelclientOverrides", -1, _, 0);
 			}
-			SetEntPropEnt(Boss[index], Prop_Send, "m_hActiveWeapon", BossWeapon);
-			KvGoBack(BossKV[Special[index]]);
-			new TFClassType:tclass=TFClassType:KvGetNum(BossKV[Special[index]], "class", 1);
-			if(TF2_GetPlayerClass(Boss[index])!=tclass)
+			SetEntPropEnt(Boss[client], Prop_Send, "m_hActiveWeapon", BossWeapon);
+			KvGoBack(BossKV[Special[client]]);
+			new TFClassType:tclass=TFClassType:KvGetNum(BossKV[Special[client]], "class", 1);
+			if(TF2_GetPlayerClass(Boss[client])!=tclass)
 			{
-				TF2_SetPlayerClass(Boss[index], tclass);
+				TF2_SetPlayerClass(Boss[client], tclass);
 			}
 		}
 		else
@@ -2820,7 +2832,7 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 			}
 		}
 	}
-	EquipBoss(index); 	
+	EquipBoss(index);
 	KSpreeCount[index]=0;
 	BossCharge[index][0]=0.0;
 	SetEntProp(Boss[index], Prop_Data, "m_iMaxHealth",BossHealthMax[index]);

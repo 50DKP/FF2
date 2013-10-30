@@ -38,7 +38,7 @@
 	}
 	"health"
 	{
-		"#format" "{1:i}, {2:i}"
+		"#format" "{1:i},{2:i}"
 		"en"	"Health: {1} out of {2}"
 	}
 	"do_rage"
@@ -144,7 +144,7 @@
 	}
 	"whatsnew"
 	{
-		"#format" "{1:s}, {2:s}"
+		"#format" "{1:s},{2:s}"
 		"en"	"Whats new in v{1} ({2})"
 	}
 	"help_mode"
@@ -183,17 +183,17 @@
 	}
 	"ff2_start"
 	{
-		"#format" "{1:N}, {2:s}, {3:i}, {4:s}"
+		"#format" "{1:N},{2:s},{3:i},{4:s}"
 		"en"	"{1} became\n {2}\n with {3}{4} hp"
 	}
 	"ff2_hp"
 	{
-		"#format" "{1:s}, {2:i}, {3:i}, {4:s}"
+		"#format" "{1:s},{2:i},{3:i},{4:s}"
 		"en"	"Current {1}'s hp amount is {2} of {3}{4}"
 	}
 	"ff2_alive"
 	{
-		"#format" "{1:s}, {2:i}, {3:i}, {4:s}"
+		"#format" "{1:s},{2:i},{3:i},{4:s}"
 		"en"	"{1} left with {2} of {3}{4} hp left."
 	}
 	"select_charset"
@@ -282,7 +282,7 @@
 	}
 	"ff2_last_update"
 	{
-		"#format" "{1:s}, {2:s}"
+		"#format" "{1:s},{2:s}"
 		"en"	"What's new in v{olive}{1}{default} ({olive}{2}{default})?  Type {olive}/ff2new{default} to find out."
 	}
 	"charge_status"
@@ -292,7 +292,7 @@
 	}
 	"nextmap_charset"
 	{
-		"#format" "{1:s}, {2:s}"
+		"#format" "{1:s},{2:s}"
 		"en"	"The character pack {1} will be on {2}."
 	}
 	"ff2_buttons_reload"
@@ -305,7 +305,7 @@
 	}
 	"ff2_lives_left"
 	{
-		"#format"	"{1:s}, {2:i}"
+		"#format"	"{1:s},{2:i}"
 		"en"	"{1} lost 1 life!  There are {2} more!"
 	}
 	"ff2_lives_left1"
