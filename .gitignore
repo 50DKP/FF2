@@ -39,10 +39,7 @@
 #SOURCEMOD RANDOM STUFF
 /addons/sourcemod/data/
 /addons/sourcemod/extensions/
-/addons/sourcemod/gamedata/core.games/
-/addons/sourcemod/gamedata/sdkhooks.games/
-/addons/sourcemod/gamedata/sdktools.games/
-/addons/sourcemod/gamedata/sm-cstrike.games/
+/addons/sourcemod/gamedata/*/
 /addons/sourcemod/gamedata/sm-tf2.games.txt
 /addons/sourcemod/gamedata/tf2.items.txt
 /addons/sourcemod/gamedata/tf2.attributes.txt
@@ -65,6 +62,7 @@
 /addons/sourcemod/plugins/r*.smx
 /addons/sourcemod/plugins/t*.smx
 /addons/sourcemod/plugins/u*.smx
+/addons/sourcemod/plugins/v*.smx
 /addons/sourcemod/plugins/w*.smx
 #SOURCEMOD SOURCE
 /addons/sourcemod/scripting/a*/
@@ -93,6 +91,7 @@
 /addons/sourcemod/scripting/include/t*
 /addons/sourcemod/scripting/include/u*
 /addons/sourcemod/scripting/include/v*
+/addons/sourcemod/scripting/includes/
 /addons/sourcemod/scripting/p*/
 /addons/sourcemod/scripting/t*/
 /addons/sourcemod/scripting/a*.sp

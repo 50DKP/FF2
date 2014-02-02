@@ -39,7 +39,6 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 
 new bool:steamtools=false;
 
-new chkFirstHale;
 new bool:b_allowBossChgClass=false;
 new bool:b_BossChgClassDetected=false;
 new OtherTeam=2;
@@ -224,10 +223,10 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",	//2.3.1
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
-	"November 11, 2013",	//2.5.0
-	"Nobember 11, 2013",	//2.5.0
-	"November 11, 2013",	//2.5.0
-	"November 11, 2013"		//2.5.0
+	"February 2, 2014",		//2.5.0
+	"February 2, 2014",		//2.5.0
+	"February 2, 2014",		//2.5.0
+	"February 2, 2014"		//2.5.0
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -857,7 +856,6 @@ public OnConfigsExecuted()
 public OnMapStart()
 {
 	HPTime=0.0;
-	chkFirstHale=0;
 	MusicTimer=INVALID_HANDLE;
 	RoundCounter=0;
 	doorchecktimer=INVALID_HANDLE;
@@ -2656,19 +2654,19 @@ EquipBoss(client)
 {
 	DoOverlay(Boss[client], "");
 	TF2_RemoveAllWeapons(Boss[client]);
-	decl String:s[64];
+	decl String:weapon[64];
 	decl String:attributes[128];
-	for(new j=1; ; j++)
+	for(new i=1; ; i++)
 	{
 		KvRewind(BossKV[Special[client]]);
-		Format(s, 10, "weapon%i", j);
-		if(KvJumpToKey(BossKV[Special[client]], s))
+		Format(weapon, 10, "weapon%i", i);
+		if(KvJumpToKey(BossKV[Special[client]], weapon))
 		{
-			KvGetString(BossKV[Special[client]], "name", s, 64);
+			KvGetString(BossKV[Special[client]], "name", weapon, 64);
 			KvGetString(BossKV[Special[client]], "attributes", attributes, 128);
 			if(attributes[0]!='\0')
 			{
-				if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
+				/*if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
 				{
 					Format(attributes, 128, "68 ; 1 ; 2 ; 3.0 ; 49 ; 1 ; %s", attributes);
 						//68:  +1 cap rate
@@ -2677,33 +2675,31 @@ EquipBoss(client)
 						//%s:  Boss-specific attributes
 				}
 				else
-				{
+				{*/
 					Format(attributes, 128, "68 ; 2 ; 2 ; 3.0 ; %s", attributes);
 						//68:  +2 cap rate
 						//2:  x3 damage
 						//%s:  Boss-specific attributes
-				}
+				//}
 			}
 			else
 			{
-				if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
+				/*if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
 				{
 					attributes="68 ; 1 ; 2 ; 3.0 ; 49 ; 1";
 						//68:  +1 cap rate
 						//2:  x3 damage
 						//49:  Disables double-jump
-					PrintToServer("Malformed config detected!  Reverting to default attributes to avoid plugin crash.");
 				}
 				else
-				{
+				{*/
 					attributes="68 ; 2 ; 2 ; 3.0";
 						//68:  +2 cap rate
 						//2:  x3 damage
-					PrintToServer("Malformed config detected!  Reverting to default attributes to avoid plugin crash.");
-				}
+				//}
 			}
 
-			new BossWeapon=SpawnWeapon(Boss[client], s, KvGetNum(BossKV[Special[client]], "client"), 101, 5, attributes);
+			new BossWeapon=SpawnWeapon(Boss[client], weapon, KvGetNum(BossKV[Special[client]], "client"), 101, 5, attributes);
 			if(!KvGetNum(BossKV[Special[client]], "show", 0))
 			{
 				SetEntProp(BossWeapon, Prop_Send, "m_iWorldModelclient", -1);
@@ -2834,51 +2830,8 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 	BossCharge[index][0]=0.0;
 	SetEntProp(Boss[index], Prop_Data, "m_iMaxHealth", BossHealthMax[index]);
 
-	SetClientQueuePoints(Boss[index], 0);	
-	if(chkFirstHale==0)
-	{
-		if(GetConVarBool(cvarFirstRound) && RoundCount==0)
-		{
-			cFH(Boss[index]);
-		}
-		else if(!GetConVarBool(cvarFirstRound) && RoundCount==1)
-		{
-			cFH(Boss[index]);
-		}
-	}
+	SetClientQueuePoints(Boss[index], 0);
 	return Plugin_Continue;
-}
-
-public cFH(any:client)
-{
-	if(client>0)
-	{
-		CreateTimer(3.0, checkFirstHale, client);
-	}
-}
-
-public Action:checkFirstHale(Handle:timer,any:client)
-{
-	b_allowBossChgClass=true;
-	if(GetBossIndex(client)!=-1 && client>0)
-	{
-		CPrintToChat(client, "{olive}[FF2]{default} First-round Hale Bug Check!");
-		ForcePlayerSuicide(client);
-		
-		if(TF2_GetPlayerClass(client)==TFClass_Soldier)
-		{
-			TF2_SetPlayerClass(client, TFClass_Scout);
-		}
-		else
-		{
-			TF2_SetPlayerClass(client, TFClass_Soldier);
-		}
-		TF2_RespawnPlayer(client);
-		TF2_RemoveAllWeapons(client);
-		CPrintToChat(client,"{olive}[FF2]{default} Bugs squashed!");
-	}
-	b_allowBossChgClass=false;
-	chkFirstHale++;
 }
 
 public Action:TF2Items_OnGiveNamedItem(client, String:classname[], iItemDefinitionIndex, &Handle:hItem)  //WEAPON BALANCE 1 (custom attributes)
@@ -5359,7 +5312,7 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 					{
 						SpawnSmallHealthPackAt(client, GetClientTeam(attacker));
 					}
-					case 355:  //Sydney Sleeper
+					case 355:  //The Fan O' War
 					{
 						BossCharge[index][0]-=5.0;
 						if(BossCharge[index][0]<0)
@@ -7941,7 +7894,7 @@ public Action:VSH_OnGetRoundState(&result)
 
 UpdateHealthBar()
 {
-	if(!GetConVarBool(cvarHealthBar) || g_Monoculus!=-1)
+	if(!GetConVarBool(cvarHealthBar) || g_Monoculus!=-1 || CheckRoundState()==-1)
 	{
 		return;
 	}
