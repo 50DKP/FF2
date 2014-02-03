@@ -1997,7 +1997,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 	}
 	else
 	{
-		Format(s0, 32, "This guy left the game!");
+		Format(s0, 32, "---");
 		top[0]=0;
 	}
 	decl String:s1[32];
@@ -2007,7 +2007,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 	}
 	else
 	{
-		Format(s1, 32, "This guy left the game!");
+		Format(s1, 32, "---");
 		top[1]=0;
 	}
 	decl String:s2[32];
@@ -2017,7 +2017,7 @@ public Action:event_round_end(Handle:event, const String:name[], bool:dontBroadc
 	}
 	else
 	{
-		Format(s2, 32, "This guy left the game!");
+		Format(s2, 32, "---");
 		top[2]=0;
 	}
 	SetHudTextParams(-1.0, 0.2, 10.0, 255, 255, 255, 255);
@@ -2699,11 +2699,11 @@ EquipBoss(client)
 				//}
 			}
 
-			new BossWeapon=SpawnWeapon(Boss[client], weapon, KvGetNum(BossKV[Special[client]], "client"), 101, 5, attributes);
+			new BossWeapon=SpawnWeapon(Boss[client], weapon, KvGetNum(BossKV[Special[client]], "index"), 101, 5, attributes);
 			if(!KvGetNum(BossKV[Special[client]], "show", 0))
 			{
-				SetEntProp(BossWeapon, Prop_Send, "m_iWorldModelclient", -1);
-				SetEntProp(BossWeapon, Prop_Send, "m_nModelclientOverrides", -1, _, 0);
+				SetEntProp(BossWeapon, Prop_Send, "m_iWorldModelIndex", -1);
+				SetEntProp(BossWeapon, Prop_Send, "m_nModelIndexOverrides", -1, _, 0);
 			}
 			SetEntPropEnt(Boss[client], Prop_Send, "m_hActiveWeapon", BossWeapon);
 			KvGoBack(BossKV[Special[client]]);
