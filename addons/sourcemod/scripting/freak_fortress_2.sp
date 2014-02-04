@@ -2543,7 +2543,7 @@ public Action:StartRound(Handle:hTimer)
 		new bool:secondary=IsValidEntity(GetPlayerWeaponSlot(Boss[boss], TFWeaponSlot_Secondary));
 		new bool:melee=IsValidEntity(GetPlayerWeaponSlot(Boss[boss], TFWeaponSlot_Melee));
 		TF2_RemovePlayerDisguise(Boss[boss]);
-		if(primary || secondary || melee)
+		if((!primary && !secondary && !melee) || (primary || secondary || melee))
 		{
 			CreateTimer(0.05, Timer_ReEquipBoss, boss, TIMER_FLAG_NO_MAPCHANGE);
 		}
@@ -2666,7 +2666,7 @@ EquipBoss(client)
 			KvGetString(BossKV[Special[client]], "attributes", attributes, 128);
 			if(attributes[0]!='\0')
 			{
-				/*if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
+				if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
 				{
 					Format(attributes, 128, "68 ; 1 ; 2 ; 3.0 ; 49 ; 1 ; %s", attributes);
 						//68:  +1 cap rate
@@ -2675,16 +2675,16 @@ EquipBoss(client)
 						//%s:  Boss-specific attributes
 				}
 				else
-				{*/
+				{
 					Format(attributes, 128, "68 ; 2 ; 2 ; 3.0 ; %s", attributes);
 						//68:  +2 cap rate
 						//2:  x3 damage
 						//%s:  Boss-specific attributes
-				//}
+				}
 			}
 			else
 			{
-				/*if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
+				if(TF2_GetPlayerClass(Boss[client])==TFClass_Scout)
 				{
 					attributes="68 ; 1 ; 2 ; 3.0 ; 49 ; 1";
 						//68:  +1 cap rate
@@ -2692,11 +2692,11 @@ EquipBoss(client)
 						//49:  Disables double-jump
 				}
 				else
-				{*/
+				{
 					attributes="68 ; 2 ; 2 ; 3.0";
 						//68:  +2 cap rate
 						//2:  x3 damage
-				//}
+				}
 			}
 
 			new BossWeapon=SpawnWeapon(Boss[client], weapon, KvGetNum(BossKV[Special[client]], "index"), 101, 5, attributes);
@@ -2706,6 +2706,7 @@ EquipBoss(client)
 				SetEntProp(BossWeapon, Prop_Send, "m_nModelIndexOverrides", -1, _, 0);
 			}
 			SetEntPropEnt(Boss[client], Prop_Send, "m_hActiveWeapon", BossWeapon);
+
 			KvGoBack(BossKV[Special[client]]);
 			new TFClassType:class=TFClassType:KvGetNum(BossKV[Special[client]], "class", 1);
 			if(TF2_GetPlayerClass(Boss[client])!=class)
@@ -2764,7 +2765,7 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 		}
 	}
 	
-	CreateTimer(0.2, MakeModelTimer,index);
+	CreateTimer(0.2, MakeModelTimer, index);
 	if(!IsVoteInProgress() && GetClientClassinfoCookie(Boss[index]))
 	{
 		HelpPanelBoss(index);
