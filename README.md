@@ -3,7 +3,7 @@ FF2-50DKP
 
 [50DKP's](http://www.50dkp.com) FF2 updates!
 
-**CURRENT VERSION:  2.5.0**
+**CURRENT VERSION:  2.5.0** (beta)
 
 Most of the work is done in the [development](https://github.com/50DKP/FF2/tree/development) branch.  Whenever a new version is considered stable, it will be merged into the [master](https://github.com/50DKP/FF2/tree/master) branch.
 If an urgent bugfix is needed in a stable version, that will be done in the [master](https://github.com/50DKP/FF2/tree/master) branch.
