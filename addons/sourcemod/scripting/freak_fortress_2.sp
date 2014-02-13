@@ -2581,7 +2581,7 @@ public Action:Timer_SkipFF2Panel(Handle:hTimer)
 
 public Action:MessageTimer(Handle:hTimer)
 {
-	if(CheckRoundState()!=-1)
+	if(CheckRoundState()!=0)
 	{
 		return Plugin_Continue;
 	}
@@ -2727,10 +2727,11 @@ public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
 	new TFClassType:oldclass=TF2_GetPlayerClass(client);
 	new team=GetClientTeam(client); 
 	if(team==BossTeam && !b_allowBossChgClass && IsPlayerAlive(client))  
-    {
+	{
         b_BossChgClassDetected=true;
         TF2_SetPlayerClass(client, oldclass);
-    }
+		CreateTimer(0.2, MakeModelTimer, client);
+	}
 }
 
 public Action:MakeBoss(Handle:hTimer,any:index)
