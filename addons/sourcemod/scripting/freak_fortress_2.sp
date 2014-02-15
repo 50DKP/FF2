@@ -3946,7 +3946,7 @@ public Action:ClientTimer(Handle:hTimer)
 				}
 				else
 				{
-					TF2_AddCondition(client,TFCond_Buffed, 0.3);
+					TF2_AddCondition(client, TFCond_Buffed, 0.3);
 				}
 			}
 
@@ -4518,13 +4518,14 @@ public Action:event_player_death(Handle:event, const String:name[], bool:dontBro
 
 OnPlayerDeath(client, attacker, bool:fake=false)
 {
-	if(CheckRoundState()!=-1)
+	if(CheckRoundState()!=1)
 	{
 		return;
 	}
+
 	CreateTimer(0.1, CheckAlivePlayers);
 	DoOverlay(client, "");
-	decl String:s[PLATFORM_MAX_PATH]; 	
+	decl String:sound[PLATFORM_MAX_PATH]; 	
 	if(!IsBoss(client))
 	{
 		if(fake)
@@ -4535,11 +4536,11 @@ OnPlayerDeath(client, attacker, bool:fake=false)
 		CreateTimer(1.0, Timer_Damage, GetClientUserId(client));
 		if(IsBoss(attacker))
 		{
-			new index=GetBossIndex(attacker);
-			if(RandomSound("sound_hit", s, PLATFORM_MAX_PATH,index))
+			new boss=GetBossIndex(attacker);
+			if(RandomSound("sound_hit", sound, PLATFORM_MAX_PATH, boss))
 			{
-				EmitSoundToAll(s);
-				EmitSoundToAll(s);
+				EmitSoundToAll(sound);
+				EmitSoundToAll(sound);
 			}
 
 			if(!GetRandomInt(0, 2))
@@ -4547,74 +4548,77 @@ OnPlayerDeath(client, attacker, bool:fake=false)
 				new Handle:data;
 				CreateDataTimer(0.1, PlaySoundKill, data);
 				WritePackCell(data, GetClientUserId(client));
-				WritePackCell(data, index);
+				WritePackCell(data, boss);
 				ResetPack(data);
 			}
 
-			if(GetGameTime()<=KSpreeTimer[index])
+			if(GetGameTime()<=KSpreeTimer[boss])
 			{
-				KSpreeCount[index]++;
+				KSpreeCount[boss]++;
 			}
 			else
 			{
-				KSpreeCount[index]=1;
+				KSpreeCount[boss]=1;
 			}
 
-			if(KSpreeCount[index]==3) 
+			if(KSpreeCount[boss]==3) 
 			{
-				if(RandomSound("sound_kspree", s, PLATFORM_MAX_PATH, index))
+				if(RandomSound("sound_kspree", sound, PLATFORM_MAX_PATH, boss))
 				{
-					EmitSoundToAll(s);
-					EmitSoundToAll(s);
+					EmitSoundToAll(sound);
+					EmitSoundToAll(sound);
 				}
-				KSpreeCount[index]=0;
+				KSpreeCount[boss]=0;
 			}
 			else
 			{
-				KSpreeTimer[index]=GetGameTime()+5.0;
+				KSpreeTimer[boss]=GetGameTime()+5.0;
 			}
 		}
 	}
 	else
 	{	
-		new index=GetBossIndex(client);
-		if(index==-1)
+		new boss=GetBossIndex(client);
+		if(boss==-1)
 		{
 			return;
 		}
-		BossHealth[index]=0;
-		if(RandomSound("sound_death", s, PLATFORM_MAX_PATH, index))
+
+		BossHealth[boss]=0;
+		if(RandomSound("sound_death", sound, PLATFORM_MAX_PATH, boss))
 		{
-			EmitSoundToAll(s);
-			EmitSoundToAll(s);
+			EmitSoundToAll(sound);
+			EmitSoundToAll(sound);
 		}
-		if(BossHealth[index]<0)
+
+		if(BossHealth[boss]<0)
 		{
-			BossHealth[index]=0;
+			BossHealth[boss]=0;
 		}
+
 		UpdateHealthBar();
 		CreateTimer(0.5, Timer_RestoreLastClass, GetClientUserId(client));
-
 		return;
 	}
 
 	if(TF2_GetPlayerClass(client)==TFClass_Engineer && !fake)
 	{
+		decl String:name[PLATFORM_MAX_PATH];
 		FakeClientCommand(client, "destroy 2");
-		for(new ent=MaxClients+1; ent<ME; ent++)
+		for(new entity=MaxClients+1; entity<ME; entity++)
 		{
-			if(IsValidEdict(ent))
+			if(IsValidEdict(entity))
 			{
-				GetEdictClassname(ent, s, sizeof(s));
-				if(!StrContains(s, "obj_sentrygun") && (GetEntPropEnt(ent, Prop_Send, "m_hBuilder")==client))
+				GetEdictClassname(entity, name, sizeof(name));
+				if(!StrContains(name, "obj_sentrygun") && (GetEntPropEnt(entity, Prop_Send, "m_hBuilder")==client))
 				{
-					SetVariantInt(GetEntPropEnt(ent, Prop_Send, "m_iMaxHealth")+1);
-					AcceptEntityInput(ent, "RemoveHealth");
-					new Handle:tevent=CreateEvent("object_removed", true);
-					SetEventInt(tevent, "userid", GetClientUserId(client));
-					SetEventInt(tevent, "index", ent);
-					FireEvent(tevent);
-					AcceptEntityInput(ent, "kill");
+					SetVariantInt(GetEntPropEnt(entity, Prop_Send, "m_iMaxHealth")+1);
+					AcceptEntityInput(entity, "RemoveHealth");
+					new Handle:event=CreateEvent("object_removed", true);
+					SetEventInt(event, "userid", GetClientUserId(client));
+					SetEventInt(event, "index", entity);
+					FireEvent(event);
+					AcceptEntityInput(entity, "kill");
 				}
 			}
 		}
