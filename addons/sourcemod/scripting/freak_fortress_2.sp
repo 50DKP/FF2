@@ -2721,12 +2721,12 @@ EquipBoss(client)
 	}
 }
 
-public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast) 
+public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
 {
 	new client=GetClientOfUserId(GetEventInt(event, "userid"));
 	new TFClassType:oldclass=TF2_GetPlayerClass(client);
-	new team=GetClientTeam(client); 
-	if(team==BossTeam && !b_allowBossChgClass && IsPlayerAlive(client))  
+	new team=GetClientTeam(client);
+	if(team==BossTeam && !b_allowBossChgClass && IsPlayerAlive(client))
 	{
         b_BossChgClassDetected=true;
         TF2_SetPlayerClass(client, oldclass);
@@ -2765,7 +2765,7 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 			return Plugin_Continue;
 		}
 	}
-	
+
 	CreateTimer(0.2, MakeModelTimer, index);
 	if(!IsVoteInProgress() && GetClientClassinfoCookie(Boss[index]))
 	{

@@ -109,7 +109,7 @@
 /addons/sourcemod/scripting/n*.sp
 /addons/sourcemod/scripting/p*.sp
 /addons/sourcemod/scripting/r*.sp
-/addons/sourcemod/scripting/s*.*
+/addons/sourcemod/scripting/s*
 /addons/sourcemod/scripting/t*.sp
 /addons/sourcemod/scripting/w*.sp
 /addons/sourcemod/scripting/u*.sp
