@@ -15,6 +15,7 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #pragma semicolon 1
 
 #include <sourcemod>
+#include <freak_fortress_2>
 #include <sdktools>
 #include <sdktools_gamerules>
 #include <sdkhooks>
@@ -55,18 +56,6 @@ new Damage[MAXPLAYERS+1];
 new curHelp[MAXPLAYERS+1];
 new uberTarget[MAXPLAYERS+1];	
 
-#define FF2FLAG_UBERREADY				(1 << 1)		//Used when medic says "I'm charged!"
-#define FF2FLAG_ISBUFFED				(1 << 2)		//Used when soldier uses backup's buff.
-#define FF2FLAG_CLASSTIMERDISABLED 		(1 << 3)		//Used to prevent clients' timer.
-#define FF2FLAG_HUDDISABLED				(1 << 4)		//Used to prevent custom hud from clients' timer.
-#define FF2FLAG_BOTRAGE					(1 << 5)		//Used by bots to use Boss' rage.
-#define FF2FLAG_TALKING					(1 << 6)		//Used by Bosses with "sound_block_vo" to disable block for some lines.
-#define FF2FLAG_ALLOWSPAWNINBOSSTEAM	(1 << 7)		//Used to allow spawn players in Boss' team.
-#define FF2FLAG_USEBOSSTIMER			(1 << 8)		//Used to prevent Boss' timer.
-#define FF2FLAG_USINGABILITY			(1 << 9)		//Used to prevent Boss' hints about abilities buttons.
-#define FF2FLAG_CLASSHELPED        		(1 << 10)
-#define FF2FLAG_HASONGIVED        		(1 << 11)
-#define FF2FLAGS_SPAWN					~FF2FLAG_UBERREADY & ~FF2FLAG_ISBUFFED & ~FF2FLAG_TALKING & ~FF2FLAG_ALLOWSPAWNINBOSSTEAM & FF2FLAG_USEBOSSTIMER & ~FF2FLAG_USINGABILITY
 new FF2flags[MAXPLAYERS+1];
 
 new Boss[MAXPLAYERS+1];
@@ -101,6 +90,7 @@ new Handle:cvarForceBossTeam;
 new Handle:cvarHealthBar;
 new Handle:cvarAllowSpectators;
 new Handle:cvarHalloween;
+new Handle:cvarDebug;
 
 new Handle:FF2Cookies;
 
@@ -223,10 +213,10 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",	//2.3.1
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
-	"February 2, 2014",		//2.5.0
-	"February 2, 2014",		//2.5.0
-	"February 2, 2014",		//2.5.0
-	"February 2, 2014"		//2.5.0
+	"February 20, 2014",	//2.5.0
+	"February 20, 2014",	//2.5.0
+	"February 20, 2014",	//2.5.0
+	"February 20, 2014"		//2.5.0
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -625,6 +615,7 @@ public OnPluginStart()
 	cvarForceBossTeam=CreateConVar("ff2_force_team", "0", "0- Use plugin logic, 1- random team, 2- red, 3- blue", FCVAR_PLUGIN, true, 0.0, true, 3.0);
 	cvarHealthBar=CreateConVar("ff2_health_bar", "1", "Show boss health bar", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarHalloween=CreateConVar("ff2_halloween", "0", "0-Disable Halloween bosses, 1-Enable Halloween bosses, 2-Use TF2 logic", FCVAR_PLUGIN, true, 0.0, true, 2.0);
+	cvarDebug=CreateConVar("ff2_debug", "0", "0-Disable debugging, 1-Enable debugging (not recommended)", FCVAR_PLUGIN, true, 0.0, true, 1.0);
 	cvarAllowSpectators=FindConVar("mp_allowspectators");
 
 	HookConVarChange(cvarHealthBar, HealthbarEnableChanged);
@@ -7816,6 +7807,11 @@ public Native_RandomSound(Handle:plugin, numParams)
 public Native_IsVSHMap(Handle:plugin, numParams)
 {
 	return false;
+}
+
+public Native_Debug(Handle:plugin, numParams)
+{
+	return GetConVarBool(cvarDebug);
 }
 
 public Action:VSH_OnIsSaxtonHaleModeEnabled(&result)
