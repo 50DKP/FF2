@@ -1,18 +1,15 @@
 "VertexLitGeneric"
 
 {
-	"$basetexture" "freak_fortress_2\ninjaspy\spy_black"
+	"$basetexture" "freak_fortress_2\ninjaspy\spy_black_v2"
 	"$bumpmap" "models/player/spy/spy_normal"
-			"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
+	"$detail" "effects/tiledfire/fireLayeredSlowTiled512.vtf"	
 	"$detailscale" "5"
 	"$detailblendfactor" .01
 	"$detailblendmode" 6
 
-
-
 	"$yellow" "0"
 	"$one" "1"
-
 
 	"$phong" "1"
 	"$phongexponent" "20"
