@@ -44,6 +44,8 @@
 /addons/sourcemod/gamedata/tf2.items.txt
 /addons/sourcemod/gamedata/tf2.attributes.txt
 /addons/sourcemod/logs/
+/addons/sourcemod/GPL*.txt
+/addons/sourcemod/LICENSE.txt
 #SOURCEMOD PLUGINS
 /addons/sourcemod/plugins/disabled/
 /addons/sourcemod/plugins/a*.smx

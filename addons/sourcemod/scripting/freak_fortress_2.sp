@@ -23,9 +23,15 @@ FF2-50DKP is being updated by ChrisMiuchiz, Wliu, LAWD VAWLDAWMAWRT, and Carge.
 #include <morecolors>
 #include <tf2items>
 #include <clientprefs>
-#include <steamtools>
+#undef REQUIRE_EXTENSIONS
+#tryinclude <steamtools>
+#define REQUIRE_EXTENSIONS
+#undef REQUIRE_PLUGIN
+#include <updater>
 
 #define PLUGIN_VERSION "2.5.0"
+#define UPDATE_URL "http://198.27.69.149/updater/ff2-50dkp/update.txt"
+
 #define ME 2048
 #define MAXSPECIALS 64
 #define MAXRANDOMS 16
@@ -213,10 +219,10 @@ static const String:ff2versiondates[][]=
 	"September 6, 2013",	//2.3.1
 	"September 6, 2013",  	//2.3.1
 	"September 17, 2013",	//2.4.0
-	"February 20, 2014",	//2.5.0
-	"February 20, 2014",	//2.5.0
-	"February 20, 2014",	//2.5.0
-	"February 20, 2014"		//2.5.0
+	"February 22, 2014",	//2.5.0
+	"February 22, 2014",	//2.5.0
+	"February 22, 2014",	//2.5.0
+	"February 22, 2014"		//2.5.0
 };
 
 stock FindVersionData(Handle:panel, versionindex)
@@ -719,6 +725,11 @@ public OnPluginStart()
 	AddMultiTargetFilter("@!boss", BossTargetFilter, "all non-Boss players", false);
 
 	steamtools=LibraryExists("SteamTools");
+
+	if(LibraryExists("updater"))
+    {
+        Updater_AddPlugin(UPDATE_URL);
+    }
 }
 
 public bool:BossTargetFilter(const String:pattern[], Handle:clients)
@@ -746,6 +757,11 @@ public bool:BossTargetFilter(const String:pattern[], Handle:clients)
 
 public OnLibraryAdded(const String:name[])
 {
+	if(StrEqual(name, "updater"))
+    {
+        Updater_AddPlugin(UPDATE_URL);
+    }
+
 	if(strcmp(name, "SteamTools", false)==0)
 	{
 		steamtools=true;

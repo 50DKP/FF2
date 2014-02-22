@@ -1,0 +1,50 @@
+"Updater"
+{
+	"Information"
+	{
+		"Version"
+		{
+			"Latest"	"2.5.0"
+			"Previous"	"2.4.0"
+		}
+		"Notes"	"Too much stuff to put here"
+	}
+
+	"Files"
+	{
+		"Patch"
+		{
+			"Plugin"	"Path_SM/plugins/freak_fortress_2.smx"
+			"Source"	"Path_SM/scripting/freak_fortress_2.sp"
+		}
+		"Plugin"	"Path_SM/plugins/freak_fortress_2.smx"
+		"Plugin"	"Path_SM/plugins/freaks/default_abilities.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ep_radimoko.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_1st_set_abilities.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_50dkp.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_bosstweaks.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_darthmule_stripped.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_otokiru.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_otokiru_pp.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_phatrages.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/ff2_servercommandrage.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/halloween_2013.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/pickups.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/rage_overlay.ff2"
+		"Plugin"	"Path_SM/plugins/freaks/special_noanims.ff2"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/administrator_head_red.vmt"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/administrator_head_red.vtf"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/administrator_purple.vmt"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/administrator_purple.vtf"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/administrator_red.vmt"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/administrator_red.vtf"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/eye-iris-green.vmt"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/administrator/eye-iris-green.vtf"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/ashwilliams/ash_body.vmt"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/ashwilliams/ash_body.vtf"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/ashwilliams/ash_chainsaw.vmt"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/ashwilliams/ash_chainsaw.vtf"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/ashwilliams/ash_outer.vmt"
+		"Plugin"	"Path_Mod/materials/freak_fortress_2/ashwilliams/ash_outer.vtf"
+	}
+}
