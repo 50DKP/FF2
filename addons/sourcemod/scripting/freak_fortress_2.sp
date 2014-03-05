@@ -2736,8 +2736,8 @@ public OnChangeClass(Handle:event, const String:name[], bool:dontBroadcast)
 	new team=GetClientTeam(client);
 	if(team==BossTeam && !b_allowBossChgClass && IsPlayerAlive(client))
 	{
-        b_BossChgClassDetected=true;
-        TF2_SetPlayerClass(client, oldclass);
+		b_BossChgClassDetected=true;
+		TF2_SetPlayerClass(client, oldclass);
 		CreateTimer(0.2, MakeModelTimer, client);
 	}
 }
