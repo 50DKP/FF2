@@ -1716,26 +1716,26 @@ public Action:event_round_start(Handle:event, const String:name[], bool:dontBroa
 
 	decl ent2;
 	decl Float:pos[3];
-	for(new ent=MaxClients+1; ent<ME; ent++)
+	for(new entity=MaxClients+1; entity<ME; entity++)
 	{
-		if(!IsValidEdict(ent))
+		if(!IsValidEdict(entity))
 		{
 			continue;
 		}
 
-		GetEdictClassname(ent, s, 64);
+		GetEdictClassname(entity, s, 64);
 		if(!strcmp(s, "func_regenerate"))
 		{
-			AcceptEntityInput(ent, "Kill");
+			AcceptEntityInput(entity, "Kill");
 		}
 		else if(!strcmp(s, "func_respawnroomvisualizer"))
 		{
-			AcceptEntityInput(ent, "Disable");
+			AcceptEntityInput(entity, "Disable");
 		}
 		else if(!strcmp(s, "item_ammopack_full") || !strcmp(s, "item_ammopack_medium"))
 		{
-			GetEntPropVector(ent, Prop_Send, "m_vecOrigin", pos);  
-			AcceptEntityInput(ent, "Kill");
+			GetEntPropVector(entity, Prop_Send, "m_vecOrigin", pos);  
+			AcceptEntityInput(entity, "Kill");
 			ent2=CreateEntityByName("item_ammopack_small");
 			TeleportEntity(ent2, pos, NULL_VECTOR, NULL_VECTOR);
 			DispatchSpawn(ent2);
@@ -1752,11 +1752,11 @@ public Action:Timer_EnableCap(Handle:timer)
 		SetControlPoint(true);
 		if(checkdoors)
 		{
-			new ent=-1;
-			while((ent=FindEntityByClassname2(ent, "func_door"))!=-1)
+			new entity=-1;
+			while((entity=FindEntityByClassname2(entity, "func_door"))!=-1)
 			{
-				AcceptEntityInput(ent, "Open");
-				AcceptEntityInput(ent, "Unlock");
+				AcceptEntityInput(entity, "Open");
+				AcceptEntityInput(entity, "Unlock");
 			}
 
 			if(doorchecktimer==INVALID_HANDLE)
@@ -1873,12 +1873,12 @@ public Action:Timer_CheckDoors(Handle:hTimer)
 	{
 		return Plugin_Continue;
 	}
-	new ent=-1;
 
-	while((ent=FindEntityByClassname2(ent, "func_door"))!=-1)
+	new entity=-1;
+	while((entity=FindEntityByClassname2(entity, "func_door"))!=-1)
 	{
-		AcceptEntityInput(ent, "Open");
-		AcceptEntityInput(ent, "Unlock");
+		AcceptEntityInput(entity, "Open");
+		AcceptEntityInput(entity, "Unlock");
 	}
 	return Plugin_Continue;
 }
@@ -2596,11 +2596,11 @@ public Action:MessageTimer(Handle:hTimer)
 
 	if(checkdoors)
 	{
-		new ent=-1;
-		while((ent=FindEntityByClassname2(ent, "func_door"))!=-1)
+		new entity=-1;
+		while((entity=FindEntityByClassname2(entity, "func_door"))!=-1)
 		{
-			AcceptEntityInput(ent, "Open");
-			AcceptEntityInput(ent, "Unlock");
+			AcceptEntityInput(entity, "Open");
+			AcceptEntityInput(entity, "Unlock");
 		}
 
 		if(doorchecktimer==INVALID_HANDLE)
@@ -2785,52 +2785,52 @@ public Action:MakeBoss(Handle:hTimer,any:index)
 		return Plugin_Continue;
 	}
 
-	new ent=-1;
-	while((ent=FindEntityByClassname2(ent, "tf_wearable"))!=-1)
+	new entity=-1;
+	while((entity=FindEntityByClassname2(entity, "tf_wearable"))!=-1)
 	{
-		if(IsBoss(GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity")))
+		if(IsBoss(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")))
 		{
-			switch(GetEntProp(ent, Prop_Send, "m_iItemDefinitionIndex"))
+			switch(GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"))
 			{
 				case 438, 463, 167, 477, 493, 233, 234, 241, 280, 281, 282, 283, 284, 286, 288, 362, 364, 365, 536, 542, 577, 599, 673, 729, 791, 839, 1015, 5607:  //Action Slot items
 				{
 				}
 				default:
 				{
-					AcceptEntityInput(ent, "kill");
+					TF2_RemoveWearable(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity"), entity);
 				}
 			}
 		}
 	}
 
-	while((ent=FindEntityByClassname2(ent, "tf_powerup_bottle"))!=-1)
+	while((entity=FindEntityByClassname2(entity, "tf_powerup_bottle"))!=-1)
 	{
-		if(IsBoss(GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity")))
+		if(IsBoss(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")))
 		{
-			AcceptEntityInput(ent, "kill");
+			TF2_RemoveWearable(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity"), entity);
 		}
 	}
 
-	while((ent=FindEntityByClassname2(ent, "tf_wearable_demoshield"))!=-1)
+	while((entity=FindEntityByClassname2(entity, "tf_wearable_demoshield"))!=-1)
 	{
-		if(IsBoss(GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity")))
+		if(IsBoss(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")))
 		{
-			AcceptEntityInput(ent, "kill");
+			TF2_RemoveWearable(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity"), entity);
 		}
 	}
 
-	while((ent=FindEntityByClassname2(ent, "tf_usableitem"))!=-1)
+	while((entity=FindEntityByClassname2(entity, "tf_usableitem"))!=-1)
 	{
-		if(IsBoss(GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity")))
+		if(IsBoss(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")))
 		{
-			switch(GetEntProp(ent, Prop_Send, "m_iItemDefinitionIndex"))
+			switch(GetEntProp(entity, Prop_Send, "m_iItemDefinitionIndex"))
 			{
 				case 438, 463, 167, 477, 493, 233, 234, 241, 280, 281, 282, 283, 284, 286, 288, 362, 364, 365, 536, 542:  //Action Slot items
 				{
 				}
 				default:
 				{
-					AcceptEntityInput(ent, "kill");
+					TF2_RemoveWearable(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity"), entity);
 				}
 			}
 		}
@@ -3538,7 +3538,7 @@ public Action:Command_GetHPCmd(client, args)
 
 public Action:Command_GetHP(client)
 {
-	if(!Enabled || CheckRoundState()!=-1)
+	if(!Enabled || CheckRoundState()!=1)
 	{
 		return Plugin_Continue;
 	}
@@ -4804,7 +4804,7 @@ public Action:CheckAlivePlayers(Handle:hTimer)
 
 public Action:Timer_DrawGame(Handle:timer)
 {
-	if(BossHealth[0]<2000 || CheckRoundState()!=-1)
+	if(BossHealth[0]<2000 || CheckRoundState()!=1)
 	{
 		return Plugin_Stop;
 	}
@@ -5078,12 +5078,13 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 				TF2_AddCondition(client, TFCond_Bonked, 0.1);
 				return Plugin_Changed;
 			}
-			new ent=-1;
-			while((ent=FindEntityByClassname2(ent, "tf_wearable_demoshield"))!=-1)  //Shields
+
+			new entity=-1;
+			while((entity=FindEntityByClassname2(entity, "tf_wearable_demoshield"))!=-1)  //Shields
 			{
-				if(GetEntPropEnt(ent, Prop_Send, "m_hOwnerEntity")==client && !GetEntProp(ent, Prop_Send, "m_bDisguiseWearable"))
+				if(GetEntPropEnt(entity, Prop_Send, "m_hOwnerEntity")==client && !GetEntProp(entity, Prop_Send, "m_bDisguiseWearable"))
 				{
-					AcceptEntityInput(ent, "Kill");
+					TF2_RemoveWearable(client, entity);
 					EmitSoundToClient(client,"player/spy_shield_break.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 0.7, 100, _, Pos, NULL_VECTOR, false, 0.0);
 					EmitSoundToClient(client,"player/spy_shield_break.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 0.7, 100, _, Pos, NULL_VECTOR, false, 0.0);
 					EmitSoundToClient(attacker,"player/spy_shield_break.wav", _, _, SNDLEVEL_TRAFFIC, SND_NOFLAGS, 0.7, 100, _, Pos, NULL_VECTOR, false, 0.0);
@@ -5837,7 +5838,7 @@ public Action:TF2_CalcIsAttackCritical(client, weapon, String:weaponname[], &boo
 
 	if(IsBoss(client))
 	{
-		if(CheckRoundState()!=-1 || TF2_IsPlayerCritBuffed(client))
+		if(CheckRoundState()!=1 || TF2_IsPlayerCritBuffed(client))
 		{
 			return Plugin_Continue;
 		}
