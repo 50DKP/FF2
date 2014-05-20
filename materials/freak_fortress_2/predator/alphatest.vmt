@@ -1,7 +1,0 @@
-UnLitGeneric
-{
-	"$baseTexture" "models/player/shared/gold_player"
-	"$alphatest" 1
-	"$AlphaTestReference" "0.0"
-	"$AllowAlphaToCoverage" "0"
-}
