@@ -361,6 +361,7 @@ stock FindVersionData(Handle:panel, versionindex)
 		}
 		case 21:  //2.1.0
 		{
+		{
 			DrawPanelText(panel, "5) Fixed koth_ doors not opening (Wliu)");
 			DrawPanelText(panel, "6) Grammer stuff (Chris/Wliu)");
 			DrawPanelText(panel, "TODO:  Natascha; Mantreads; Revolvers; Gangplank; other things~");
@@ -5197,18 +5198,18 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 						Damage[teleowner]+=9001*3/5;
 						if(!(FF2flags[teleowner] & FF2FLAG_HUDDISABLED))
 						{
-							PrintCenterText(teleowner, "TELEFRAG ASSIST! Nice job setting it up!");
+							PrintCenterText(teleowner, "%t", "telefrag assist");
 						}
 					}
 
 					if(!(FF2flags[attacker] & FF2FLAG_HUDDISABLED))
 					{
-						PrintCenterText(attacker, "TELEFRAG! You are a pro!");
+						PrintCenterText(attacker, "%t", "telefrag");
 					}
 
 					if(!(FF2flags[client] & FF2FLAG_HUDDISABLED))
 					{
-						PrintCenterText(client, "TELEFRAG! Be careful around quantum tunneling devices!");
+						PrintCenterText(client, "%t", "telefrag victim");
 					}
 					return Plugin_Changed;
 				}

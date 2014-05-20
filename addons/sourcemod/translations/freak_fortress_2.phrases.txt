@@ -317,4 +317,16 @@
 	{
 		"en"	"For FF2 rules, go to {red}50DKP.com/ff2/rules{default}.  For General rules, go to {red}50DKP.com/rules{default}."
 	}
+	"telefrag"
+	{
+		"en"	"TELEFRAG!"
+	}
+	"telefrag assist"
+	{
+		"en"	"TELEFRAG ASSIST!"
+	}
+	"telefrag victim"
+	{
+		"en"	"TELEFRAG! Be careful around quantum tunnelling devices!"
+	}
 }
