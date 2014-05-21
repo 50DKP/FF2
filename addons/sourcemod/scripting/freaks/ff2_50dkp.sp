@@ -27,7 +27,6 @@ Current bosses that use this:  Fempyro, Gaben (soon), Psycho
 #define PLUGIN_VERSION "1.6.1"
 
 new bEnableSuperDuperJump[MAXPLAYERS+1];
-new bool:gabenBan=false;
 
 public Plugin:myinfo=
 {
@@ -55,10 +54,6 @@ public Action:FF2_OnAbility2(index,const String:plugin_name[],const String:abili
 	if(!strcmp(ability_name,"rage_fempyro"))
 	{
 		Rage_Fempyro(index);
-	}
-	else if(!strcmp(ability_name,"gaben_ban"))
-	{
-		gabenBan=true;
 	}
 	else if(!strcmp(ability_name,"rage_cleaver"))
 	{
@@ -101,13 +96,13 @@ Rage_Cleaver(index)
 }
 
 /*=========ABILITIES START=========*/
-//Gaben_Ban was going to go here, but I didn't know how to hook event_player_death, so...
+
 
 /*==========MISCELLANEOUS========*/
 public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)  //For Gaben Ban
 {
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if(client && GetClientHealth(client) <= 0 && gabenBan==true)
+	if(client && GetClientHealth(client) <= 0 && FF2_HasAbility(GetClientOfUserId (GetEventInt(event, "attacker")), this_plugin_name, "Gaben_Ban")
 	{
 		OnPlayerDeath(client,(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
 	}
@@ -117,7 +112,7 @@ OnPlayerDeath(client,bool:fake = false)  //Also for Gaben Ban
 {
 	if(fake==false)
 	{
-		PrintToChatAll("Player %s has been banned (Banned by Gabe Newell) Reason:  You are not worthy of fighting me",client);
+		PrintToChatAll("Player %s has been banned (Banned by Gabe Newell)",client);
 	}
 }
 
