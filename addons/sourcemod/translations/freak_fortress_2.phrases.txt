@@ -329,4 +329,12 @@
 	{
 		"en"	"TELEFRAG! Be careful around quantum tunnelling devices!"
 	}
+	"backstab"
+	{
+		"en"	"You have backstabbed the boss!"
+	}
+	"backstab victim"
+	{
+		"en"	"You just got backstabbed!"
+	}
 }

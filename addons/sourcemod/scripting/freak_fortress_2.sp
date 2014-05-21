@@ -5515,12 +5515,12 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 
 					if(!(FF2flags[attacker] & FF2FLAG_HUDDISABLED))
 					{
-						PrintCenterText(attacker, "You backstabbed the boss!");
+						PrintCenterText(attacker, "%t", "backstab");
 					}
 
 					if(!(FF2flags[client] & FF2FLAG_HUDDISABLED))
 					{
-						PrintCenterText(client,"You just got backstabbed!");
+						PrintCenterText(client, "%t", "backstab victim");
 					}
 					new Handle:stabevent=CreateEvent("player_hurt", true);
 					SetEventInt(stabevent, "userid", GetClientUserId(client));
