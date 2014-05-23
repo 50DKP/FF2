@@ -1,0 +1,17 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "freak_fortress_2/skeleton_king/skeleton_king_sword"
+
+	$SPECULAREXPONENT 15
+	$SPECULARSCALE 7
+
+	$RIMLIGHTSCALE .5
+	$AMBIENTSCALE 1
+
+
+
+
+	"$cloakPassEnabled" "1"
+
+}
+

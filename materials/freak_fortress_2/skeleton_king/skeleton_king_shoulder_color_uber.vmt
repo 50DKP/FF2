@@ -1,0 +1,45 @@
+"VertexLitGeneric"
+{
+	"$baseTexture" "freak_fortress_2/skeleton_king/skeleton_king_shoulder_color"
+	"$bumpmap" "water/tfwater001_normal"
+	"$envmap" "effects/cubemapper"
+	"$surfaceprop" "metal"
+	"$halflambert" "1"
+
+	"$selfillum" "1"
+	"$selfIllumFresnel" "1"
+	"$selfIllumFresnelMinMaxExp" "[0 18 13]"
+
+	"$invulnlevel" "0"
+	"$invulnexponent" "1"
+	"$invulnfmax" "18"
+	"$invulnscale" "0"
+	"$invulnphong" "1"
+
+	"$half" "0.5"
+
+	"$invulnphongfading" "0"
+	"$invulnphongfull" "1"
+	"$invulnphongoutput" "1" 
+
+	"$invulnexponentfading" "1"
+	"$invulnexponentfull" "13"
+	"$invulnexponentoutput" "1"
+	
+	"$invulnfmaxfading" "-31"
+	"$invulnfmaxfull" "18"
+	"$invulnfmaxoutput" "1"
+
+	"$phong" "1"
+	"$phongexponent"  "35"
+	"$phongboost" "1"	
+	"$lightwarptexture" "test\color_green"
+	"$phongfresnelranges"	"[11 1 8]"
+	
+	// Rim lighting parameters
+	"$rimlight" "1"		
+	"$rimlightexponent" "11"
+	"$rimlightboost" "5"
+}
+
+	
