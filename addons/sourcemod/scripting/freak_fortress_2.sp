@@ -361,7 +361,6 @@ stock FindVersionData(Handle:panel, versionindex)
 		}
 		case 21:  //2.1.0
 		{
-		{
 			DrawPanelText(panel, "5) Fixed koth_ doors not opening (Wliu)");
 			DrawPanelText(panel, "6) Grammer stuff (Chris/Wliu)");
 			DrawPanelText(panel, "TODO:  Natascha; Mantreads; Revolvers; Gangplank; other things~");

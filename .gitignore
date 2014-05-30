@@ -45,6 +45,7 @@
 /addons/sourcemod/gamedata/tf2.items.txt
 /addons/sourcemod/gamedata/tf2.attributes.txt
 /addons/sourcemod/logs/
+/addons/sourcemod/.hg_archival.txt
 /addons/sourcemod/GPL*.txt
 /addons/sourcemod/LICENSE.txt
 #SOURCEMOD PLUGINS
@@ -73,6 +74,7 @@
 /addons/sourcemod/scripting/c*/
 /addons/sourcemod/scripting/freaks/compiled/
 /addons/sourcemod/scripting/fun*/
+/addons/sourcemod/scripting/g*/
 /addons/sourcemod/scripting/k*/
 /addons/sourcemod/scripting/include/a*
 /addons/sourcemod/scripting/include/b*
@@ -118,12 +120,12 @@
 /addons/sourcemod/source/
 #SOURCEMOD TRANSLATIONS
 /addons/sourcemod/translations/*/
-/addons/sourcemod/.hg_archival.txt
 /addons/sourcemod/translations/a*.txt
 /addons/sourcemod/translations/b*.txt
 /addons/sourcemod/translations/c*.txt
 /addons/sourcemod/translations/ff2_o*.txt
 /addons/sourcemod/translations/fun*.txt
+/addons/sourcemod/translations/g*.txt
 /addons/sourcemod/translations/m*.txt
 /addons/sourcemod/translations/n*.txt
 /addons/sourcemod/translations/p*.txt

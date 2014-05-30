@@ -102,7 +102,7 @@ Rage_Cleaver(index)
 public Action:event_player_death(Handle:event, const String:name[], bool:dontBroadcast)  //For Gaben Ban
 {
 	new client = GetClientOfUserId(GetEventInt(event, "userid"));
-	if(client && GetClientHealth(client) <= 0 && FF2_HasAbility(GetClientOfUserId (GetEventInt(event, "attacker")), this_plugin_name, "Gaben_Ban")
+	if(client && GetClientHealth(client) <= 0 && FF2_HasAbility(GetClientOfUserId (GetEventInt(event, "attacker")), this_plugin_name, "Gaben_Ban"))
 	{
 		OnPlayerDeath(client,(GetEventInt(event, "death_flags") & TF_DEATHFLAG_DEADRINGER) != 0);
 	}
