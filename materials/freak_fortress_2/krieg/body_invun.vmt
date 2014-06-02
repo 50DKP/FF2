@@ -6,7 +6,7 @@
 		 	"$bumpmap" "water/dx80_tfwater001_normal"
 	}
 	"$bumpmap" "water/tfwater001_normal"
-	"$envmap" "effects/red_dx8"
+	"$envmap" "effects/brightglow_y"
 	"$surfaceprop" "metal"
 	"$halflambert" "1"
 
