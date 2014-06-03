@@ -1,0 +1,8 @@
+"VertexLitGeneric"
+{
+	"$basetexture" "freak_fortress_2/skeleton_king/skeleton_king_cape"
+	"$bumpmap" "freak_fortress_2/skeleton_king/skeleton_king_cape_normals"
+	"$nocull" 1
+	"$alphatest" 1
+}
+
